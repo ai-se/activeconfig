@@ -1,0 +1,124 @@
+\begin{thebibliography}{10}
+
+\bibitem{lessmann2008benchmarking}
+Stefan Lessmann, Bart Baesens, Christophe Mues, and Swantje Pietsch.
+\newblock Benchmarking classification models for software defect prediction: A
+  proposed framework and novel findings.
+\newblock {\em Software Engineering, IEEE Transactions on}, 34(4):485--496,
+  2008.
+
+\bibitem{mccabe1976complexity}
+Thomas~J McCabe.
+\newblock A complexity measure.
+\newblock {\em Software Engineering, IEEE Transactions on}, (4):308--320, 1976.
+
+\bibitem{menzies2007data}
+Tim Menzies, Jeremy Greenwald, and Art Frank.
+\newblock Data mining static code attributes to learn defect predictors.
+\newblock {\em Software Engineering, IEEE Transactions on}, 33(1):2--13, 2007.
+
+\bibitem{menzies2010defect}
+Tim Menzies, Zach Milton, Burak Turhan, Bojan Cukic, Yue Jiang, and Ay{\c{s}}e
+  Bener.
+\newblock Defect prediction from static code features: current results,
+  limitations, new approaches.
+\newblock {\em Automated Software Engineering}, 17(4):375--407, 2010.
+
+\bibitem{jiang2008can}
+Yue Jiang, Bojan Cukic, and Tim Menzies.
+\newblock Can data transformation help in the detection of fault-prone modules?
+\newblock In {\em Proceedings of the 2008 workshop on Defects in large software
+  systems}, pages 16--20. ACM, 2008.
+
+\bibitem{song2011general}
+Qinbao Song, Zihan Jia, Martin Shepperd, Shi Ying, and Jin Liu.
+\newblock A general software defect-proneness prediction framework.
+\newblock {\em Software Engineering, IEEE Transactions on}, 37(3):356--370,
+  2011.
+
+\bibitem{guo2004robust}
+Lan Guo, Yan Ma, Bojan Cukic, and Harshinder Singh.
+\newblock Robust prediction of fault-proneness by random forests.
+\newblock In {\em Software Reliability Eng, 2004. ISSRE 2004. 15th Int'l Symp
+  on}, pages 417--428. IEEE, 2004.
+
+\bibitem{khoshgoftaar1999logistic}
+Taghi~M Khoshgoftaar and Edward~B Allen.
+\newblock Logistic regression modeling of software quality.
+\newblock {\em International Journal of Reliability, Quality and Safety
+  Engineering}, 6(04):303--317, 1999.
+
+\bibitem{rahman2013how}
+Foyzur Rahman and Premkumar Devanbu.
+\newblock How, and why, process metrics are better.
+\newblock In {\em Proceedings of the 2013 International Conference on Software
+  Engineering}, pages 432--441. IEEE Press, 2013.
+
+\bibitem{Radjenovi?20131397}
+Danijel Radjenovi?, Marjan Heri?ko, Richard Torkar, and Ale¨ ´ivkovi?
+\newblock Software fault prediction metrics: A systematic literature review.
+\newblock {\em Information and Software Technology}, 55(8):1397 -- 1418, 2013.
+
+\bibitem{menzies2013local}
+Tim Menzies, Andrew Butcher, David Cok, Andrian Marcus, Lucas Layman, Forrest
+  Shull, Burak Turhan, and Thomas Zimmermann.
+\newblock Local versus global lessons for defect prediction and effort
+  estimation.
+\newblock {\em Software Engineering, IEEE Transactions on}, 39(6):822--834,
+  2013.
+
+\bibitem{faloutsos1995fastmap}
+Christos Faloutsos and King-Ip Lin.
+\newblock {\em FastMap: A fast algorithm for indexing, data-mining and
+  visualization of traditional and multimedia datasets}, volume~24.
+\newblock ACM, 1995.
+
+\bibitem{breiman84}
+L.~Breiman, J.~H. Friedman, R.~A. Olshen, and C.~J. Stone.
+\newblock {\em Classification and Regression Trees}.
+\newblock 1984.
+
+\bibitem{brieman00}
+Leo Breiman and Adele Cutler.
+\newblock Random forests, 2001.
+\newblock https://www.stat.berkeley.edu/~breiman/RandomForests.
+
+\bibitem{storn1997differential}
+Rainer Storn and Kenneth Price.
+\newblock Differential evolution--a simple and efficient heuristic for global
+  optimization over continuous spaces.
+\newblock {\em Journal of global optimization}, 11(4):341--359, 1997.
+
+\bibitem{omran2005differential}
+Mahamed~GH Omran, Andries~Petrus Engelbrecht, and Ayed Salman.
+\newblock Differential evolution methods for unsupervised image classification.
+\newblock In {\em Evolutionary Computation, 2005. The 2005 IEEE Congress on},
+  volume~2, pages 966--973. IEEE, 2005.
+
+\bibitem{chiha2012tuning}
+I~Chiha, J~Ghabi, and N~Liouane.
+\newblock Tuning pid controller with multi-objective differential evolution.
+\newblock In {\em Communications Control and Signal Processing (ISCCSP), 2012
+  5th International Symposium on}, pages 1--4. IEEE, 2012.
+
+\bibitem{zhang2007comments}
+Hongyu Zhang and Xiuzhen Zhang.
+\newblock Comments on ?data mining static code attributes to learn defect
+  predictors?
+\newblock {\em IEEE Transactions on Software Engineering}, 33(9):635, 2007.
+
+\bibitem{scikit-learn}
+F.~Pedregosa, G.~Varoquaux, A.~Gramfort, V.~Michel, B.~Thirion, O.~Grisel,
+  M.~Blondel, P.~Prettenhofer, R.~Weiss, V.~Dubourg, J.~Vanderplas, A.~Passos,
+  D.~Cournapeau, M.~Brucher, M.~Perrot, and E.~Duchesnay.
+\newblock Scikit-learn: Machine learning in {P}ython.
+\newblock {\em Journal of Machine Learning Research}, 12:2825--2830, 2011.
+
+\bibitem{mittas2013ranking}
+Nikolaos Mittas and Lefteris Angelis.
+\newblock Ranking and clustering software cost estimation models through a
+  multiple comparisons algorithm.
+\newblock {\em Software Engineering, IEEE Transactions on}, 39(4):537--551,
+  2013.
+
+\end{thebibliography}

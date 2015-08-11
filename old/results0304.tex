@@ -1,0 +1,1527 @@
+
+
+\documentclass{acm_proc_article-sp}
+\usepackage{multirow}
+\usepackage{color}
+\usepackage{graphics}
+\usepackage{rotating}
+\usepackage{graphics}
+\usepackage{colortbl}
+\usepackage{picture}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\definecolor{lightgray}{gray}{0.8}
+\definecolor{darkgray}{gray}{0.6}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+\newcommand{\crule}[3][darkgray]{\textcolor{#1}{\rule{#2}{#3}}}
+
+\newcommand{\rone}{\crule{1mm}{1.95mm}}
+
+\newcommand{\rtwo}{\crule{1mm}{1.95mm}\hspace{0.3pt}\crule{1mm}{1.95mm}}
+
+\newcommand{\rthree}{\crule{1mm}{1.95mm}\hspace{0.3pt}\crule{1mm}{1.95mm}\hspace{0.3pt}\crule{1mm}{1.95mm}}
+
+\newcommand{\rfour}{\crule{1mm}{1.95mm}\hspace{0.3pt}\crule{1mm}{1.95mm}\hspace{0.3pt}\crule{1mm}{1.95mm}\hspace{0.3pt}\crule{1mm}{1.95mm}}
+ 
+\newcommand{\rfive}{\crule{1mm}{1.95mm}\hspace{0.3pt}\crule{1mm}{1.95mm}\hspace{0.3pt}\crule{1mm}{1.95mm}\hspace{0.3pt}\crule{1mm}{1.95mm}}
+
+
+\newcommand{\quart}[3]{\begin{picture}(100,6)%1
+{\color{black}\put(#3,3){\circle*{4}}\put(#1,3){\line(1,0){#2}}}\end{picture}}
+\definecolor{Gray}{gray}{0.95}
+\definecolor{LightGray}{gray}{0.975}
+
+\begin{document}
+
+
+
+%%%%%%%%%%%%%%%% optimal parameters from tuning process%%%%%%%%%%%%%%%%%%%%%
+%%%%parameters for pd %%%%%%
+\begin{figure*}[!ht]
+\resizebox{\textwidth}{!}{
+\scriptsize
+\centering
+  \begin{tabular}{|c |c |c |c |c |c |c |c |c |c |c |c |c |c |c |c |c |c |c |c |}
+    \hline
+  \begin{tabular}[c]{@{}c@{}}Learner \\ Name\end{tabular}&Parameters  & Default &antV0&antV1&antV2&camelV0&camelV1&ivyV0&jeditV0&jeditV1&jeditV2&log4jV0&luceneV0&poiV0&poiV1&synapseV0&velocityV0&xercesV0&xercesV1\\ 
+ \hline
+\multirow{8}{*}{\begin{tabular}[c]{@{}c@{}}Where\\based\\ Learner\end{tabular}}
+& threshold& 0.5& 0.17& 0.14& 0.01& 0.03& 0.4& 0.03& 0.44& 0.14& 0.29& 0.09& 0.56& 0.56& 0.01& 0.01& 0.85& 0.31& 0.07\\ \cline{2-20}
+& infoPrune& 0.33& 0.13& 0.39& 0.01& 0.17& 0.04& 0.44& 0.6& 0.62& 0.96& 0.91& 0.44& 0.4& 0.1& 0.07& 0.89& 0.47& 0.34\\ \cline{2-20}
+& min\_sample\_split& 4& 5& 5& 9& 1& 5& 8& 6& 2& 8& 8& 1& 2& 8& 5& 9& 2& 1\\ \cline{2-20}
+& min\_Size& 0.5& 0.49& 0.15& 0.49& 0.27& 0.15& 0.99& 0.13& 0.24& 0.27& 0.07& 0.1& 0.98& 0.56& 0.58& 0.27& 0.18& 0.21\\ \cline{2-20}
+& wriggle& 0.2& 0.65& 0.72& 0.86& 0.53& 0.52& 0.42& 0.93& 0.53& 0.35& 0.08& 0.37& 0.47& 0.01& 0.74& 0.68& 0.02& 0.99\\ \cline{2-20}
+& depthMin& 2& 4& 5& 6& 2& 4& 3& 3& 1& 4& 5& 4& 2& 1& 4& 1& 4& 2\\ \cline{2-20}
+& depthMax& 10& 16& 20& 3& 18& 10& 13& 10& 9& 14& 10& 8& 4& 12& 4& 13& 10& 13\\ \cline{2-20}
+& wherePrune& False& True& False& False& False& True& False& False& True& False& True& True& False& True& False& True& False& False\\ \cline{2-20}
+& treePrune& True& True& False& False& True& True& False& True& False& True& True& False& True& False& False& True& True& True\\ \cline{2-20}
+\hline
+\multirow{4}{*}{CART}
+& threshold& 0.5& 0.01& 0.01& 0.01& 0.01& 0.01& 0.17& 0.01& 0.01& 0.01& 0.18& 0.52& 0.02& 0.01& 0.01& 0.01& 0.06& 0.01\\ \cline{2-20}
+& max\_feature& None& 0.01& 0.01& 0.53& 1& 0.27& 0.12& 0.01& 0.27& 0.63& 0.11& 0.07& 0.13& 0.01& 0.71& 0.3& 0.14& 0.02\\ \cline{2-20}
+& min\_samples\_split& 2& 19& 7& 10& 20& 18& 11& 2& 2& 10& 4& 6& 5& 20& 6& 8& 15& 2\\ \cline{2-20}
+& min\_samples\_leaf& 1& 3& 12& 1& 1& 3& 10& 17& 16& 8& 10& 13& 17& 13& 3& 16& 19& 12\\ \cline{2-20}
+\hline
+\multirow{6}{*}{\begin{tabular}[c]{@{}c@{}}Random \\ Forests\end{tabular}} 
+& threshold& 0.5& 0.01& 0.01& 0.01& 0.01& 0.16& 0.23& 0.04& 0.04& 0.05& 0.03& 0.01& 0.07& 0.01& 0.01& 0.26& 0.11& 0.01\\ \cline{2-20}
+& max\_feature& None& 0.14& 0.78& 0.96& 0.01& 0.14& 1.0& 0.41& 0.09& 0.91& 0.39& 0.01& 0.82& 0.01& 0.01& 0.29& 0.46& 0.32\\ \cline{2-20}
+& max\_leaf\_nodes& None& 49& 23& 27& 41& 22& 16& 16& 14& 30& 35& 17& 44& 47& 48& 20& 44& 44\\ \cline{2-20}
+& min\_samples\_split& 2& 9& 9& 10& 20& 3& 17& 2& 5& 16& 5& 19& 12& 4& 17& 9& 14& 9\\ \cline{2-20}
+& min\_samples\_leaf& 1& 16& 15& 9& 20& 10& 8& 19& 7& 17& 18& 5& 15& 18& 9& 11& 17& 14\\ \cline{2-20}
+& n\_estimators& 100& 140& 102& 55& 108& 140& 70& 107& 147& 65& 145& 96& 142& 133& 82& 88& 119& 104\\ \cline{2-20}
+\hline  \end{tabular}
+}
+  \caption{Parameters tuned on different models over the objective of pd}
+\end{figure*}
+
+
+%%%%parameters for prec %%%%%%
+\begin{figure*}[!ht]
+\resizebox{\textwidth}{!}{
+\scriptsize
+\centering
+  \begin{tabular}{|c |c |c |c |c |c |c |c |c |c |c |c |c |c |c |c |c |c |c |c |}
+    \hline
+  \begin{tabular}[c]{@{}c@{}}Learner \\ Name\end{tabular}&Parameters  & Default &antV0&antV1&antV2&camelV0&camelV1&ivyV0&jeditV0&jeditV1&jeditV2&log4jV0&luceneV0&poiV0&poiV1&synapseV0&velocityV0&xercesV0&xercesV1\\ 
+ \hline
+\multirow{8}{*}{\begin{tabular}[c]{@{}c@{}}Where\\based\\ Learner\end{tabular}}
+& threshold& 0.5& 0.53& 0.57& 0.14& 0.67& 0.9& 1& 1& 0.72& 0.91& 0.96& 0.67& 1.0& 0.41& 0.24& 1& 0.47& 0.74\\ \cline{2-20}
+& infoPrune& 0.33& 0.68& 0.45& 0.53& 0.26& 0.81& 0.42& 0.39& 0.21& 0.05& 0.57& 0.35& 0.53& 0.68& 0.52& 0.56& 0.5& 0.75\\ \cline{2-20}
+& min\_sample\_split& 4& 3& 9& 9& 8& 6& 5& 2& 8& 6& 1& 3& 7& 1& 4& 6& 9& 7\\ \cline{2-20}
+& min\_Size& 0.5& 0.07& 0.26& 0.39& 0.73& 0.29& 0.49& 0.19& 0.44& 0.36& 1.0& 0.93& 0.45& 0.52& 0.22& 0.91& 0.19& 0.87\\ \cline{2-20}
+& wriggle& 0.2& 0.91& 0.63& 0.31& 0.18& 0.97& 0.74& 0.98& 0.59& 0.61& 0.34& 0.92& 0.71& 1& 0.95& 0.25& 0.01& 0.17\\ \cline{2-20}
+& depthMin& 2& 4& 5& 1& 5& 3& 1& 4& 1& 3& 3& 1& 3& 1& 2& 5& 3& 2\\ \cline{2-20}
+& depthMax& 10& 10& 17& 6& 6& 12& 19& 14& 15& 12& 12& 18& 19& 11& 8& 10& 11& 18\\ \cline{2-20}
+& wherePrune& False& True& True& True& False& True& True& True& True& False& False& True& True& True& True& False& True& True\\ \cline{2-20}
+& treePrune& True& True& True& False& False& False& True& True& False& False& False& False& False& True& False& False& True& False\\ \cline{2-20}
+\hline
+\multirow{4}{*}{CART}
+& threshold& 0.5& 0.83& 1& 0.99& 0.85& 0.9& 0.93& 1& 0.98& 0.88& 0.9& 0.7& 1& 0.63& 1& 1& 0.91& 0.81\\ \cline{2-20}
+& max\_feature& None& 0.01& 0.35& 0.35& 0.73& 0.63& 0.76& 0.76& 0.01& 0.13& 0.01& 0.83& 0.01& 0.02& 0.19& 0.28& 0.97& 0.1\\ \cline{2-20}
+& min\_samples\_split& 2& 18& 11& 6& 18& 20& 19& 3& 6& 14& 12& 8& 12& 17& 2& 11& 5& 16\\ \cline{2-20}
+& min\_samples\_leaf& 1& 3& 19& 6& 1& 4& 2& 14& 1& 2& 6& 2& 19& 4& 6& 15& 1& 17\\ \cline{2-20}
+\hline
+\multirow{6}{*}{\begin{tabular}[c]{@{}c@{}}Random \\ Forests\end{tabular}} 
+& threshold& 0.5& 0.86& 0.61& 0.71& 0.17& 1& 1& 0.87& 1& 1& 1& 0.97& 1& 0.41& 0.33& 1& 0.83& 0.94\\ \cline{2-20}
+& max\_feature& None& 0.05& 0.34& 0.31& 0.45& 0.54& 0.94& 0.93& 0.81& 0.01& 1& 0.69& 0.42& 1& 0.01& 0.01& 0.75& 1\\ \cline{2-20}
+& max\_leaf\_nodes& None& 16& 11& 38& 47& 18& 38& 27& 33& 16& 24& 41& 50& 15& 15& 30& 47& 28\\ \cline{2-20}
+& min\_samples\_split& 2& 3& 3& 4& 19& 17& 19& 18& 5& 13& 19& 1& 5& 2& 6& 7& 11& 11\\ \cline{2-20}
+& min\_samples\_leaf& 1& 7& 11& 10& 16& 8& 14& 4& 2& 7& 14& 12& 7& 10& 12& 7& 8& 4\\ \cline{2-20}
+& n\_estimators& 100& 85& 111& 99& 121& 128& 140& 141& 63& 100& 69& 99& 109& 123& 88& 125& 107& 131\\ \cline{2-20}
+\hline  \end{tabular}
+}
+  \caption{Parameters tuned on different models over the objective of prec}
+\end{figure*}
+
+
+%%%%parameters for F %%%%%%
+\begin{figure*}[!ht]
+\resizebox{\textwidth}{!}{
+\scriptsize
+\centering
+  \begin{tabular}{|c |c |c |c |c |c |c |c |c |c |c |c |c |c |c |c |c |c |c |c |}
+    \hline
+  \begin{tabular}[c]{@{}c@{}}Learner \\ Name\end{tabular}&Parameters  & Default &antV0&antV1&antV2&camelV0&camelV1&ivyV0&jeditV0&jeditV1&jeditV2&log4jV0&luceneV0&poiV0&poiV1&synapseV0&velocityV0&xercesV0&xercesV1\\ 
+ \hline
+\multirow{8}{*}{\begin{tabular}[c]{@{}c@{}}Where\\based\\ Learner\end{tabular}}
+& threshold& 0.5& 0.02& 0.72& 0.97& 0.01& 0.87& 1& 0.59& 0.49& 0.77& 0.38& 0.25& 0.94& 0.01& 0.81& 0.53& 0.83& 0.99\\ \cline{2-20}
+& infoPrune& 0.33& 0.13& 0.64& 0.57& 0.33& 0.92& 0.37& 0.43& 0.53& 0.68& 0.56& 0.55& 0.74& 0.04& 0.34& 0.62& 1& 0.36\\ \cline{2-20}
+& min\_sample\_split& 4& 5& 1& 1& 5& 3& 3& 8& 9& 2& 4& 6& 2& 2& 2& 2& 9& 7\\ \cline{2-20}
+& min\_Size& 0.5& 0.59& 0.56& 0.29& 0.03& 0.64& 0.5& 1.0& 0.45& 1& 0.79& 0.22& 0.97& 1& 0.6& 0.68& 0.47& 0.35\\ \cline{2-20}
+& wriggle& 0.2& 0.51& 0.88& 0.92& 0.67& 0.81& 0.82& 0.45& 0.93& 0.39& 0.92& 0.16& 0.48& 0.22& 0.98& 0.7& 0.57& 0.02\\ \cline{2-20}
+& depthMin& 2& 4& 2& 5& 3& 2& 1& 5& 2& 2& 1& 3& 3& 3& 1& 4& 2& 5\\ \cline{2-20}
+& depthMax& 10& 16& 12& 1& 11& 19& 12& 20& 7& 8& 17& 19& 17& 12& 9& 9& 13& 3\\ \cline{2-20}
+& wherePrune& False& True& True& False& False& False& True& False& False& True& False& False& True& False& False& False& False& False\\ \cline{2-20}
+& treePrune& True& True& False& False& False& True& False& False& False& True& True& False& False& False& False& True& False& False\\ \cline{2-20}
+\hline
+\multirow{4}{*}{CART}
+& threshold& 0.5& 0.06& 0.63& 0.99& 0.01& 1& 0.98& 0.47& 0.74& 0.99& 0.36& 0.6& 0.95& 0.01& 0.01& 0.01& 0.43& 0.01\\ \cline{2-20}
+& max\_feature& None& 0.3& 0.81& 0.01& 1& 0.98& 0.26& 0.36& 0.76& 0.29& 0.5& 0.12& 0.01& 0.01& 0.01& 0.16& 0.96& 0.01\\ \cline{2-20}
+& min\_samples\_split& 2& 13& 10& 15& 14& 13& 7& 7& 4& 5& 5& 15& 20& 8& 20& 6& 10& 2\\ \cline{2-20}
+& min\_samples\_leaf& 1& 9& 17& 1& 9& 1& 20& 1& 20& 17& 4& 9& 3& 12& 10& 16& 4& 8\\ \cline{2-20}
+\hline
+\multirow{6}{*}{\begin{tabular}[c]{@{}c@{}}Random \\ Forests\end{tabular}} 
+& threshold& 0.5& 0.92& 0.49& 0.24& 0.01& 1& 1& 1& 1& 1& 0.7& 0.21& 1& 0.01& 0.17& 0.4& 0.81& 0.01\\ \cline{2-20}
+& max\_feature& None& 0.02& 0.55& 0.01& 0.01& 0.81& 0.52& 0.01& 0.76& 0.01& 0.01& 0.67& 0.3& 0.01& 0.06& 0.36& 0.34& 0.93\\ \cline{2-20}
+& max\_leaf\_nodes& None& 13& 10& 34& 10& 15& 25& 34& 24& 40& 20& 33& 14& 27& 40& 47& 44& 41\\ \cline{2-20}
+& min\_samples\_split& 2& 8& 1& 15& 15& 10& 11& 10& 5& 1& 9& 6& 7& 13& 13& 12& 15& 15\\ \cline{2-20}
+& min\_samples\_leaf& 1& 2& 14& 17& 19& 5& 13& 5& 2& 3& 11& 17& 2& 5& 9& 7& 18& 14\\ \cline{2-20}
+& n\_estimators& 100& 132& 50& 81& 150& 63& 59& 85& 141& 96& 106& 71& 95& 121& 135& 112& 104& 92\\ \cline{2-20}
+\hline  \end{tabular}
+}
+  \caption{Parameters tuned on different models over the objective of F}
+\end{figure*}
+
+
+
+
+%%%%%%%%%%%%%%%% defectives and non-defectives for each datasets%%%%%%%%%%%%%%%%%%%%%
+
+\begin{figure*}[!ht]
+\scriptsize
+\centering
+  \begin{tabular}{c c c c c c c c c c }
+  \hline\hline
+  Dataset &antV0&antV1&antV2&camelV0&camelV1&ivyV0&jeditV0&jeditV1&jeditV2
+\\\hline
+  training &20/125 &40/178 &32/293 &13/339 &216/608 &63/111 &90/272 &75/306 &79/312
+\\  tunning  &40/178 &32/293 &92/351 &216/608 &145/872 &16/241 &75/306 &79/312 &48/367
+\\  testing &32/293 &92/351 &166/745 &145/872 &188/965 &40/352 &79/312 &48/367 &11/492
+\\  \end{tabular}
+   \caption{The percentage of defective instances in each experimental data set. For each experiment,  training, tuning and testing data are composed of single chronological data file}
+\end{figure*}
+\begin{figure*}[!ht]
+\scriptsize
+\centering
+  \begin{tabular}{c c c c c c c c c c }
+  \hline\hline
+  Dataset &log4jV0&luceneV0&poiV0&poiV1&synapseV0&velocityV0&xercesV0&xercesV1
+\\\hline
+  training &34/135 &91/195 &141/237 &37/314 &16/157 &147/196 &77/162 &71/440
+\\  tunning  &37/109 &144/247 &37/314 &248/385 &60/222 &142/214 &71/440 &69/453
+\\  testing &189/205 &203/340 &248/385 &281/442 &86/256 &78/229 &69/453 &437/588
+\\  \end{tabular}
+
+   \caption{The percentage of defective instances in each experimental data set. For each experiment,  training, tuning and testing data are composed of single chronological data file}
+\end{figure*}
+
+
+%%%%%%%%%%%%%%%% feature selection over pd%%%%%%%%%%%%%%%%%%%%%
+\begin{figure*}[!ht]
+\resizebox{\textwidth}{!}{
+\scriptsize
+\centering
+  \begin{tabular}{c|c c|c c|c c|c c|c c|c c|c c|c c|c c|c c|c c|c c|c c|c c|c c|c c|c c|c }
+  \hline\hline
+  Features & \multicolumn{2}{c}{antV0}&\multicolumn{2}{c}{antV1}&\multicolumn{2}{c}{antV2}&\multicolumn{2}{c}{camelV0}&\multicolumn{2}{c}{camelV1}&\multicolumn{2}{c}{ivyV0}&\multicolumn{2}{c}{jeditV0}&\multicolumn{2}{c}{jeditV1}&\multicolumn{2}{c}{jeditV2}&\multicolumn{2}{c}{log4jV0}&\multicolumn{2}{c}{luceneV0}&\multicolumn{2}{c}{poiV0}&\multicolumn{2}{c}{poiV1}&\multicolumn{2}{c}{synapseV0}&\multicolumn{2}{c}{velocityV0}&\multicolumn{2}{c}{xercesV0}&\multicolumn{2}{c}{xercesV1}
+\\\hline
+  npm& & & & & & & & & & & & & & & & & & & & & & & & $\circ$& & & & & & & & & & \\
+loc& & & $\star$& & & & $\star$& & $\star$& & & & & & & & & & $\star$& & & & $\star$& $\circ$& $\star$& $\circ$& $\star$& & & & $\star$& & $\star$& \\
+amc& & & & & & & & & & & & & & & & & & & & & & & $\star$& $\circ$& $\star$& & & & & & $\star$& & $\star$& \\
+max\_cc& & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & \\
+lcom& & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & \\
+dam& $\star$& & $\star$& & $\star$& & $\star$& & & & $\star$& $\circ$& $\star$& & $\star$& & $\star$& & & & $\star$& & $\star$& $\circ$& $\star$& & $\star$& $\circ$& $\star$& & $\star$& & & \\
+ca& & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & \\
+cbo& & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & \\
+ce& & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & \\
+noc& & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & \\
+rfc& & & & & & & $\star$& & $\star$& & & $\circ$& & & & & & & & & & & $\star$& & & & & & & & & & $\star$& \\
+dit& & & $\star$& & & & & & $\star$& & $\star$& & $\star$& & $\star$& & $\star$& & $\star$& & & & & & & & & & $\star$& & & & & \\
+mfa& $\star$& $\circ$& $\star$& & $\star$& $\circ$& $\star$& & $\star$& & & & $\star$& & $\star$& & $\star$& & $\star$& & $\star$& & $\star$& $\circ$& $\star$& & $\star$& & $\star$& & $\star$& & $\star$& \\
+cam& & & & & $\star$& & $\star$& & $\star$& & $\star$& $\circ$& & & & & $\star$& & & & $\star$& & & & & & $\star$& & & & $\star$& & $\star$& \\
+avg\_cc& & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & \\
+wmc& $\star$& & $\star$& & & & & & $\star$& & & $\circ$& & & & & & & & & & & $\star$& $\circ$& & & & & & & & & $\star$& \\
+moa& & & & & & & & & & & & $\circ$& & & & & & & & & & & & & & & & & & & & & & \\
+cbm& & & & & & & & & & & & & $\star$& & $\star$& & $\star$& & & & & & & & $\star$& & & & & & & & & \\
+ic& $\star$& & & & $\star$& & & & & & $\star$& & & & $\star$& & $\star$& & $\star$& & $\star$& & & & & & & & $\star$& & & & & \\
+lcom3& & & & & $\star$& & $\star$& & & & $\star$& & $\star$& & $\star$& & & & $\star$& & $\star$& & & & $\star$& $\circ$& & & $\star$& & & & & \\
+
+  \end{tabular}}
+    \caption{Feature seleciton for different datasets with  and without the tuning process over the objective of pd. }
+\end{figure*}
+
+%%%%%%%%%%%%%%%% features selection over precision%%%%%%%%%%%%%%%%%%%%%
+\begin{figure*}[!ht]
+\resizebox{\textwidth}{!}{
+\scriptsize
+\centering
+  \begin{tabular}{c|c c|c c|c c|c c|c c|c c|c c|c c|c c|c c|c c|c c|c c|c c|c c|c c|c c|c }
+  \hline\hline
+  Features & \multicolumn{2}{c}{antV0}&\multicolumn{2}{c}{antV1}&\multicolumn{2}{c}{antV2}&\multicolumn{2}{c}{camelV0}&\multicolumn{2}{c}{camelV1}&\multicolumn{2}{c}{ivyV0}&\multicolumn{2}{c}{jeditV0}&\multicolumn{2}{c}{jeditV1}&\multicolumn{2}{c}{jeditV2}&\multicolumn{2}{c}{log4jV0}&\multicolumn{2}{c}{luceneV0}&\multicolumn{2}{c}{poiV0}&\multicolumn{2}{c}{poiV1}&\multicolumn{2}{c}{synapseV0}&\multicolumn{2}{c}{velocityV0}&\multicolumn{2}{c}{xercesV0}&\multicolumn{2}{c}{xercesV1}
+\\\hline
+  npm& & & & & & & & & & & & & & & & & & & & $\circ$& & $\circ$& & $\circ$& & $\circ$& & & & & & & & $\circ$\\
+loc& & & $\star$& & & & $\star$& $\circ$& $\star$& $\circ$& & & & & & & & & $\star$& $\circ$& & & & $\circ$& $\star$& $\circ$& $\star$& & & & $\star$& & $\star$& $\circ$\\
+amc& & & & & & & & & & $\circ$& & & & & & & & & & & & & $\star$& $\circ$& $\star$& $\circ$& & & & & $\star$& & $\star$& \\
+max\_cc& & & & & & & & & & & & & & & & & & & & $\circ$& & & & & & & & & & & & & & \\
+lcom& & & & & & & & & & & & & & & & & & & & $\circ$& & & & & & $\circ$& & & & $\circ$& & & & \\
+dam& $\star$& & $\star$& & $\star$& $\circ$& $\star$& & & $\circ$& $\star$& $\circ$& $\star$& & $\star$& $\circ$& $\star$& & & & $\star$& $\circ$& $\star$& $\circ$& $\star$& $\circ$& $\star$& & $\star$& $\circ$& $\star$& & & $\circ$\\
+ca& & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & \\
+cbo& & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & $\circ$\\
+ce& & & & & & & & & & & & $\circ$& & & & & & & & & & & & & & & & & & & & & & \\
+noc& & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & \\
+rfc& & & & & & $\circ$& $\star$& $\circ$& $\star$& & & & & & & & & & & & & $\circ$& $\star$& & & $\circ$& & & & $\circ$& & & $\star$& \\
+dit& & & $\star$& & & $\circ$& & & $\star$& $\circ$& $\star$& $\circ$& $\star$& & $\star$& $\circ$& $\star$& & $\star$& & & & & & & $\circ$& & & $\star$& & & & & $\circ$\\
+mfa& $\star$& & $\star$& & $\star$& $\circ$& $\star$& $\circ$& $\star$& $\circ$& & $\circ$& $\star$& & $\star$& $\circ$& $\star$& $\circ$& $\star$& $\circ$& $\star$& & $\star$& $\circ$& $\star$& $\circ$& $\star$& & $\star$& $\circ$& $\star$& & $\star$& $\circ$\\
+cam& & & & & $\star$& $\circ$& $\star$& $\circ$& $\star$& & $\star$& $\circ$& & & & & $\star$& & & $\circ$& $\star$& $\circ$& & & & $\circ$& $\star$& & & $\circ$& $\star$& & $\star$& $\circ$\\
+avg\_cc& & & & & & $\circ$& & & & & & & & & & & & & & $\circ$& & & & & & & & & & & & & & $\circ$\\
+wmc& $\star$& & $\star$& & & & & & $\star$& & & & & & & & & & & $\circ$& & $\circ$& $\star$& $\circ$& & $\circ$& & & & $\circ$& & & $\star$& $\circ$\\
+moa& & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & $\circ$\\
+cbm& & & & & & & & & & & $\star$& & $\star$& & $\star$& & $\star$& & $\star$& & & & & $\circ$& $\star$& $\circ$& & & & & & & & $\circ$\\
+ic& $\star$& & & & $\star$& & & & & & & $\circ$& $\star$& & $\star$& $\circ$& $\star$& & & & $\star$& & & $\circ$& & & & & $\star$& $\circ$& & & & \\
+lcom3& & & & & $\star$& & $\star$& $\circ$& & & $\star$& $\circ$& $\star$& & $\star$& & & & $\star$& $\circ$& $\star$& $\circ$& & $\circ$& $\star$& $\circ$& & & $\star$& $\circ$& & & & \\
+
+  \end{tabular}}
+  \caption{Feature seleciton for different datasets with and without the tuning process over the objective of precision. }
+\end{figure*}
+
+
+%%%%%%%%%%%%%%%% features selection over F%%%%%%%%%%%%%%%%%%%%%
+\begin{figure*}[!ht]
+\resizebox{\textwidth}{!}{
+\scriptsize
+\centering
+  \begin{tabular}{c|c c|c c|c c|c c|c c|c c|c c|c c|c c|c c|c c|c c|c c|c c|c c|c c|c c|c }
+  \hline\hline
+  Features & \multicolumn{2}{c}{antV0}&\multicolumn{2}{c}{antV1}&\multicolumn{2}{c}{antV2}&\multicolumn{2}{c}{camelV0}&\multicolumn{2}{c}{camelV1}&\multicolumn{2}{c}{ivyV0}&\multicolumn{2}{c}{jeditV0}&\multicolumn{2}{c}{jeditV1}&\multicolumn{2}{c}{jeditV2}&\multicolumn{2}{c}{log4jV0}&\multicolumn{2}{c}{luceneV0}&\multicolumn{2}{c}{poiV0}&\multicolumn{2}{c}{poiV1}&\multicolumn{2}{c}{synapseV0}&\multicolumn{2}{c}{velocityV0}&\multicolumn{2}{c}{xercesV0}&\multicolumn{2}{c}{xercesV1}
+\\\hline
+  npm& & & & $\circ$& & $\circ$& & & & $\circ$& & & & & & & & & & & & & & $\circ$& & & & & & & & & & \\
+loc& & & $\star$& $\circ$& & $\circ$& $\star$& & $\star$& $\circ$& & & & $\circ$& & $\circ$& & $\circ$& $\star$& $\circ$& & & $\star$& $\circ$& $\star$& $\circ$& $\star$& $\circ$& & & $\star$& $\circ$& $\star$& $\circ$\\
+amc& & & & $\circ$& & & & & & $\circ$& & & & & & & & & & & & & $\star$& $\circ$& $\star$& & & & & $\circ$& $\star$& & $\star$& $\circ$\\
+max\_cc& & & & $\circ$& & & & & & & & & & & & & & & & & & & & & & & & & & & & & & \\
+lcom& & & & $\circ$& & & & & & & & & & & & & & & & & & & & $\circ$& & & & $\circ$& & & & & & \\
+dam& $\star$& & $\star$& $\circ$& $\star$& $\circ$& $\star$& & & $\circ$& $\star$& $\circ$& $\star$& $\circ$& $\star$& $\circ$& $\star$& $\circ$& & & $\star$& & $\star$& $\circ$& $\star$& & $\star$& $\circ$& $\star$& $\circ$& $\star$& $\circ$& & \\
+ca& & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & \\
+cbo& & & & & & & & & & $\circ$& & & & & & & & & & & & & & & & & & & & $\circ$& & $\circ$& & $\circ$\\
+ce& & & & & & & & & & & & & & $\circ$& & & & & & & & & & $\circ$& & & & & & & & & & \\
+noc& & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & \\
+rfc& & $\circ$& & $\circ$& & $\circ$& $\star$& & $\star$& $\circ$& & & & $\circ$& & & & & & $\circ$& & & $\star$& & & & & $\circ$& & $\circ$& & & $\star$& $\circ$\\
+dit& & & $\star$& $\circ$& & & & & $\star$& $\circ$& $\star$& $\circ$& $\star$& & $\star$& & $\star$& $\circ$& $\star$& & & & & & & & & & $\star$& $\circ$& & $\circ$& & \\
+mfa& $\star$& $\circ$& $\star$& $\circ$& $\star$& $\circ$& $\star$& & $\star$& $\circ$& & $\circ$& $\star$& $\circ$& $\star$& $\circ$& $\star$& $\circ$& $\star$& $\circ$& $\star$& & $\star$& $\circ$& $\star$& & $\star$& $\circ$& $\star$& & $\star$& $\circ$& $\star$& $\circ$\\
+cam& & & & $\circ$& $\star$& $\circ$& $\star$& & $\star$& $\circ$& $\star$& $\circ$& & & & $\circ$& $\star$& $\circ$& & & $\star$& & & & & & $\star$& $\circ$& & $\circ$& $\star$& $\circ$& $\star$& $\circ$\\
+avg\_cc& & & & & & $\circ$& & & & & & & & $\circ$& & & & & & & & & & & & & & & & & & & & \\
+wmc& $\star$& & $\star$& $\circ$& & $\circ$& & & $\star$& $\circ$& & & & $\circ$& & $\circ$& & $\circ$& & $\circ$& & & $\star$& $\circ$& & & & & & $\circ$& & $\circ$& $\star$& $\circ$\\
+moa& & & & & & $\circ$& & & & & & & & & & & & $\circ$& & & & & & & & & & & & & & & & \\
+cbm& & & & & & & & & & $\circ$& & & $\star$& & $\star$& $\circ$& $\star$& & & & & & & & $\star$& & & & & $\circ$& & & & \\
+ic& $\star$& & & & $\star$& & & & & $\circ$& $\star$& $\circ$& $\star$& & $\star$& $\circ$& $\star$& & $\star$& & $\star$& & & & & & & & $\star$& $\circ$& & & & \\
+lcom3& & & & $\circ$& $\star$& $\circ$& $\star$& & & $\circ$& $\star$& $\circ$& $\star$& & $\star$& $\circ$& & & $\star$& & $\star$& & & $\circ$& $\star$& & & & $\star$& $\circ$& & & & \\
+
+  \end{tabular}}
+    \caption{Feature seleciton for different datasets with and without the tuning process over the objective of F measure. }
+\end{figure*}
+
+
+%%%%%%%%%%%%%%%%  counts of features for different goals%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[!ht]
+
+\renewcommand{\baselinestretch}{0.8}
+\scriptsize
+\centering
+  \begin{tabular}{c|c c|c c|c c|c c| c c }
+  
+    & \multicolumn{2}{c|}{Pd} &  \multicolumn{2}{c|}{Precision} & \multicolumn{2}{c|}{F} &  \multicolumn{2}{c|}{SUM}\\
+ &&&&&&&&\\
+Features& \begin{sideways}naive\end{sideways}
+& \begin{sideways}tuned\end{sideways}
+& \begin{sideways}naive\end{sideways}
+& \begin{sideways}tuned\end{sideways}
+& \begin{sideways}naive\end{sideways}
+& \begin{sideways}tuned\end{sideways}
+& \begin{sideways}naive\end{sideways}
+& \begin{sideways}tuned\end{sideways}
+\\\hline
+noc& & & & & & &  & \\
+ca& & & & & & &  & \\
+max\_cc& & & & 1& & 1&  & 2\\
+ce& & & & 1& & 2&  & 3\\
+moa& & 1& & 1& & 2&  & 4\\
+cbo& & & & 1& & 4&  & 5\\
+avg\_cc& & & & 3& & 2&  & 5\\
+lcom& & & & 3& & 3&  & 6\\
+npm& & 1& & 5& & 4&  & 10\\
+cbm& 4& & 6& 3& 4& 3& 14 & 6\\
+amc& 4& 1& 4& 3& 4& 5& 12 & 9\\
+rfc& 4& 1& 4& 5& 4& 9& 12 & 15\\
+ic& 8& & 7& 4& 9& 4& 24 & 8\\
+wmc& 5& 2& 5& 6& 5& 11& 15 & 19\\
+dit& 8& & 8& 6& 8& 6& 24 & 12\\
+lcom3& 9& 1& 9& 7& 9& 7& 27 & 15\\
+loc& 9& 2& 8& 6& 9& 12& 26 & 20\\
+cam& 9& 1& 9& 8& 9& 10& 27 & 19\\
+dam& 14& 3& 14& 9& 14& 11& 42 & 23\\
+mfa& 16& 3& 16& 11& 16& 13& 48 & 27\\
+
+  \end{tabular}
+    \caption{Counts of features selected by different goals. For each goal, the numbers in right and left columns represent the counts of features selected for all the data sets with and without tuning processes.}
+\end{figure}
+
+
+
+
+%%%%%features summary %%%%%%
+%\begin{figure*}[!ht]
+%\scriptsize
+%\centering
+%  \begin{tabular}{c|c c|c c|c c|c c|c c|c |c}
+%  \hline\hline
+%  Features & \multicolumn{2}{c}{Pd}  & \multicolumn{2}{c}{Precision} & \multicolumn{2}{c}{F}  &\multicolumn{2}{c}{SUM}
+%\\\hline
+%  noc& 0& 0& 0& 0& 0& 0&0 & 0\\
+%ca& 0& 0& 0& 0& 0& 0&0 & 0\\
+%npm& 0& 1& 0& 5& 0& 4& 0 & 10\\
+%max\_cc& 0& 0& 0& 1& 0& 1& 0 & 2\\
+%ce& 0& 0& 0& 1& 0& 2& 0 & 3\\
+%moa& 0& 1& 0& 1& 0& 2&  0 & 4\\
+%cbo& 0& 0& 0& 1& 0& 4& 0 & 5\\
+%avg\_cc& 0& 0& 0& 3& 0& 2& 0 & 5\\
+%lcom& 0& 0& 0& 3& 0& 3& 0 & 6\\
+%rfc& 4& 1& 4& 5& 4& 9& 12 & 15\\
+%amc& 4& 1& 4& 3& 4& 5& 12 & 9\\
+%cbm& 4& 0& 6& 3& 4& 3&14 & 6\\
+%wmc& 5& 2& 5& 6& 5& 11&  15 & 19\\
+%dit& 8& 0& 8& 6& 8& 6& 24 & 12\\
+%ic& 8& 0& 7& 4& 9& 4& 24 & 8\\
+%loc& 9& 2& 8& 6& 9& 12& 26 & 20\\
+%lcom3& 9& 1& 9& 7& 9& 7& 27 & 15\\
+%cam& 9& 1& 9& 8& 9& 10& 27 & 19\\
+%dam& 14& 3& 14& 9& 14& 11&  42 & 23\\
+%mfa& 16& 3& 16& 11& 16& 13&  48 & 27\\
+%
+%  \end{tabular}
+%  \caption{Summary of the features selected for buidling learning over the objectives of pd, precision and F}
+%\end{figure*}
+%
+
+
+
+%%%%%%%%%%%%%% pd bars%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+\begin{figure}
+\renewcommand{\baselinestretch}{0.8} 
+
+\scriptsize  
+\begin{tabular}{r|r@{~}l@{~}|r@{~}l|r@{~}l|r@{~}l|r@{~}l@{~}|r@{~}l@{~}r@{~}l}
+      &   \multicolumn{4}{c|}{WHERE}         &   \multicolumn{4}{c|}{CART}         &   \multicolumn{4}{c}{Random Forests}         \\\hline
+  Data set   &   \multicolumn{2}{c}{Naive}         &   \multicolumn{2}{c|}{Tuned}         &   \multicolumn{2}{c}{Naive}         &   \multicolumn{2}{c|}{Tuned}    &   \multicolumn{2}{c}{Naive}  &   \multicolumn{2}{c}{Tuned}\\\hline
+antV0 & 53 & {\rone} & $\bigstar$100 & {\rfour} & 38 &         & $\bigstar$100 & {\rfour} & 97 & {\rfour} & $\bigstar$100 & {\rfour}\\
+antV1 & 7 &         & $\bigstar$100 & {\rfour} & 39 & {\rone} & 96 & {\rfour} & 95 & {\rfour} & $\bigstar$100 & {\rfour}\\
+antV2 & 0 &         & $\bigstar$100 & {\rfour} & 37 & {\rone} & $\bigstar$100 & {\rfour} & 92 & {\rfour} & 98 & {\rfour}\\
+camelV0 & 0 &         & $\bigstar$100 & {\rfour} & 6 &         & $\bigstar$100 & {\rfour} & 66 & {\rthree} & 97 & {\rfour}\\
+camelV1 & 80 & {\rthree} & $\bigstar$100 & {\rfour} & 46 &         & $\bigstar$100 & {\rfour} & 94 & {\rfour} & $\bigstar$100 & {\rfour}\\
+ivyV0 & 93 & {\rtwo} & $\bigstar$100 & {\rfour} & 88 &         & $\bigstar$100 & {\rfour} & 98 & {\rfour} & 98 & {\rfour}\\
+jeditV0 & 89 & {\rthree} & $\bigstar$100 & {\rfour} & 66 &         & 99 & {\rfour} & 96 & {\rfour} & $\bigstar$100 & {\rfour}\\
+jeditV1 & 75 & {\rtwo} & $\bigstar$100 & {\rfour} & 50 &         & $\bigstar$100 & {\rfour} & $\bigstar$100 & {\rfour} & $\bigstar$100 & {\rfour}\\
+jeditV2 & 45 &         & $\bigstar$100 & {\rfour} & 36 &         & $\bigstar$100 & {\rfour} & $\bigstar$100 & {\rfour} & $\bigstar$100 & {\rfour}\\
+log4jV0 & 46 & {\rone} & $\bigstar$100 & {\rfour} & 31 &         & $\bigstar$100 & {\rfour} & 79 & {\rthree} & 94 & {\rfour}\\
+luceneV0 & 81 & {\rthree} & $\bigstar$100 & {\rfour} & 48 &         & $\bigstar$100 & {\rfour} & $\bigstar$100 & {\rfour} & $\bigstar$100 & {\rfour}\\
+poiV0 & 89 & {\rtwo} & 96 & {\rfour} & 79 &         & $\bigstar$100 & {\rfour} & 99 & {\rfour} & $\bigstar$100 & {\rfour}\\
+poiV1 & 2 &         & $\bigstar$100 & {\rfour} & 12 &         & $\bigstar$100 & {\rfour} & 89 & {\rfour} & $\bigstar$100 & {\rfour}\\
+synapseV0 & 0 &         & $\bigstar$100 & {\rfour} & 28 & {\rone} & $\bigstar$100 & {\rfour} & 90 & {\rfour} & $\bigstar$100 & {\rfour}\\
+velocityV0 & $\bigstar$100 & {\rfour} & $\bigstar$100 & {\rfour} & 86 &         & $\bigstar$100 & {\rfour} & 99 & {\rfour} & $\bigstar$100 & {\rfour}\\
+xercesV0 & 64 & {\rone} & $\bigstar$100 & {\rfour} & 46 &         & $\bigstar$100 & {\rfour} & 81 & {\rthree} & $\bigstar$100 & {\rfour}\\
+xercesV1 & 15 &         & $\bigstar$100 & {\rfour} & 11 &         & $\bigstar$100 & {\rfour} & 68 & {\rthree} & 88 & {\rfour}\\
+\end{tabular}
+
+\caption{pd values in tune and naive runs.
+All data available from http://openscience.us/repo/effort. {\bf KEY:}
+  percentile ranges:\newline
+80th to 100th= {\rfour};
+60th to 80th= {\rthree}; 
+40th to 60th= {\rtwo};
+20th to 40th= {\rone};
+an absent bar shows  0th to 20th.
+Percentiles computed  separately
+for each row.}
+\label{fig:pdbars}
+\end{figure}
+
+%%%%%%%%%%%%%% pd bars end%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+
+%%%%%%%%%%%%%% precision bars%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+
+\begin{figure}
+\renewcommand{\baselinestretch}{0.8} 
+
+\scriptsize  
+\begin{tabular}{r|r@{~}l@{~}|r@{~}l|r@{~}l|r@{~}l|r@{~}l@{~}|r@{~}l@{~}r@{~}l}
+      &   \multicolumn{4}{c|}{WHERE}         &   \multicolumn{4}{c|}{CART}         &   \multicolumn{4}{c}{Random Forests}         \\\hline
+  Data set   &   \multicolumn{2}{c}{Naive}         &   \multicolumn{2}{c|}{Tuned}         &   \multicolumn{2}{c}{Naive}         &   \multicolumn{2}{c|}{Tuned}    &   \multicolumn{2}{c}{Naive}  &   \multicolumn{2}{c}{Tuned}\\\hline
+antV0 & 30 &         & $\bigstar$89 & {\rfour} & 27 &         & $\bigstar$89 & {\rfour} & 39 &         & $\bigstar$89 & {\rfour}\\
+antV1 & 32 & {\rtwo} & $\bigstar$74 & {\rfour} & 41 & {\rtwo} & $\bigstar$74 & {\rfour} & 43 & {\rtwo} & 0 &        \\
+antV2 & $\bigstar$78 & {\rfour} & $\bigstar$78 & {\rfour} & 52 &         & 68 & {\rthree} & 66 & {\rtwo} & 67 & {\rtwo}\\
+camelV0 & $\bigstar$83 & {\rfour} & $\bigstar$83 & {\rfour} & 26 &         & 33 &         & 34 &         & 45 & {\rone}\\
+camelV1 & 22 &         & $\bigstar$28 & {\rfour} & 23 &         & 24 & {\rone} & $\bigstar$28 & {\rfour} & $\bigstar$28 & {\rfour}\\
+ivyV0 & 16 &         & $\bigstar$23 & {\rfour} & 18 & {\rone} & 21 & {\rthree} & 21 & {\rthree} & 20 & {\rtwo}\\
+jeditV0 & 35 &         & $\bigstar$75 & {\rfour} & 49 & {\rone} & 56 & {\rtwo} & 50 & {\rone} & 48 & {\rone}\\
+jeditV1 & 24 &         & $\bigstar$87 & {\rfour} & 28 &         & 86 & {\rfour} & 36 &         & 39 & {\rone}\\
+jeditV2 & 2 &         & $\bigstar$98 & {\rfour} & 3 &         & 18 &         & 5 &         & 5 &        \\
+log4jV0 & 94 &         & $\bigstar$100 & {\rfour} & 97 & {\rtwo} & $\bigstar$100 & {\rfour} & $\bigstar$100 & {\rfour} & $\bigstar$100 & {\rfour}\\
+luceneV0 & 61 &         & 74 & {\rfour} & 67 & {\rone} & 70 & {\rtwo} & 72 & {\rthree} & $\bigstar$77 & {\rfour}\\
+poiV0 & 70 &         & 68 &         & 77 & {\rfour} & 72 & {\rone} & $\bigstar$79 & {\rfour} & 76 & {\rthree}\\
+poiV1 & $\bigstar$100 & {\rfour} & 90 & {\rthree} & 73 &         & 89 & {\rtwo} & 81 & {\rone} & $\bigstar$100 & {\rfour}\\
+synapseV0 & 66 &         & 66 &         & 71 & {\rone} & $\bigstar$100 & {\rfour} & 59 &         & 80 & {\rtwo}\\
+velocityV0 & 34 &         & 39 & {\rthree} & 34 &         & 40 & {\rfour} & 40 & {\rfour} & $\bigstar$41 & {\rfour}\\
+xercesV0 & 13 &         & $\bigstar$85 & {\rfour} & 14 &         & 13 &         & 15 &         & 13 &        \\
+xercesV1 & $\bigstar$56 & {\rfour} & 26 &         & 50 & {\rthree} & 26 &         & 41 & {\rtwo} & 26 &        \\
+\end{tabular}
+\caption{precision values in tune and naive runs.
+All data available from http://openscience.us/repo/effort. {\bf KEY:}
+  percentile ranges:\newline
+80th to 100th= {\rfour};
+60th to 80th= {\rthree}; 
+40th to 60th= {\rtwo};
+20th to 40th= {\rone};
+an absent bar shows  0th to 20th.
+Percentiles computed  separately
+for each row.}
+\label{fig:precisionbars}
+\end{figure}
+
+
+
+
+%\begin{figure*}
+%\renewcommand{\baselinestretch}{0.5} 
+%\scriptsize
+%\begin{minipage}{0.81\linewidth}
+%\begin{tabular}{r@{~}|r@{~}l@{~}|r@{~}l@{~}|r@{~}l|r@{~}@{~}l|r@{~}l@{~}|r@{~}l@{~}|r@{~}l}
+%  \multicolumn{1}{c|}{~}&\multicolumn{11}{c}{precision } \\
+%  Data set   &   \multicolumn{2}{c}{Naive\_Where}         &   \multicolumn{2}{c}{Tuned\_Where}         &   \multicolumn{2}{c}{Naive\_CART}         &   \multicolumn{2}{c}{Tuned\_CART}    &   \multicolumn{2}{c}{Naive\_RanFst}  &   \multicolumn{2}{c}{Tuned\_RanFst}\\\hline
+%\multicolumn{1}{c}{~}\\
+%antV0 & 30 &         & $\bigstar$89 & {\rfour} & 27 &         & $\bigstar$89 & {\rfour} & 39 &         & $\bigstar$89 & {\rfour}\\
+%antV1 & 32 & {\rtwo} & $\bigstar$74 & {\rfour} & 41 & {\rtwo} & $\bigstar$74 & {\rfour} & 43 & {\rtwo} & 0 &        \\
+%antV2 & $\bigstar$78 & {\rfour} & $\bigstar$78 & {\rfour} & 52 &         & 68 & {\rthree} & 66 & {\rtwo} & 67 & {\rtwo}\\
+%camelV0 & $\bigstar$83 & {\rfour} & $\bigstar$83 & {\rfour} & 26 &         & 33 &         & 34 &         & 45 & {\rone}\\
+%camelV1 & 22 &         & $\bigstar$28 & {\rfour} & 23 &         & 24 & {\rone} & $\bigstar$28 & {\rfour} & $\bigstar$28 & {\rfour}\\
+%ivyV0 & 16 &         & $\bigstar$23 & {\rfour} & 18 & {\rone} & 21 & {\rthree} & 21 & {\rthree} & 20 & {\rtwo}\\
+%jeditV0 & 35 &         & $\bigstar$75 & {\rfour} & 49 & {\rone} & 56 & {\rtwo} & 50 & {\rone} & 48 & {\rone}\\
+%jeditV1 & 24 &         & $\bigstar$87 & {\rfour} & 28 &         & 86 & {\rfour} & 36 &         & 39 & {\rone}\\
+%jeditV2 & 2 &         & $\bigstar$98 & {\rfour} & 3 &         & 18 &         & 5 &         & 5 &        \\
+%log4jV0 & 94 &         & $\bigstar$100 & {\rfour} & 97 & {\rtwo} & $\bigstar$100 & {\rfour} & $\bigstar$100 & {\rfour} & $\bigstar$100 & {\rfour}\\
+%luceneV0 & 61 &         & 74 & {\rfour} & 67 & {\rone} & 70 & {\rtwo} & 72 & {\rthree} & $\bigstar$77 & {\rfour}\\
+%poiV0 & 70 &         & 68 &         & 77 & {\rfour} & 72 & {\rone} & $\bigstar$79 & {\rfour} & 76 & {\rthree}\\
+%poiV1 & $\bigstar$100 & {\rfour} & 90 & {\rthree} & 73 &         & 89 & {\rtwo} & 81 & {\rone} & $\bigstar$100 & {\rfour}\\
+%synapseV0 & 66 &         & 66 &         & 71 & {\rone} & $\bigstar$100 & {\rfour} & 59 &         & 80 & {\rtwo}\\
+%velocityV0 & 34 &         & 39 & {\rthree} & 34 &         & 40 & {\rfour} & 40 & {\rfour} & $\bigstar$41 & {\rfour}\\
+%xercesV0 & 13 &         & $\bigstar$85 & {\rfour} & 14 &         & 13 &         & 15 &         & 13 &        \\
+%xercesV1 & $\bigstar$56 & {\rfour} & 26 &         & 50 & {\rthree} & 26 &         & 41 & {\rtwo} & 26 &        \\
+%\end{tabular}
+%\end{minipage}\begin{minipage}{.15\linewidth}
+%\begin{tabular}{|p{\linewidth}|}\hline
+%
+%~\\
+%
+%{\bf KEY:}
+%
+%~\\
+%
+%precision percentile ranges:
+%
+%~\\
+%
+%80th to 100th = {\rfour}
+%
+%60th to 80th ~ = {\rthree}
+%
+%40th to 60th  ~ = {\rtwo}
+%
+%20th to 40th  ~ = {\rone}
+%
+%~\\
+%
+%An absent bar denotes\newline 0th to 20th percentile.
+%
+%~\\
+%
+%Percentiles computed  separately
+%for each data set.\\\hline
+%\end{tabular}
+%\end{minipage}
+%\caption{Precision values in tune once and test once experiment. 
+%}\label{fig:nonc}
+%\end{figure*}
+
+%%%%%%%%%%%%%% precision bars end%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+
+%%%%%%%%%%%%%% F bars begin%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\begin{figure}
+\renewcommand{\baselinestretch}{0.8} 
+
+\scriptsize  
+\begin{tabular}{r|r@{~}l@{~}|r@{~}l|r@{~}l|r@{~}l|r@{~}l@{~}|r@{~}l@{~}r@{~}l}
+      &   \multicolumn{4}{c|}{WHERE}         &   \multicolumn{4}{c|}{CART}         &   \multicolumn{4}{c}{Random Forests}         \\\hline
+  Data set   &   \multicolumn{2}{c}{Naive}         &   \multicolumn{2}{c|}{Tuned}         &   \multicolumn{2}{c}{Naive}         &   \multicolumn{2}{c|}{Tuned}    &   \multicolumn{2}{c}{Naive}  &   \multicolumn{2}{c}{Tuned}\\\hline
+antV0 & $\bigstar$39 & {\rfour} & 25 & {\rtwo} & 32 & {\rthree} & 31 & {\rthree} & $\bigstar$39 & {\rfour} & 12 &        \\
+antV1 & 11 &         & 6 &         & 40 & {\rfour} & $\bigstar$45 & {\rfour} & 39 & {\rfour} & 44 & {\rfour}\\
+antV2 & 0 &         & $\bigstar$87 & {\rfour} & 44 & {\rtwo} & 1 &         & 50 & {\rtwo} & 51 & {\rtwo}\\
+camelV0 & 0 &         & 28 & {\rfour} & 9 & {\rone} & 28 & {\rfour} & $\bigstar$34 & {\rfour} & 30 & {\rfour}\\
+camelV1 & $\bigstar$34 & {\rfour} & $\bigstar$34 & {\rfour} & 31 &         & 32 & {\rone} & 33 & {\rthree} & 31 &        \\
+ivyV0 & 27 &         & 34 & {\rthree} & 30 & {\rone} & $\bigstar$38 & {\rfour} & 35 & {\rthree} & 33 & {\rtwo}\\
+jeditV0 & 50 &         & 56 & {\rtwo} & 56 & {\rtwo} & 54 & {\rone} & $\bigstar$61 & {\rfour} & 59 & {\rfour}\\
+jeditV1 & 37 & {\rone} & 33 &         & 36 &         & $\bigstar$49 & {\rfour} & 45 & {\rthree} & 47 & {\rfour}\\
+jeditV2 & 4 &         & 8 & {\rtwo} & 5 &         & $\bigstar$11 & {\rfour} & 9 & {\rthree} & 9 & {\rthree}\\
+log4jV0 & $\bigstar$62 & {\rfour} & 56 & {\rthree} & 47 & {\rone} & 59 & {\rfour} & 53 & {\rtwo} & 43 &        \\
+luceneV0 & 70 & {\rthree} & $\bigstar$75 & {\rfour} & 56 &         & $\bigstar$75 & {\rfour} & 73 & {\rfour} & $\bigstar$75 & {\rfour}\\
+poiV0 & $\bigstar$78 & {\rfour} & 64 &         & 74 & {\rthree} & 68 & {\rone} & 73 & {\rthree} & 69 & {\rone}\\
+poiV1 & 5 &         & $\bigstar$78 & {\rfour} & 21 & {\rone} & $\bigstar$78 & {\rfour} & 76 & {\rfour} & $\bigstar$78 & {\rfour}\\
+synapseV0 & 0 &         & 2 &         & 40 & {\rthree} & $\bigstar$56 & {\rfour} & 51 & {\rfour} & 55 & {\rfour}\\
+velocityV0 & $\bigstar$51 & {\rfour} & $\bigstar$51 & {\rfour} & 49 &         & $\bigstar$51 & {\rfour} & $\bigstar$51 & {\rfour} & $\bigstar$51 & {\rfour}\\
+xercesV0 & 22 & {\rone} & 20 &         & 21 &         & $\bigstar$27 & {\rfour} & 23 & {\rtwo} & 20 &        \\
+xercesV1 & 25 &         & 39 & {\rone} & 18 &         & 53 & {\rthree} & 68 & {\rfour} & $\bigstar$73 & {\rfour}\\
+\end{tabular}
+\caption{f values in tune and naive runs.
+All data available from http://openscience.us/repo/effort. {\bf KEY:}
+  percentile ranges:\newline
+80th to 100th= {\rfour};
+60th to 80th= {\rthree}; 
+40th to 60th= {\rtwo};
+20th to 40th= {\rone};
+an absent bar shows  0th to 20th.
+Percentiles computed  separately
+for each row.}
+\label{fig:precisionbars}
+\end{figure}
+
+%
+%
+%
+%\begin{figure*}
+%\renewcommand{\baselinestretch}{0.5} 
+%\scriptsize
+%\begin{minipage}{0.81\linewidth}
+%\begin{tabular}{r@{~}|r@{~}l@{~}|r@{~}l@{~}|r@{~}l|r@{~}@{~}l|r@{~}l@{~}|r@{~}l@{~}|r@{~}l}
+%  \multicolumn{1}{c|}{~}&\multicolumn{11}{c}{F } \\
+%  Data set   &   \multicolumn{2}{c}{Naive\_Where}         &   \multicolumn{2}{c}{Tuned\_Where}         &   \multicolumn{2}{c}{Naive\_CART}         &   \multicolumn{2}{c}{Tuned\_CART}    &   \multicolumn{2}{c}{Naive\_RanFst}  &   \multicolumn{2}{c}{Tuned\_RanFst}\\\hline
+%\multicolumn{1}{c}{~}\\
+%antV0 & $\bigstar$39 & {\rfour} & 25 & {\rtwo} & 32 & {\rthree} & 31 & {\rthree} & $\bigstar$39 & {\rfour} & 12 &        \\
+%antV1 & 11 &         & 6 &         & 40 & {\rfour} & $\bigstar$45 & {\rfour} & 39 & {\rfour} & 44 & {\rfour}\\
+%antV2 & 0 &         & $\bigstar$87 & {\rfour} & 44 & {\rtwo} & 1 &         & 50 & {\rtwo} & 51 & {\rtwo}\\
+%camelV0 & 0 &         & 28 & {\rfour} & 9 & {\rone} & 28 & {\rfour} & $\bigstar$34 & {\rfour} & 30 & {\rfour}\\
+%camelV1 & $\bigstar$34 & {\rfour} & $\bigstar$34 & {\rfour} & 31 &         & 32 & {\rone} & 33 & {\rthree} & 31 &        \\
+%ivyV0 & 27 &         & 34 & {\rthree} & 30 & {\rone} & $\bigstar$38 & {\rfour} & 35 & {\rthree} & 33 & {\rtwo}\\
+%jeditV0 & 50 &         & 56 & {\rtwo} & 56 & {\rtwo} & 54 & {\rone} & $\bigstar$61 & {\rfour} & 59 & {\rfour}\\
+%jeditV1 & 37 & {\rone} & 33 &         & 36 &         & $\bigstar$49 & {\rfour} & 45 & {\rthree} & 47 & {\rfour}\\
+%jeditV2 & 4 &         & 8 & {\rtwo} & 5 &         & $\bigstar$11 & {\rfour} & 9 & {\rthree} & 9 & {\rthree}\\
+%log4jV0 & $\bigstar$62 & {\rfour} & 56 & {\rthree} & 47 & {\rone} & 59 & {\rfour} & 53 & {\rtwo} & 43 &        \\
+%luceneV0 & 70 & {\rthree} & $\bigstar$75 & {\rfour} & 56 &         & $\bigstar$75 & {\rfour} & 73 & {\rfour} & $\bigstar$75 & {\rfour}\\
+%poiV0 & $\bigstar$78 & {\rfour} & 64 &         & 74 & {\rthree} & 68 & {\rone} & 73 & {\rthree} & 69 & {\rone}\\
+%poiV1 & 5 &         & $\bigstar$78 & {\rfour} & 21 & {\rone} & $\bigstar$78 & {\rfour} & 76 & {\rfour} & $\bigstar$78 & {\rfour}\\
+%synapseV0 & 0 &         & 2 &         & 40 & {\rthree} & $\bigstar$56 & {\rfour} & 51 & {\rfour} & 55 & {\rfour}\\
+%velocityV0 & $\bigstar$51 & {\rfour} & $\bigstar$51 & {\rfour} & 49 &         & $\bigstar$51 & {\rfour} & $\bigstar$51 & {\rfour} & $\bigstar$51 & {\rfour}\\
+%xercesV0 & 22 & {\rone} & 20 &         & 21 &         & $\bigstar$27 & {\rfour} & 23 & {\rtwo} & 20 &        \\
+%xercesV1 & 25 &         & 39 & {\rone} & 18 &         & 53 & {\rthree} & 68 & {\rfour} & $\bigstar$73 & {\rfour}\\
+%\end{tabular}
+%\end{minipage}\begin{minipage}{.15\linewidth}
+%\begin{tabular}{|p{\linewidth}|}\hline
+%
+%~\\
+%
+%{\bf KEY:}
+%
+%~\\
+%
+%F percentile ranges:
+%
+%~\\
+%
+%80th to 100th = {\rfour}
+%
+%60th to 80th ~ = {\rthree}
+%
+%40th to 60th  ~ = {\rtwo}
+%
+%20th to 40th  ~ = {\rone}
+%
+%~\\
+%
+%An absent bar denotes\newline 0th to 20th percentile.
+%
+%~\\
+%
+%Percentiles computed  separately
+%for each data set.\\\hline
+%\end{tabular}
+%\end{minipage}
+%\caption{F values in tune once and test once experiment. 
+%}\label{fig:nonc}
+%\end{figure*}
+
+%%%%%%%%%%%%%% F bars end%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+%%%%%%%%%%%%%% G bars%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+
+\begin{figure}
+\renewcommand{\baselinestretch}{0.8} 
+
+\scriptsize  
+\begin{tabular}{r|r@{~}l@{~}|r@{~}l|r@{~}l|r@{~}l|r@{~}l@{~}|r@{~}l@{~}r@{~}l}
+      &   \multicolumn{4}{c|}{WHERE}         &   \multicolumn{4}{c|}{CART}         &   \multicolumn{4}{c}{Random Forests}         \\\hline
+  Data set   &   \multicolumn{2}{c}{Naive}         &   \multicolumn{2}{c|}{Tuned}         &   \multicolumn{2}{c}{Naive}         &   \multicolumn{2}{c|}{Tuned}    &   \multicolumn{2}{c}{Naive}  &   \multicolumn{2}{c}{Tuned}\\\hline
+antV0 & 65 & {\rtwo} & 68 & {\rthree} & 53 &         & $\bigstar$75 & {\rfour} & 69 & {\rthree} & 72 & {\rfour}\\
+antV1 & 12 &         & $\bigstar$70 & {\rfour} & 52 & {\rthree} & 56 & {\rthree} & 62 & {\rfour} & 69 & {\rfour}\\
+antV2 & 0 &         & $\bigstar$69 & {\rfour} & 53 & {\rthree} & 64 & {\rfour} & 68 & {\rfour} & 67 & {\rfour}\\
+camelV0 & 0 &         & 51 & {\rfour} & 10 &         & 56 & {\rfour} & 60 & {\rfour} & $\bigstar$61 & {\rfour}\\
+camelV1 & 45 &         & 55 & {\rthree} & 53 & {\rtwo} & $\bigstar$59 & {\rfour} & 56 & {\rthree} & 57 & {\rfour}\\
+ivy & 53 &         & 71 & {\rfour} & 63 & {\rtwo} & $\bigstar$74 & {\rfour} & 70 & {\rfour} & 71 & {\rfour}\\
+jeditV0 & 59 &         & 69 & {\rthree} & 71 & {\rfour} & 72 & {\rfour} & $\bigstar$73 & {\rfour} & $\bigstar$73 & {\rfour}\\
+jeditV1 & 70 & {\rthree} & 69 & {\rtwo} & 62 &         & 73 & {\rfour} & $\bigstar$75 & {\rfour} & $\bigstar$75 & {\rfour}\\
+jeditV2 & 49 &         & 56 & {\rone} & 48 &         & 61 & {\rtwo} & $\bigstar$78 & {\rfour} & 67 & {\rthree}\\
+log4j & 53 & {\rtwo} & 56 & {\rthree} & 46 &         & $\bigstar$59 & {\rfour} & 56 & {\rthree} & 56 & {\rthree}\\
+lucene & 37 &         & 65 & {\rfour} & 55 & {\rthree} & 56 & {\rthree} & 60 & {\rthree} & $\bigstar$66 & {\rfour}\\
+poiV0 & 45 &         & 60 & {\rthree} & 66 & {\rfour} & 62 & {\rthree} & $\bigstar$68 & {\rfour} & 56 & {\rtwo}\\
+poiV1 & 6 &         & $\bigstar$62 & {\rfour} & 22 & {\rone} & 60 & {\rfour} & 56 & {\rfour} & 57 & {\rfour}\\
+synapse & 0 &         & 61 & {\rfour} & 43 & {\rthree} & 64 & {\rfour} & 63 & {\rfour} & $\bigstar$67 & {\rfour}\\
+velocity & 3 &         & $\bigstar$56 & {\rfour} & 26 & {\rtwo} & 51 & {\rfour} & 51 & {\rfour} & 55 & {\rfour}\\
+xercesV0 & 37 &         & 46 & {\rthree} & 47 & {\rfour} & $\bigstar$49 & {\rfour} & $\bigstar$49 & {\rfour} & 48 & {\rfour}\\
+xercesV1 & 24 &         & $\bigstar$68 & {\rfour} & 19 &         & 32 & {\rone} & 32 & {\rone} & 17 &        \\
+\end{tabular}
+\caption{g values in tune and naive runs.
+All data available from http://openscience.us/repo/effort. {\bf KEY:}
+  percentile ranges:\newline
+80th to 100th= {\rfour};
+60th to 80th= {\rthree}; 
+40th to 60th= {\rtwo};
+20th to 40th= {\rone};
+an absent bar shows  0th to 20th.
+Percentiles computed  separately
+for each row.}
+\label{fig:gbars}
+\end{figure}
+
+%%%%%%%%%%%%%% g bars end%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+
+%%%%%%%%%%%%%%%%  time for different objectives %%%%%%%%%%%%%%%%%%%%%
+\clearpage
+%%%%time for pd %%%%%%
+\begin{figure*}[!ht]
+\scriptsize
+\centering
+  \begin{tabular}{r|c |c |c |c |c |c }
+    \hline\hline
+    Datasets & Tuned\_Where & Naive\_Where & Tuned\_CART & Naive\_CART & Tuned\_RanFst & Naive\_RanFst\\
+    \hline
+    antV0 & 50/ 76.50 & 1.42 & 80/ 4.82 & 0.08 & 60/ 7.44 & 0.16\\
+    antV1 & 90/ 235.43 & 2.31 & 70/ 5.96 & 0.08 & 50/ 8.20 & 0.20\\
+    antV2 & 70/ 435.70 & 6.31 & 70/ 8.71 & 0.16 & 60/ 12.81 & 0.41\\
+    camelV0 & 70/ 528.58 & 7.89 & 80/ 13.12 & 0.18 & 70/ 17.46 & 0.30\\
+    camelV1 & 50/ 1498.80 & 23.87 & 70/ 18.36 & 0.24 & 50/ 22.81 & 0.71\\
+    ivy & 50/ 54.83 & 1.00 & 50/ 3.04 & 0.06 & 50/ 6.40 & 0.17\\
+    jeditV0 & 50/ 283.42 & 5.15 & 80/ 7.58 & 0.08 & 50/ 9.03 & 0.29\\
+    jeditV1 & 50/ 313.84 & 6.38 & 70/ 7.04 & 0.10 & 50/ 10.25 & 0.30\\
+    jeditV2 & 50/ 357.03 & 6.76 & 70/ 7.92 & 0.11 & 50/ 10.30 & 0.33\\
+    log4j & 50/ 74.28 & 1.30 & 50/ 2.10 & 0.05 & 50/ 5.47 & 0.16\\
+    lucene & 50/ 162.91 & 2.78 & 50/ 3.85 & 0.08 & 60/ 10.01 & 0.24\\
+    poiV0 & 50/ 208.96 & 3.92 & 50/ 4.97 & 0.10 & 50/ 8.96 & 0.28\\
+    poiV1 & 70/ 526.41 & 7.00 & 60/ 7.18 & 0.10 & 60/ 12.95 & 0.27\\
+    synapse & 70/ 157.51 & 1.84 & 60/ 3.77 & 0.05 & 70/ 9.24 & 0.16\\
+    velocity & 50/ 154.39 & 2.58 & 60/ 4.05 & 0.05 & 50/ 6.89 & 0.19\\
+    xercesV0 & 50/ 103.19 & 1.99 & 50/ 5.13 & 0.08 & 50/ 9.16 & 0.21\\
+    xercesV1 & 50/ 686.59 & 12.61 & 100/ 13.93 & 0.15 & 60/ 14.69 & 0.38\\
+  \end{tabular}
+  \caption{Time (in seconds) spent on the objective of pd with B stop: tune once+ test once}
+\end{figure*}
+
+
+%%%%time for prec %%%%%%
+\begin{figure*}[!ht]
+\scriptsize
+\centering
+  \begin{tabular}{r|c |c |c |c |c |c }
+    \hline\hline
+    Datasets & Tuned\_Where & Naive\_Where & Tuned\_CART & Naive\_CART & Tuned\_RanFst & Naive\_RanFst\\
+    \hline
+    antV0 & 50/ 77.16 & 1.30 & 60/ 3.47 & 0.07 & 50/ 6.54 & 0.14\\
+    antV1 & 50/ 135.16 & 2.33 & 60/ 4.84 & 0.08 & 50/ 8.61 & 0.19\\
+    antV2 & 50/ 368.50 & 6.23 & 60/ 6.67 & 0.14 & 50/ 11.75 & 0.40\\
+    camelV0 & 50/ 479.03 & 8.25 & 60/ 11.73 & 0.18 & 60/ 15.69 & 0.31\\
+    camelV1 & 60/ 1551.51 & 26.87 & 60/ 18.47 & 0.28 & 80/ 37.96 & 0.73\\
+    ivy & 80/ 83.80 & 1.01 & 50/ 3.07 & 0.07 & 60/ 7.63 & 0.17\\
+    jeditV0 & 60/ 349.99 & 5.95 & 70/ 8.33 & 0.11 & 50/ 13.40 & 0.30\\
+    jeditV1 & 50/ 442.35 & 7.48 & 70/ 8.63 & 0.11 & 70/ 15.52 & 0.37\\
+    jeditV2 & 50/ 360.04 & 7.90 & 60/ 8.63 & 0.12 & 60/ 14.33 & 0.38\\
+    log4j & 60/ 97.23 & 1.49 & 70/ 3.31 & 0.06 & 80/ 8.79 & 0.17\\
+    lucene & 70/ 206.41 & 2.89 & 80/ 6.90 & 0.08 & 60/ 10.30 & 0.25\\
+    poiV0 & 70/ 338.44 & 4.28 & 60/ 6.47 & 0.13 & 60/ 12.45 & 0.29\\
+    poiV1 & 60/ 468.73 & 7.95 & 50/ 7.24 & 0.14 & 70/ 17.66 & 0.30\\
+    synapse & 50/ 111.30 & 1.87 & 60/ 3.85 & 0.05 & 60/ 7.82 & 0.15\\
+    velocity & 60/ 192.83 & 2.66 & 90/ 6.11 & 0.06 & 80/ 12.99 & 0.22\\
+    xercesV0 & 70/ 139.33 & 2.23 & 60/ 6.47 & 0.11 & 50/ 8.89 & 0.25\\
+    xercesV1 & 50/ 759.82 & 13.11 & 50/ 8.62 & 0.14 & 60/ 16.90 & 0.37\\
+  \end{tabular}
+  \caption{Time (in seconds) spent on the objective of prec with B stop: tune once+ test once}
+\end{figure*}
+
+
+%%%%time for F %%%%%%
+\begin{figure*}[!ht]
+\scriptsize
+\centering
+  \begin{tabular}{r|c |c |c |c |c |c }
+    \hline\hline
+    Datasets & Tuned\_Where & Naive\_Where & Tuned\_CART & Naive\_CART & Tuned\_RanFst & Naive\_RanFst\\
+    \hline
+    antV0 & 70/ 95.34 & 1.18 & 50/ 3.09 & 0.06 & 60/ 6.89 & 0.13\\
+    antV1 & 50/ 130.69 & 2.24 & 50/ 4.47 & 0.08 & 60/ 9.03 & 0.19\\
+    antV2 & 50/ 296.68 & 6.66 & 60/ 7.29 & 0.15 & 60/ 12.74 & 0.31\\
+    camelV0 & 60/ 496.70 & 8.01 & 60/ 10.43 & 0.17 & 70/ 17.32 & 0.30\\
+    camelV1 & 70/ 1732.99 & 23.35 & 60/ 15.93 & 0.22 & 60/ 24.71 & 0.71\\
+    ivy & 70/ 58.81 & 1.03 & 70/ 4.07 & 0.06 & 60/ 7.37 & 0.16\\
+    jeditV0 & 90/ 412.23 & 5.17 & 70/ 6.59 & 0.08 & 60/ 10.56 & 0.28\\
+    jeditV1 & 70/ 425.18 & 6.61 & 60/ 6.15 & 0.10 & 60/ 13.00 & 0.31\\
+    jeditV2 & 60/ 398.86 & 6.97 & 50/ 5.90 & 0.12 & 60/ 13.63 & 0.35\\
+    log4j & 50/ 68.17 & 1.37 & 60/ 2.46 & 0.04 & 70/ 6.37 & 0.15\\
+    lucene & 50/ 147.78 & 2.74 & 50/ 3.79 & 0.07 & 60/ 7.98 & 0.24\\
+    poiV0 & 60/ 251.48 & 3.90 & 60/ 5.65 & 0.09 & 70/ 11.25 & 0.30\\
+    poiV1 & 60/ 404.96 & 7.22 & 70/ 8.10 & 0.11 & 60/ 12.74 & 0.28\\
+    synapse & 50/ 95.37 & 1.80 & 60/ 3.69 & 0.06 & 60/ 7.65 & 0.14\\
+    velocity & 60/ 176.80 & 3.40 & 50/ 4.14 & 0.07 & 50/ 7.36 & 0.23\\
+    xercesV0 & 60/ 177.48 & 2.34 & 50/ 6.53 & 0.09 & 50/ 14.91 & 0.33\\
+    xercesV1 & 50/ 762.28 & 13.33 & 70/ 12.84 & 0.15 & 60/ 16.63 & 0.40\\
+  \end{tabular}
+  \caption{Time (in seconds) spent on the objective of F with B stop: tune once+ test once}
+\end{figure*}
+
+
+%%%%%%%%%%%%%%% pd bars%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%
+%\begin{figure*}
+%\renewcommand{\baselinestretch}{0.5} 
+%\scriptsize
+%\begin{minipage}{0.81\linewidth}
+%\begin{tabular}{r@{~}|r@{~}l@{~}|r@{~}l@{~}|r@{~}l|r@{~}@{~}l|r@{~}l@{~}|r@{~}l@{~}|r@{~}l}
+%  \multicolumn{1}{c|}{~}&\multicolumn{11}{c}{median(pd) } \\
+%  Data set   &   \multicolumn{2}{c}{Naive\_Where}         &   \multicolumn{2}{c}{Tuned\_Where}         &   \multicolumn{2}{c}{Naive\_CART}         &   \multicolumn{2}{c}{Tuned\_CART}    &   \multicolumn{2}{c}{Naive\_RanFst}  &   \multicolumn{2}{c}{Tuned\_RanFst}\\\hline
+%\multicolumn{1}{c}{~}\\
+%antV0 & 53 & {\rone} & $\bigstar$100 & {\rfour} & 38 &         & $\bigstar$100 & {\rfour} & 97 & {\rfour} & $\bigstar$100 & {\rfour}\\
+%antV1 & 7 &         & $\bigstar$100 & {\rfour} & 39 & {\rone} & 96 & {\rfour} & 95 & {\rfour} & $\bigstar$100 & {\rfour}\\
+%antV2 & 0 &         & $\bigstar$100 & {\rfour} & 37 & {\rone} & $\bigstar$100 & {\rfour} & 92 & {\rfour} & 98 & {\rfour}\\
+%camelV0V0 & 0 &         & $\bigstar$100 & {\rfour} & 6 &         & $\bigstar$100 & {\rfour} & 66 & {\rthree} & 97 & {\rfour}\\
+%camelV1 & 80 & {\rthree} & $\bigstar$100 & {\rfour} & 46 &         & $\bigstar$100 & {\rfour} & 94 & {\rfour} & $\bigstar$100 & {\rfour}\\
+%ivyV0 & 93 & {\rtwo} & $\bigstar$100 & {\rfour} & 88 &         & $\bigstar$100 & {\rfour} & 98 & {\rfour} & 98 & {\rfour}\\
+%jeditV0 & 89 & {\rthree} & $\bigstar$100 & {\rfour} & 66 &         & 99 & {\rfour} & 96 & {\rfour} & $\bigstar$100 & {\rfour}\\
+%jeditV1 & 75 & {\rtwo} & $\bigstar$100 & {\rfour} & 50 &         & $\bigstar$100 & {\rfour} & $\bigstar$100 & {\rfour} & $\bigstar$100 & {\rfour}\\
+%jeditV2 & 45 &         & $\bigstar$100 & {\rfour} & 36 &         & $\bigstar$100 & {\rfour} & $\bigstar$100 & {\rfour} & $\bigstar$100 & {\rfour}\\
+%log4jV0 & 46 & {\rone} & $\bigstar$100 & {\rfour} & 31 &         & $\bigstar$100 & {\rfour} & 79 & {\rthree} & 94 & {\rfour}\\
+%luceneV0 & 81 & {\rthree} & $\bigstar$100 & {\rfour} & 48 &         & $\bigstar$100 & {\rfour} & $\bigstar$100 & {\rfour} & $\bigstar$100 & {\rfour}\\
+%poiV0 & 89 & {\rtwo} & 96 & {\rfour} & 79 &         & $\bigstar$100 & {\rfour} & 99 & {\rfour} & $\bigstar$100 & {\rfour}\\
+%poiV1 & 2 &         & $\bigstar$100 & {\rfour} & 12 &         & $\bigstar$100 & {\rfour} & 89 & {\rfour} & $\bigstar$100 & {\rfour}\\
+%synapseV0 & 0 &         & $\bigstar$100 & {\rfour} & 28 & {\rone} & $\bigstar$100 & {\rfour} & 90 & {\rfour} & $\bigstar$100 & {\rfour}\\
+%velocityV0 & $\bigstar$100 & {\rfour} & $\bigstar$100 & {\rfour} & 86 &         & $\bigstar$100 & {\rfour} & 99 & {\rfour} & $\bigstar$100 & {\rfour}\\
+%xercesV0 & 64 & {\rone} & $\bigstar$100 & {\rfour} & 46 &         & $\bigstar$100 & {\rfour} & 81 & {\rthree} & $\bigstar$100 & {\rfour}\\
+%xercesV1 & 15 &         & $\bigstar$100 & {\rfour} & 11 &         & $\bigstar$100 & {\rfour} & 68 & {\rthree} & 88 & {\rfour}\\
+%
+%
+%\end{tabular}
+%\end{minipage}\begin{minipage}{.15\linewidth}
+%\begin{tabular}{|p{\linewidth}|}\hline
+%
+%~\\
+%
+%{\bf KEY:}
+%
+%~\\
+%
+%pd percentile ranges:
+%
+%~\\
+%
+%80th to 100th = {\rfour}
+%
+%60th to 80th ~ = {\rthree}
+%
+%40th to 60th  ~ = {\rtwo}
+%
+%20th to 40th  ~ = {\rone}
+%
+%~\\
+%
+%An absent bar denotes\newline 0th to 20th percentile.
+%
+%~\\
+%
+%Percentiles computed  separately
+%for each data set.\\\hline
+%\end{tabular}
+%\end{minipage}
+%\caption{Median pd values in tune once and test ten times experiment. 
+%Gray bars  show  pd values
+%discretized into 20th percentiles ranges from min to max.
+%All data available from http://openscience.us/repo/effort.
+%}\label{fig:nonc}
+%\end{figure*}
+%
+%%%%%%%%%%%%%%% pd bars end%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%
+%%%%%%%%%%%%%%% pd bars with B stop%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%
+%\begin{figure*}
+%\renewcommand{\baselinestretch}{0.5} 
+%\scriptsize
+%\begin{minipage}{0.81\linewidth}
+%\begin{tabular}{r@{~}|r@{~}l@{~}|r@{~}l@{~}|r@{~}l|r@{~}@{~}l|r@{~}l@{~}|r@{~}l@{~}|r@{~}l}
+%  \multicolumn{1}{c|}{~}&\multicolumn{11}{c}{pd } \\
+%  Data set   &   \multicolumn{2}{c}{Naive\_Where}         &   \multicolumn{2}{c}{Tuned\_Where}         &   \multicolumn{2}{c}{Naive\_CART}         &   \multicolumn{2}{c}{Tuned\_CART}    &   \multicolumn{2}{c}{Naive\_RanFst}  &   \multicolumn{2}{c}{Tuned\_RanFst}\\\hline
+%\multicolumn{1}{c}{~}\\
+%antV0 & 53 & {\rone} & $\bigstar$100 & {\rfour} & 38 &         & $\bigstar$100 & {\rfour} & 97 & {\rfour} & $\bigstar$100 & {\rfour}\\
+%antV1 & 7 &         & $\bigstar$100 & {\rfour} & 39 & {\rone} & 96 & {\rfour} & 95 & {\rfour} & $\bigstar$100 & {\rfour}\\
+%antV2 & 0 &         & $\bigstar$100 & {\rfour} & 37 & {\rone} & $\bigstar$100 & {\rfour} & 92 & {\rfour} & 98 & {\rfour}\\
+%camelV0 & 0 &         & $\bigstar$100 & {\rfour} & 6 &         & $\bigstar$100 & {\rfour} & 66 & {\rthree} & 97 & {\rfour}\\
+%camelV1 & 80 & {\rthree} & $\bigstar$100 & {\rfour} & 46 &         & $\bigstar$100 & {\rfour} & 94 & {\rfour} & $\bigstar$100 & {\rfour}\\
+%ivyV0 & 93 & {\rtwo} & $\bigstar$100 & {\rfour} & 88 &         & $\bigstar$100 & {\rfour} & 98 & {\rfour} & 98 & {\rfour}\\
+%jeditV0 & 89 & {\rthree} & $\bigstar$100 & {\rfour} & 66 &         & 99 & {\rfour} & 96 & {\rfour} & $\bigstar$100 & {\rfour}\\
+%jeditV1 & 75 & {\rtwo} & $\bigstar$100 & {\rfour} & 50 &         & $\bigstar$100 & {\rfour} & $\bigstar$100 & {\rfour} & $\bigstar$100 & {\rfour}\\
+%jeditV2 & 45 &         & $\bigstar$100 & {\rfour} & 36 &         & $\bigstar$100 & {\rfour} & $\bigstar$100 & {\rfour} & $\bigstar$100 & {\rfour}\\
+%log4jV0 & 46 & {\rone} & $\bigstar$100 & {\rfour} & 31 &         & $\bigstar$100 & {\rfour} & 79 & {\rthree} & 94 & {\rfour}\\
+%luceneV0 & 81 & {\rthree} & $\bigstar$100 & {\rfour} & 48 &         & $\bigstar$100 & {\rfour} & $\bigstar$100 & {\rfour} & $\bigstar$100 & {\rfour}\\
+%poiV0 & 89 & {\rtwo} & 96 & {\rfour} & 79 &         & $\bigstar$100 & {\rfour} & 99 & {\rfour} & $\bigstar$100 & {\rfour}\\
+%poiV1 & 3 &         & $\bigstar$100 & {\rfour} & 12 &         & $\bigstar$100 & {\rfour} & 89 & {\rfour} & $\bigstar$100 & {\rfour}\\
+%synapseV0 & 0 &         & $\bigstar$100 & {\rfour} & 28 & {\rone} & $\bigstar$100 & {\rfour} & 90 & {\rfour} & $\bigstar$100 & {\rfour}\\
+%velocityV0 & $\bigstar$100 & {\rfour} & $\bigstar$100 & {\rfour} & 86 &         & $\bigstar$100 & {\rfour} & $\bigstar$100 & {\rfour} & $\bigstar$100 & {\rfour}\\
+%xercesV0 & 64 & {\rone} & $\bigstar$100 & {\rfour} & 46 &         & $\bigstar$100 & {\rfour} & 78 & {\rtwo} & 81 & {\rthree}\\
+%xercesV1 & 16 &         & $\bigstar$100 & {\rfour} & 11 &         & $\bigstar$100 & {\rfour} & 68 & {\rthree} & 84 & {\rfour}\\
+%\end{tabular}
+%\end{minipage}\begin{minipage}{.15\linewidth}
+%\begin{tabular}{|p{\linewidth}|}\hline
+%
+%~\\
+%
+%{\bf KEY:}
+%
+%~\\
+%
+%pd percentile ranges:
+%
+%~\\
+%
+%80th to 100th = {\rfour}
+%
+%60th to 80th ~ = {\rthree}
+%
+%40th to 60th  ~ = {\rtwo}
+%
+%20th to 40th  ~ = {\rone}
+%
+%~\\
+%
+%An absent bar denotes\newline 0th to 20th percentile.
+%
+%~\\
+%
+%Percentiles computed  separately
+%for each data set.\\\hline
+%\end{tabular}
+%\end{minipage}
+%\caption{Pd values with B stop
+%}\label{fig:pdbarsBstop}
+%\end{figure*}
+%
+%%%%%%%%%%%%%%% pd bars  with B stop end%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%
+%%%%%time for pd %%%%%%
+%\begin{figure*}[!ht]
+%\scriptsize
+%\centering
+%  \begin{tabular}{l|c |c |c |c |c |c }
+%    \hline\hline
+%    Datasets & Tuned\_Where & Naive\_Where & Tuned\_CART & Naive\_CART & Tuned\_RanFst & Naive\_RanFst\\
+%    \hline
+%    antV0 & 180/ 241.5 & 12.6 & 120/ 7.4 & 0.8 & 13.3 & 1.4\\
+%    antV1 & 140/ 347.5 & 23.5 & 140/ 11.6 & 0.8 & 19.5 & 2.0\\
+%    antV2 & 140/ 696.5 & 60.0 & 220/ 23.6 & 1.5 & 22.6 & 3.1\\
+%    camelV0 & 190/ 1412.6 & 76.5 & 230/ 34.7 & 1.7 & 51.1 & 3.0\\
+%    camelV1 & 130/ 3391.9 & 230.6 & 140/ 36.1 & 2.4 & 46.3 & 6.9\\
+%    ivyV0 & 70/ 93.9 & 9.9 & 80/ 5.1 & 0.6 & 9.7 & 1.6\\
+%    jeditV0 & 110/ 679.2 & 51.1 & 140/ 12.7 & 0.8 & 18.1 & 2.8\\
+%    jeditV1 & 180/ 1078.5 & 64.9 & 180/ 17.2 & 0.9 & 24.6 & 3.0\\
+%    jeditV2 & 110/ 838.0 & 68.2 & 150/ 16.4 & 1.1 & 23.4 & 3.4\\
+%    log4jV0 & 150/ 190.8 & 13.4 & 130/ 5.2 & 0.4 & 11.0 & 1.4\\
+%    luceneV0 & 120/ 421.0 & 27.6 & 130/ 9.2 & 0.7 & 13.3 & 2.3\\
+%    poiV0 & 70/ 348.6 & 40.4 & 110/ 10.6 & 0.9 & 21.7 & 2.7\\
+%    poiV1 & 140/ 1060.7 & 69.4 & 190/ 20.8 & 1.0 & 26.3 & 2.6\\
+%    synapseV0 & 180/ 350.9 & 18.5 & 160/ 9.5 & 0.5 & 14.4 & 1.5\\
+%    velocityV0 & 80/ 257.0 & 28.3 & 110/ 7.5 & 0.5 & 13.3 & 1.9\\
+%    xercesV0 & 110/ 239.9 & 21.4 & 160/ 14.8 & 0.8 & 15.2 & 2.1\\
+%    xercesV1 & 210/ 2433.9 & 130.3 & 200/ 27.6 & 1.4 & 25.3 & 3.7\\
+%  \end{tabular}
+%  \caption{Time (in seconds) spent on different models over the objective of pd}
+%\end{figure*}
+%
+%
+%%%%%time for pd %%%%%%
+%\begin{figure*}[!ht]
+%\scriptsize
+%\centering
+%  \begin{tabular}{l|c |c |c |c |c |c }
+%    \hline\hline
+%    Datasets & Tuned\_Where & Naive\_Where & Tuned\_CART & Naive\_CART & Tuned\_RanFst & Naive\_RanFst\\
+%    \hline
+%    antV0 & 50/ 77.44 & 1.24 & 80/ 4.24 & 0.06 & 6.71 & 0.15\\
+%    antV1 & 90/ 230.16 & 2.23 & 70/ 5.97 & 0.08 & 8.07 & 0.20\\
+%    antV2 & 70/ 378.86 & 6.06 & 70/ 8.01 & 0.17 & 11.73 & 0.31\\
+%    camelV0 & 70/ 494.66 & 7.80 & 80/ 12.82 & 0.19 & 16.56 & 0.30\\
+%    camelV1 & 50/ 1491.42 & 23.14 & 70/ 18.33 & 0.24 & 22.18 & 0.71\\
+%    ivyV0 & 50/ 54.57 & 1.00 & 50/ 3.00 & 0.06 & 6.33 & 0.16\\
+%    jeditV0 & 50/ 283.66 & 5.13 & 80/ 7.30 & 0.08 & 10.08 & 0.28\\
+%    jeditV1 & 50/ 314.08 & 6.44 & 70/ 6.88 & 0.09 & 10.07 & 0.30\\
+%    jeditV2 & 50/ 358.69 & 6.81 & 70/ 7.79 & 0.11 & 11.45 & 0.34\\
+%    log4jV0 & 50/ 74.06 & 1.37 & 50/ 2.08 & 0.05 & 5.45 & 0.14\\
+%    luceneV0 & 50/ 162.03 & 2.65 & 50/ 3.75 & 0.07 & 9.71 & 0.25\\
+%    poiV0 & 50/ 209.67 & 3.91 & 50/ 4.86 & 0.09 & 8.86 & 0.28\\
+%    poiV1 & 80/ 600.72 & 6.97 & 60/ 7.12 & 0.11 & 13.19 & 0.28\\
+%    synapseV0 & 60/ 137.39 & 1.83 & 60/ 3.80 & 0.06 & 8.44 & 0.17\\
+%    velocityV0 & 50/ 171.88 & 3.10 & 60/ 4.73 & 0.06 & 8.16 & 0.24\\
+%    xercesV0 & 50/ 116.11 & 2.02 & 60/ 6.21 & 0.11 & 9.51 & 0.21\\
+%    xercesV1 & 80/ 1131.28 & 15.16 & 80/ 14.33 & 0.19 & 17.83 & 0.41\\
+%  \end{tabular}
+%  \caption{Time (in seconds) spent on the objective of pd with B stop: tune once+ test once}
+%\end{figure*}
+%
+%
+%%%%%%%%%%%%%%% precision bars%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%
+%\begin{figure*}
+%\renewcommand{\baselinestretch}{0.5} 
+%\scriptsize
+%\begin{minipage}{0.81\linewidth}
+%\begin{tabular}{r@{~}|r@{~}l@{~}|r@{~}l@{~}|r@{~}l|r@{~}@{~}l|r@{~}l@{~}|r@{~}l@{~}|r@{~}l}
+%  \multicolumn{1}{c|}{~}&\multicolumn{11}{c}{median(precision) } \\
+%  Data set   &   \multicolumn{2}{c}{Naive\_Where}         &   \multicolumn{2}{c}{Tuned\_Where}         &   \multicolumn{2}{c}{Naive\_CART}         &   \multicolumn{2}{c}{Tuned\_CART}    &   \multicolumn{2}{c}{Naive\_RanFst}  &   \multicolumn{2}{c}{Tuned\_RanFst}\\\hline
+%\multicolumn{1}{c}{~}\\
+%antV0 & 30 &         & $\bigstar$ 89 & {\rfour} & 27 &         &$\bigstar$ 89 & {\rfour} & 40 & {\rone} &$\bigstar$ 89 & {\rfour}\\
+%antV1 & 32 &         &$\bigstar$ 74 & {\rfour} & 41 & {\rone} &$\bigstar$ 74 & {\rfour} & 57 & {\rtwo} &$\bigstar$ 74 & {\rfour}\\
+%antV2 & 78 & {\rfour} &$\bigstar$ 78 & {\rfour} & 52 &         & 67 & {\rthree} & 66 & {\rtwo} & 50 &        \\
+%camelV0 &$\bigstar$ 83 & {\rfour} &$\bigstar$ 83 & {\rfour} & 26 &         & 37 &         &$\bigstar$ 83 & {\rfour} &$\bigstar$ 83 & {\rfour}\\
+%camelV1 & 22 &         &$\bigstar$ 81 & {\rfour} & 23 &         & 25 &         & 28 &         & 28 &        \\
+%ivyV0 & 16 &         & 23 & {\rthree} & 18 & {\rone} &$\bigstar$ 25 & {\rfour} & 18 & {\rone} & 19 & {\rone}\\
+%jeditV0 & 35 &         & 75 & {\rthree} & 49 & {\rone} &$\bigstar$ 86 & {\rfour} & 52 & {\rone} & 50 & {\rone}\\
+%jeditV1 & 24 &         &$\bigstar$ 87 & {\rfour} & 28 &         & 62 & {\rthree} & 36 &         & 42 & {\rone}\\
+%jeditV2 & 2 &         &$\bigstar$ 98 & {\rfour} & 3 &         & 4 &         & 5 &         & 6 &        \\
+%log4jV0 & 94 &         &$\bigstar$100 & {\rfour} & 97 & {\rtwo} & 98 & {\rthree} &$\bigstar$ 100 & {\rfour} &$\bigstar$100 & {\rfour}\\
+%luceneV0 & 61 &         & 71 & {\rtwo} & 67 & {\rone} &$\bigstar$ 78 & {\rfour} & 69 & {\rtwo} & 70 & {\rtwo}\\
+%poiV0 & 70 &         &$\bigstar$ 92 & {\rfour} & 77 & {\rone} & 79 & {\rtwo} & 79 & {\rtwo} & 75 & {\rone}\\
+%poiV1 & 100 & {\rfour} &$\bigstar$ 89 & {\rfour} & 73 & {\rtwo} &$\bigstar$ 89 & {\rfour} & 86 & {\rthree} & 36 &        \\
+%synapseV0 & 66 & {\rthree} & 0 &         & 71 & {\rthree} &$\bigstar$ 95 & {\rfour} & 59 & {\rthree} & 67 & {\rthree}\\
+%velocityV0 & 34 &         & 34 &         & 34 &         &$\bigstar$ 45 & {\rfour} & 40 & {\rtwo} & 41 & {\rthree}\\
+%xercesV0 & 13 &         &$\bigstar$ 85 & {\rfour} & 14 &         & 73 & {\rfour} & 16 &         & 13 &        \\
+%xercesV1 &$\bigstar$ 56 & {\rfour} & 26 &         & 55 & {\rfour} & 26 &         & 41 & {\rtwo} & 26 &        \\
+%\end{tabular}
+%\end{minipage}\begin{minipage}{.15\linewidth}
+%\begin{tabular}{|p{\linewidth}|}\hline
+%
+%~\\
+%
+%{\bf KEY:}
+%
+%~\\
+%
+%precision percentile ranges:
+%
+%~\\
+%
+%80th to 100th = {\rfour}
+%
+%60th to 80th ~ = {\rthree}
+%
+%40th to 60th  ~ = {\rtwo}
+%
+%20th to 40th  ~ = {\rone}
+%
+%~\\
+%
+%An absent bar denotes\newline 0th to 20th percentile.
+%
+%~\\
+%
+%Percentiles computed  separately
+%for each data set.\\\hline
+%\end{tabular}
+%\end{minipage}
+%\caption{Median precision values in tune once and test ten times experiment. 
+%Gray bars  show  precision values
+%discretized into 20th percentiles ranges from min to max.
+%All data available from http://openscience.us/repo/effort.
+%}\label{fig:nonc}
+%\end{figure*}
+%
+%%%%%%%%%%%%%%% precision bars end%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%
+%%%%%%%%%%%%%%% precision bars with B stop begin%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%
+%\begin{figure*}
+%\renewcommand{\baselinestretch}{0.5} 
+%\scriptsize
+%\begin{minipage}{0.81\linewidth}
+%\begin{tabular}{r@{~}|r@{~}l@{~}|r@{~}l@{~}|r@{~}l|r@{~}@{~}l|r@{~}l@{~}|r@{~}l@{~}|r@{~}l}
+%  \multicolumn{1}{c|}{~}&\multicolumn{11}{c}{precision } \\
+%  Data set   &   \multicolumn{2}{c}{Naive\_Where}         &   \multicolumn{2}{c}{Tuned\_Where}         &   \multicolumn{2}{c}{Naive\_CART}         &   \multicolumn{2}{c}{Tuned\_CART}    &   \multicolumn{2}{c}{Naive\_RanFst}  &   \multicolumn{2}{c}{Tuned\_RanFst}\\\hline
+%\multicolumn{1}{c}{~}\\
+%antV0 & 30 &         & $\bigstar$89 & {\rfour} & 27 &         & $\bigstar$89 & {\rfour} & 39 &         & $\bigstar$89 & {\rfour}\\
+%antV1 & 32 & {\rtwo} & $\bigstar$74 & {\rfour} & 41 & {\rtwo} & $\bigstar$74 & {\rfour} & 43 & {\rtwo} & 0 &        \\
+%antV2 & $\bigstar$78 & {\rfour} & $\bigstar$78 & {\rfour} & 52 &         & 68 & {\rthree} & 66 & {\rtwo} & 67 & {\rtwo}\\
+%camelV0 & $\bigstar$83 & {\rfour} & $\bigstar$83 & {\rfour} & 26 &         & 33 &         & 34 &         & 45 & {\rone}\\
+%camelV1 & 22 &         & $\bigstar$28 & {\rfour} & 23 &         & 24 & {\rone} & $\bigstar$28 & {\rfour} & $\bigstar$28 & {\rfour}\\
+%ivyV0 & 16 &         & $\bigstar$23 & {\rfour} & 18 & {\rone} & 21 & {\rthree} & 21 & {\rthree} & 20 & {\rtwo}\\
+%jeditV0 & 35 &         & $\bigstar$75 & {\rfour} & 49 & {\rone} & 56 & {\rtwo} & 50 & {\rone} & 48 & {\rone}\\
+%jeditV1 & 24 &         & $\bigstar$87 & {\rfour} & 28 &         & 86 & {\rfour} & 36 &         & 39 & {\rone}\\
+%jeditV2 & 2 &         & $\bigstar$98 & {\rfour} & 3 &         & 18 &         & 5 &         & 5 &        \\
+%log4jV0 & 94 &         & $\bigstar$100 & {\rfour} & 97 & {\rtwo} & $\bigstar$100 & {\rfour} & $\bigstar$100 & {\rfour} & $\bigstar$100 & {\rfour}\\
+%luceneV0 & 61 &         & 74 & {\rfour} & 67 & {\rone} & 70 & {\rtwo} & 72 & {\rthree} & $\bigstar$77 & {\rfour}\\
+%poiV0 & 70 &         & 68 &         & 77 & {\rfour} & 72 & {\rone} & $\bigstar$79 & {\rfour} & 76 & {\rthree}\\
+%poiV1 & $\bigstar$100 & {\rfour} & 90 & {\rthree} & 73 &         & 89 & {\rtwo} & 81 & {\rone} & $\bigstar$100 & {\rfour}\\
+%synapseV0 & 66 &         & 66 &         & 71 & {\rone} & $\bigstar$100 & {\rfour} & 59 &         & 80 & {\rtwo}\\
+%velocityV0 & 34 &         & 39 & {\rthree} & 34 &         & 40 & {\rfour} & 40 & {\rfour} & $\bigstar$41 & {\rfour}\\
+%xercesV0 & 13 &         & $\bigstar$85 & {\rfour} & 14 &         & 13 &         & 15 &         & 13 &        \\
+%xercesV1 & $\bigstar$56 & {\rfour} & 26 &         & 50 & {\rthree} & 26 &         & 41 & {\rtwo} & 26 &        \\
+%\end{tabular}
+%\end{minipage}\begin{minipage}{.15\linewidth}
+%\begin{tabular}{|p{\linewidth}|}\hline
+%
+%~\\
+%
+%{\bf KEY:}
+%
+%~\\
+%
+%precision percentile ranges:
+%
+%~\\
+%
+%80th to 100th = {\rfour}
+%
+%60th to 80th ~ = {\rthree}
+%
+%40th to 60th  ~ = {\rtwo}
+%
+%20th to 40th  ~ = {\rone}
+%
+%~\\
+%
+%An absent bar denotes\newline 0th to 20th percentile.
+%
+%~\\
+%
+%Percentiles computed  separately
+%for each data set.\\\hline
+%\end{tabular}
+%\end{minipage}
+%\caption{Precision values with B stop.
+%}\label{fig:precbarsBstop}
+%\end{figure*}
+%
+%%%%%%%%%%%%%%% precision bars with B stop end%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%
+%
+%%%%%time for prec %%%%%%
+%\begin{figure*}[!ht]
+%\scriptsize
+%\centering
+%  \begin{tabular}{l|c |c |c |c |c |c }
+%    \hline\hline
+%    Datasets & Tuned\_Where & Naive\_Where & Tuned\_CART & Naive\_CART & Tuned\_RanFst & Naive\_RanFst\\
+%    \hline
+%    antV0 & 90/ 158.6 & 13.3 & 140/ 8.8 & 0.7 & 18.1 & 1.6\\
+%    antV1 & 110/ 298.9 & 25.4 & 150/ 13.5 & 0.9 & 15.8 & 2.2\\
+%    antV2 & 90/ 632.0 & 65.0 & 100/ 14.4 & 1.7 & 29.3 & 3.6\\
+%    camelV0 & 50/ 566.3 & 94.3 & 110/ 26.0 & 1.8 & 20.8 & 5.5\\
+%    camelV1 & 170/ 4954.0 & 243.0 & 200/ 52.1 & 2.3 & 42.7 & 7.2\\
+%    ivyV0 & 160/ 148.7 & 10.0 & 150/ 8.6 & 0.6 & 11.0 & 1.6\\
+%    jeditV0 & 240/ 972.5 & 51.9 & 180/ 15.8 & 0.8 & 22.3 & 2.9\\
+%    jeditV1 & 140/ 1102.5 & 73.6 & 160/ 19.7 & 0.9 & 46.5 & 3.5\\
+%    jeditV2 & 100/ 837.5 & 76.9 & 130/ 15.7 & 1.3 & 65.3 & 3.7\\
+%    log4jV0 & 170/ 289.2 & 17.1 & 140/ 6.8 & 0.6 & 17.1 & 1.6\\
+%    luceneV0 & 180/ 471.6 & 29.6 & 100/ 8.7 & 0.8 & 16.8 & 2.5\\
+%    poiV0 & 130/ 651.4 & 52.0 & 90/ 11.4 & 1.1 & 23.1 & 3.3\\
+%    poiV1 & 220/ 1666.8 & 86.2 & 90/ 13.8 & 1.4 & 25.7 & 3.2\\
+%    synapseV0 & 80/ 209.2 & 23.7 & 120/ 9.2 & 0.7 & 15.8 & 1.7\\
+%    velocityV0 & 90/ 345.5 & 33.5 & 140/ 11.5 & 0.7 & 12.7 & 2.3\\
+%    xercesV0 & 170/ 392.2 & 27.2 & 100/ 13.9 & 1.2 & 43.0 & 3.0\\
+%    xercesV1 & 90/ 1619.8 & 157.1 & 130/ 23.8 & 1.7 & 34.8 & 5.0\\
+%  \end{tabular}
+%  \caption{Time (in seconds) spent on different models over the objective of prec}
+%\end{figure*}
+%
+%%%%%time for prec %%%%%%
+%\begin{figure*}[!ht]
+%\scriptsize
+%\centering
+%  \begin{tabular}{l|c |c |c |c |c |c }
+%    \hline\hline
+%    Datasets & Tuned\_Where & Naive\_Where & Tuned\_CART & Naive\_CART & Tuned\_RanFst & Naive\_RanFst\\
+%    \hline
+%    antV0 & 50/ 74.99 & 1.18 & 60/ 3.61 & 0.08 & 6.74 & 0.15\\
+%    antV1 & 50/ 130.29 & 2.55 & 60/ 5.53 & 0.08 & 7.95 & 0.18\\
+%    antV2 & 50/ 350.53 & 6.79 & 60/ 7.31 & 0.15 & 11.94 & 0.38\\
+%    camelV0 & 50/ 495.31 & 7.87 & 60/ 10.01 & 0.18 & 15.89 & 0.30\\
+%    camelV1 & 60/ 1535.38 & 26.05 & 60/ 19.33 & 0.25 & 37.19 & 0.77\\
+%    ivyV0 & 80/ 89.34 & 1.04 & 50/ 3.50 & 0.07 & 8.29 & 0.16\\
+%    jeditV0 & 60/ 339.23 & 5.31 & 70/ 7.55 & 0.10 & 12.40 & 0.33\\
+%    jeditV1 & 50/ 425.66 & 6.63 & 70/ 7.12 & 0.09 & 13.26 & 0.32\\
+%    jeditV2 & 50/ 305.83 & 7.03 & 60/ 7.29 & 0.11 & 12.15 & 0.35\\
+%    log4jV0 & 60/ 85.77 & 1.30 & 70/ 2.77 & 0.04 & 7.75 & 0.15\\
+%    luceneV0 & 70/ 179.94 & 2.62 & 80/ 5.55 & 0.07 & 9.04 & 0.24\\
+%    poiV0 & 70/ 296.01 & 4.06 & 60/ 5.79 & 0.09 & 9.99 & 0.27\\
+%    poiV1 & 60/ 408.56 & 7.01 & 50/ 6.27 & 0.10 & 15.76 & 0.27\\
+%    synapseV0 & 50/ 96.34 & 1.83 & 60/ 3.74 & 0.05 & 7.35 & 0.15\\
+%    velocityV0 & 60/ 176.39 & 2.62 & 90/ 5.79 & 0.06 & 13.14 & 0.19\\
+%    xercesV0 & 70/ 123.47 & 2.15 & 60/ 6.01 & 0.08 & 8.03 & 0.21\\
+%    xercesV1 & 50/ 679.13 & 12.77 & 50/ 7.70 & 0.14 & 15.67 & 0.37\\
+%  \end{tabular}
+%  \caption{Time (in seconds) spent on the objective of prec with B stop: tune once+ test once}
+%\end{figure*}
+%
+%
+%
+%%%%%%%%%%%%%%% F bars begin%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%
+%\begin{figure*}
+%\renewcommand{\baselinestretch}{0.5} 
+%\scriptsize
+%\begin{minipage}{0.81\linewidth}
+%\begin{tabular}{r@{~}|r@{~}l@{~}|r@{~}l@{~}|r@{~}l|r@{~}@{~}l|r@{~}l@{~}|r@{~}l@{~}|r@{~}l}
+%  \multicolumn{1}{c|}{~}&\multicolumn{11}{c}{median(F ) } \\
+%  Data set   &   \multicolumn{2}{c}{Naive\_Where}         &   \multicolumn{2}{c}{Tuned\_Where}         &   \multicolumn{2}{c}{Naive\_CART}         &   \multicolumn{2}{c}{Tuned\_CART}    &   \multicolumn{2}{c}{Naive\_RanFst}  &   \multicolumn{2}{c}{Tuned\_RanFst}\\\hline
+%\multicolumn{1}{c}{~}\\
+%antV0 &$\bigstar$ 39 & {\rfour} & 26 & {\rone} & 32 & {\rtwo} & 25 &         & 25 &         & 22 &        \\
+%antV1 & 11 &         &$\bigstar$ 85 & {\rfour} & 40 & {\rone} & 49 & {\rtwo} & 39 & {\rone} & 33 & {\rone}\\
+%antV2 & 0 &         &$\bigstar$ 86 & {\rfour} & 44 & {\rtwo} & 51 & {\rtwo} & 52 & {\rthree} & 56 & {\rthree}\\
+%camelV0 & 0 &         &$\bigstar$ 28 & {\rfour} & 9 & {\rone} &$\bigstar$ 28 & {\rfour} & 34 & {\rfour} & 31 & {\rfour}\\
+%camelV1 & 34 & {\rthree} &$\bigstar$ 35 & {\rfour} & 31 &         & 33 & {\rtwo} & 33 & {\rtwo} & 30 &        \\
+%ivyV0 & 27 &         & 30 & {\rone} & 30 & {\rone} & 32 & {\rthree} &$\bigstar$ 35 & {\rfour} &$\bigstar$ 35 & {\rfour}\\
+%jeditV0 & 50 &         & 55 & {\rtwo} & 56 & {\rtwo} & 55 & {\rtwo} &$\bigstar$ 61 & {\rfour} & 60 & {\rfour}\\
+%jeditV1 & 37 & {\rone} & 34 &         & 36 &         & 47 & {\rfour} & 45 & {\rthree} &$\bigstar$ 48 & {\rfour}\\
+%jeditV2 & 4 &         &$\bigstar$ 99 & {\rfour} & 5 &         & 9 &         & 9 &         & 11 &        \\
+%log4jV0 & 62 & {\rfour} & 7 &         & 47 & {\rthree} &$\bigstar$ 64 & {\rfour} & 53 & {\rfour} & 45 & {\rthree}\\
+%luceneV0 & 70 & {\rthree} & 73 & {\rfour} & 56 &         &$\bigstar$ 75 & {\rfour} & 70 & {\rthree} &$\bigstar$ 75 & {\rfour}\\
+%poiV0 &$\bigstar$ 78 & {\rfour} & 63 &         & 74 & {\rthree} & 70 & {\rtwo} & 73 & {\rthree} & 72 & {\rtwo}\\
+%poiV1 & 5 &         &$\bigstar$ 78 & {\rfour} & 21 & {\rone} &$\bigstar$ 78 & {\rfour} & 76 & {\rfour} &$\bigstar$ 78 & {\rfour}\\
+%synapseV0 & 0 &         & 2 &         & 40 & {\rthree} &$\bigstar$ 56 & {\rfour} & 52 & {\rfour} & 55 & {\rfour}\\
+%velocityV0 & 51 &         & 51 &         & 49 &         & 51 &         & 53 & {\rone} &$\bigstar$ 59 & {\rfour}\\
+%xercesV0 & 22 & {\rthree} & 20 & {\rone} & 21 & {\rtwo} & 18 &         & 23 & {\rfour} & 22 & {\rthree}\\
+%xercesV1 & 23 & {\rone} & 2 &         & 18 & {\rone} & 36 & {\rtwo} & 68 & {\rfour} &$\bigstar$ 71 & {\rfour}\\
+%\end{tabular}
+%\end{minipage}\begin{minipage}{.15\linewidth}
+%\begin{tabular}{|p{\linewidth}|}\hline
+%
+%~\\
+%
+%{\bf KEY:}
+%
+%~\\
+%
+%F percentile ranges:
+%
+%~\\
+%
+%80th to 100th = {\rfour}
+%
+%60th to 80th ~ = {\rthree}
+%
+%40th to 60th  ~ = {\rtwo}
+%
+%20th to 40th  ~ = {\rone}
+%
+%~\\
+%
+%An absent bar denotes\newline 0th to 20th percentile.
+%
+%~\\
+%
+%Percentiles computed  separately
+%for each data set.\\\hline
+%\end{tabular}
+%\end{minipage}
+%\caption{Median F values in tune once and test ten times experiment. 
+%Gray bars  show  F values
+%discretized into 20th percentiles ranges from min to max.
+%All data available from http://openscience.us/repo/effort.
+%}\label{fig:nonc}
+%\end{figure*}
+%
+%%%%%%%%%%%%%%% F bars end%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%
+%%%%%%%%%%%%%%% F bars begin%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%
+%\begin{figure*}
+%\renewcommand{\baselinestretch}{0.5} 
+%\scriptsize
+%\begin{minipage}{0.81\linewidth}
+%\begin{tabular}{r@{~}|r@{~}l@{~}|r@{~}l@{~}|r@{~}l|r@{~}@{~}l|r@{~}l@{~}|r@{~}l@{~}|r@{~}l}
+%  \multicolumn{1}{c|}{~}&\multicolumn{11}{c}{F } \\
+%  Data set   &   \multicolumn{2}{c}{Naive\_Where}         &   \multicolumn{2}{c}{Tuned\_Where}         &   \multicolumn{2}{c}{Naive\_CART}         &   \multicolumn{2}{c}{Tuned\_CART}    &   \multicolumn{2}{c}{Naive\_RanFst}  &   \multicolumn{2}{c}{Tuned\_RanFst}\\\hline
+%\multicolumn{1}{c}{~}\\
+%antV0 & 39 & {\rfour} & 25 & {\rtwo} & 32 & {\rthree} & 31 & {\rthree} & $\bigstar$39 & {\rfour} & 12 &        \\
+%antV1 & 11 &         & 6 &         & 40 & {\rfour} & $\bigstar$45 & {\rfour} & 39 & {\rfour} & 44 & {\rfour}\\
+%antV2 & 0 &         & $\bigstar$87 & {\rfour} & 44 & {\rtwo} & 1 &         & 50 & {\rtwo} & 51 & {\rtwo}\\
+%camelV0 & 0 &         & 28 & {\rfour} & 9 & {\rone} & 28 & {\rfour} & $\bigstar$34 & {\rfour} & 30 & {\rfour}\\
+%camelV1 & 34 & {\rtwo} & 34 & {\rtwo} & 31 &         & 31 &         & $\bigstar$37 & {\rfour} & 34 & {\rtwo}\\
+%ivyV0 & 27 &         & 28 &         & 30 & {\rtwo} & $\bigstar$32 & {\rfour} & 28 &         & 28 &        \\
+%jeditV0 & 50 &         & 55 & {\rtwo} & 56 & {\rtwo} & 52 &         & $\bigstar$61 & {\rfour} & 59 & {\rfour}\\
+%jeditV1 & 37 &         & $\bigstar$93 & {\rfour} & 36 &         & 42 &         & 47 &         & 49 & {\rone}\\
+%jeditV2 & 4 &         & $\bigstar$99 & {\rfour} & 5 &         & 9 &         & 9 &         & 7 &        \\
+%log4jV0 & $\bigstar$62 & {\rfour} & 52 & {\rone} & 47 &         & 53 & {\rone} & 59 & {\rthree} & 60 & {\rfour}\\
+%luceneV0 & 70 & {\rthree} & 73 & {\rfour} & 56 &         & $\bigstar$75 & {\rfour} & 66 & {\rtwo} & 74 & {\rfour}\\
+%poiV0 & $\bigstar$78 & {\rfour} & 75 & {\rfour} & 74 & {\rthree} & 62 &         & 73 & {\rthree} & 72 & {\rthree}\\
+%poiV1 & 5 &         & $\bigstar$79 & {\rfour} & 21 & {\rone} & 78 & {\rfour} & 76 & {\rfour} & 78 & {\rfour}\\
+%synapseV0 & 0 &         & $\bigstar$79 & {\rfour} & 40 & {\rtwo} & 56 & {\rthree} & 52 & {\rthree} & 55 & {\rthree}\\
+%velocityV0 & 51 & {\rfour} & $\bigstar$51 & {\rfour} & 49 &         & $\bigstar$51 & {\rfour} & $\bigstar$51 & {\rfour} & $\bigstar$51 & {\rfour}\\
+%xercesV0 & 22 & {\rthree} & 19 &         & 21 & {\rtwo} & 20 & {\rone} & $\bigstar$23 & {\rfour} & 21 & {\rtwo}\\
+%xercesV1 & 23 & {\rone} & 0 &         & 18 & {\rone} & 48 & {\rthree} & 68 & {\rfour} & $\bigstar$72 & {\rfour}\\
+%\end{tabular}
+%\end{minipage}\begin{minipage}{.15\linewidth}
+%\begin{tabular}{|p{\linewidth}|}\hline
+%
+%~\\
+%
+%{\bf KEY:}
+%
+%~\\
+%
+%F percentile ranges:
+%
+%~\\
+%
+%80th to 100th = {\rfour}
+%
+%60th to 80th ~ = {\rthree}
+%
+%40th to 60th  ~ = {\rtwo}
+%
+%20th to 40th  ~ = {\rone}
+%
+%~\\
+%
+%An absent bar denotes\newline 0th to 20th percentile.
+%
+%~\\
+%
+%Percentiles computed  separately
+%for each data set.\\\hline
+%\end{tabular}
+%\end{minipage}
+%\caption{F values  with B stop
+%}\label{fig:fbarsBstop}
+%\end{figure*}
+%
+%%%%%%%%%%%%%%% F bars B stopend%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%%%%%time for F %%%%%%
+%\begin{figure*}[!ht]
+%\scriptsize
+%\centering
+%  \begin{tabular}{l|c |c |c |c |c |c }
+%    \hline\hline
+%    Datasets & Tuned\_Where & Naive\_Where & Tuned\_CART & Naive\_CART & Tuned\_RanFst & Naive\_RanFst\\
+%    \hline
+%    antV0 & 230/ 302.5 & 13.3 & 110/ 6.9 & 0.7 & 13.8 & 1.6\\
+%    antV1 & 130/ 328.7 & 27.2 & 140/ 12.7 & 0.8 & 15.4 & 2.0\\
+%    antV2 & 200/ 1030.2 & 73.0 & 260/ 31.3 & 1.7 & 34.6 & 4.2\\
+%    camelV0 & 200/ 1838.4 & 92.5 & 190/ 33.4 & 2.0 & 43.7 & 3.4\\
+%    camelV1 & 220/ 4352.4 & 275.8 & 160/ 46.2 & 5.4 & 42.8 & 7.8\\
+%    ivyV0 & 140/ 167.9 & 11.9 & 50/ 4.1 & 0.7 & 18.8 & 1.8\\
+%    jeditV0 & 180/ 830.6 & 62.9 & 60/ 7.8 & 1.0 & 45.7 & 3.3\\
+%    jeditV1 & 140/ 1055.2 & 81.8 & 110/ 13.6 & 1.1 & 30.7 & 3.6\\
+%    jeditV2 & 170/ 1322.7 & 92.2 & 140/ 18.1 & 1.3 & 35.3 & 4.1\\
+%    log4jV0 & 220/ 370.7 & 16.3 & 110/ 5.6 & 0.5 & 16.1 & 1.7\\
+%    luceneV0 & 110/ 385.3 & 31.9 & 100/ 8.8 & 0.8 & 21.3 & 2.6\\
+%    poiV0 & 170/ 720.7 & 46.2 & 100/ 10.2 & 0.9 & 19.9 & 3.0\\
+%    poiV1 & 170/ 1229.0 & 79.4 & 110/ 14.9 & 1.2 & 25.9 & 2.9\\
+%    synapseV0 & 190/ 377.0 & 21.6 & 160/ 10.3 & 0.6 & 21.0 & 1.7\\
+%    velocityV0 & 100/ 275.6 & 39.6 & 120/ 8.9 & 0.7 & 13.2 & 2.1\\
+%    xercesV0 & 130/ 310.7 & 25.4 & 130/ 13.3 & 0.9 & 21.6 & 2.3\\
+%    xercesV1 & 130/ 1792.1 & 147.9 & 160/ 37.1 & 1.6 & 35.4 & 4.0\\
+%  \end{tabular}
+%  \caption{Time (in seconds) spent on different models over the objective of F}
+%\end{figure*}
+%
+%%%%%time for F %%%%%%
+%\begin{figure*}[!ht]
+%\scriptsize
+%\centering
+%  \begin{tabular}{l|c |c |c |c |c |c }
+%    \hline\hline
+%    Datasets & Tuned\_Where & Naive\_Where & Tuned\_CART & Naive\_CART & Tuned\_RanFst & Naive\_RanFst\\
+%    \hline
+%    antV0 & 70/ 95.37 & 1.13 & 50/ 2.98 & 0.07 & 6.69 & 0.13\\
+%    antV1 & 50/ 124.00 & 2.15 & 50/ 4.39 & 0.09 & 8.71 & 0.19\\
+%    antV2 & 50/ 292.02 & 6.16 & 60/ 7.12 & 0.18 & 13.25 & 0.31\\
+%    camelV0 & 60/ 512.16 & 7.51 & 60/ 9.81 & 0.16 & 17.61 & 0.29\\
+%    camelV1 & 60/ 1577.43 & 22.43 & 60/ 15.90 & 0.24 & 24.13 & 0.71\\
+%    ivyV0 & 80/ 84.74 & 0.99 & 60/ 3.92 & 0.07 & 6.39 & 0.17\\
+%    jeditV0 & 80/ 428.65 & 5.01 & 50/ 5.26 & 0.08 & 13.66 & 0.28\\
+%    jeditV1 & 60/ 400.97 & 6.48 & 50/ 5.81 & 0.10 & 10.48 & 0.32\\
+%    jeditV2 & 70/ 449.76 & 6.75 & 50/ 5.90 & 0.11 & 12.41 & 0.35\\
+%    log4jV0 & 60/ 79.60 & 1.43 & 60/ 2.75 & 0.05 & 7.38 & 0.14\\
+%    luceneV0 & 60/ 183.58 & 2.88 & 50/ 5.07 & 0.09 & 10.27 & 0.30\\
+%    poiV0 & 60/ 295.96 & 4.30 & 60/ 6.15 & 0.10 & 11.59 & 0.28\\
+%    poiV1 & 70/ 614.74 & 8.69 & 80/ 14.46 & 0.13 & 17.12 & 0.28\\
+%    synapseV0 & 60/ 103.38 & 1.78 & 60/ 3.64 & 0.06 & 6.54 & 0.15\\
+%    velocityV0 & 50/ 264.00 & 5.79 & 50/ 8.58 & 0.14 & 17.06 & 0.40\\
+%    xercesV0 & 70/ 194.38 & 1.98 & 50/ 5.42 & 0.08 & 9.08 & 0.22\\
+%    xercesV1 & 70/ 871.91 & 12.57 & 50/ 7.96 & 0.14 & 16.22 & 0.38\\
+%  \end{tabular}
+%  \caption{Time (in seconds) spent on the objective of F with B stop: tune once+ test once}
+%\end{figure*}
+%
+%
+
+%%%%%%%%%%%%%% precision bars%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+
+\begin{figure}
+\renewcommand{\baselinestretch}{0.8} 
+
+\scriptsize  
+\begin{tabular}{r|r@{~}l@{~}|r@{~}l|r@{~}l|r@{~}l|r@{~}l@{~}|r@{~}l@{~}r@{~}l}
+      &   \multicolumn{4}{c|}{WHERE}         &   \multicolumn{4}{c|}{CART}         &   \multicolumn{4}{c}{Random Forests}         \\\hline
+  Data set   &   \multicolumn{2}{c}{Naive}         &   \multicolumn{2}{c|}{Tuned}         &   \multicolumn{2}{c}{Naive}         &   \multicolumn{2}{c|}{Tuned}    &   \multicolumn{2}{c}{Naive}  &   \multicolumn{2}{c}{Tuned}\\\hline
+antV0 & 30 &         & $\bigstar$89 & {\rfour} & 27 &         & $\bigstar$89 & {\rfour} & 39 &         & $\bigstar$89 & {\rfour}\\
+antV1 & 32 & {\rtwo} & $\bigstar$74 & {\rfour} & 41 & {\rtwo} & $\bigstar$74 & {\rfour} & 43 & {\rtwo} & 0 &        \\
+antV2 & $\bigstar$78 & {\rfour} & $\bigstar$78 & {\rfour} & 52 &         & 68 & {\rthree} & 66 & {\rtwo} & 67 & {\rtwo}\\
+camelV0 & $\bigstar$83 & {\rfour} & $\bigstar$83 & {\rfour} & 26 &         & 33 &         & 34 &         & 45 & {\rone}\\
+camelV1 & 22 &         & $\bigstar$28 & {\rfour} & 23 &         & 24 & {\rone} & $\bigstar$28 & {\rfour} & $\bigstar$28 & {\rfour}\\
+ivyV0 & 16 &         & $\bigstar$23 & {\rfour} & 18 & {\rone} & 21 & {\rthree} & 21 & {\rthree} & 20 & {\rtwo}\\
+jeditV0 & 35 &         & $\bigstar$75 & {\rfour} & 49 & {\rone} & 56 & {\rtwo} & 50 & {\rone} & 48 & {\rone}\\
+jeditV1 & 24 &         & $\bigstar$87 & {\rfour} & 28 &         & 86 & {\rfour} & 36 &         & 39 & {\rone}\\
+jeditV2 & 2 &         & $\bigstar$98 & {\rfour} & 3 &         & 18 &         & 5 &         & 5 &        \\
+log4jV0 & 94 &         & $\bigstar$100 & {\rfour} & 97 & {\rtwo} & $\bigstar$100 & {\rfour} & $\bigstar$100 & {\rfour} & $\bigstar$100 & {\rfour}\\
+luceneV0 & 61 &         & 74 & {\rfour} & 67 & {\rone} & 70 & {\rtwo} & 72 & {\rthree} & $\bigstar$77 & {\rfour}\\
+poiV0 & 70 &         & 68 &         & 77 & {\rfour} & 72 & {\rone} & $\bigstar$79 & {\rfour} & 76 & {\rthree}\\
+poiV1 & $\bigstar$100 & {\rfour} & 90 & {\rthree} & 73 &         & 89 & {\rtwo} & 81 & {\rone} & $\bigstar$100 & {\rfour}\\
+synapseV0 & 66 &         & 66 &         & 71 & {\rone} & $\bigstar$100 & {\rfour} & 59 &         & 80 & {\rtwo}\\
+velocityV0 & 34 &         & 39 & {\rthree} & 34 &         & 40 & {\rfour} & 40 & {\rfour} & $\bigstar$41 & {\rfour}\\
+xercesV0 & 13 &         & $\bigstar$85 & {\rfour} & 14 &         & 13 &         & 15 &         & 13 &        \\
+xercesV1 & $\bigstar$56 & {\rfour} & 26 &         & 50 & {\rthree} & 26 &         & 41 & {\rtwo} & 26 &        \\
+antV0 & $\bigstar$89 & {\rfour}& 0 &  & 15 &        & 0 &  & 21 &        & 0 & \\
+antV1 & 0 &        & 0 &  & 54 & {\rthree}& 0 &  & $\bigstar$68 & {\rfour}& 0 & \\
+antV2 & 53 & {\rthree}& 0 &  & 43 &        & 0 &  & $\bigstar$57 & {\rfour}& 0 & \\
+camelV0 & 26 &        & 0 &  & $\bigstar$30 & {\rfour}& 0 &  & 28 & {\rtwo}& 0 & \\
+camelV1 & 28 &        & 0 &  & $\bigstar$38 & {\rfour}& 0 &  & 34 & {\rtwo}& 0 & \\
+ivyV0 & $\bigstar$26 & {\rfour}& 0 &  & 21 &        & 0 &  & 24 & {\rtwo}& 0 & \\
+jeditV0 & 41 &        & 0 &  & $\bigstar$56 & {\rfour}& 0 &  & 52 & {\rthree}& 0 & \\
+jeditV1 & 26 &        & 0 &  & $\bigstar$33 & {\rfour}& 0 &  & 32 & {\rfour}& 0 & \\
+jeditV2 & 5 &        & 0 &  & $\bigstar$6 & {\rfour}& 0 &  & 5 &        & 0 & \\
+log4jV0 & $\bigstar$98 & {\rfour}& 0 &  & 96 & {\rone}& 0 &  & 95 &        & 0 & \\
+luceneV0 & 64 & {\rtwo}& 0 &  & $\bigstar$65 & {\rfour}& 0 &  & 63 &        & 0 & \\
+poiV0 & $\bigstar$68 & {\rfour}& 0 &  & 65 &        & 0 &  & 67 & {\rthree}& 0 & \\
+poiV1 & 77 & {\rthree}& 0 &  & 72 &        & 0 &  & $\bigstar$79 & {\rfour}& 0 & \\
+synapseV0 & $\bigstar$64 & {\rfour}& 0 &  & 51 &        & 0 &  & 61 & {\rthree}& 0 & \\
+velocityV0 & 34 &        & 0 &  & 40 & {\rfour}& 0 &  & $\bigstar$41 & {\rfour}& 0 & \\
+xercesV0 & 19 &        & 0 &  & 17 &        & 0 &  & $\bigstar$28 & {\rfour}& 0 & \\
+xercesV1 & $\bigstar$88 & {\rfour}& 0 &  & 73 &        & 0 &  & 79 & {\rone}& 0 & \\
+\end{tabular}
+\caption{precision values comparisons,old runs followed by new runs. In new expeirments,  1st, 2nd release are used for training,
+and test on 3rd release. }
+\label{fig:precisionbarscompare}
+\end{figure}
+
+\clearpage
+
+
+
+%%%%%%%%%%%%%% F bars with only native train with the first two and test with the last begin%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\begin{figure}
+\renewcommand{\baselinestretch}{0.8} 
+
+\scriptsize  
+\begin{tabular}{r|r@{~}l@{~}|r@{~}l|r@{~}l|r@{~}l|r@{~}l@{~}|r@{~}l@{~}r@{~}l}
+      &   \multicolumn{4}{c|}{WHERE}         &   \multicolumn{4}{c|}{CART}         &   \multicolumn{4}{c}{Random Forests}         \\\hline
+  Data set   &   \multicolumn{2}{c}{Naive}         &   \multicolumn{2}{c|}{Tuned}         &   \multicolumn{2}{c}{Naive}         &   \multicolumn{2}{c|}{Tuned}    &   \multicolumn{2}{c}{Naive}  &   \multicolumn{2}{c}{Tuned}\\\hline
+antV0 & $\bigstar$39 & {\rfour} & 25 & {\rtwo} & 32 & {\rthree} & 31 & {\rthree} & $\bigstar$39 & {\rfour} & 12 &        \\
+antV1 & 11 &         & 6 &         & 40 & {\rfour} & $\bigstar$45 & {\rfour} & 39 & {\rfour} & 44 & {\rfour}\\
+antV2 & 0 &         & $\bigstar$87 & {\rfour} & 44 & {\rtwo} & 1 &         & 50 & {\rtwo} & 51 & {\rtwo}\\
+camelV0 & 0 &         & 28 & {\rfour} & 9 & {\rone} & 28 & {\rfour} & $\bigstar$34 & {\rfour} & 30 & {\rfour}\\
+camelV1 & $\bigstar$34 & {\rfour} & $\bigstar$34 & {\rfour} & 31 &         & 32 & {\rone} & 33 & {\rthree} & 31 &        \\
+ivyV0 & 27 &         & 34 & {\rthree} & 30 & {\rone} & $\bigstar$38 & {\rfour} & 35 & {\rthree} & 33 & {\rtwo}\\
+jeditV0 & 50 &         & 56 & {\rtwo} & 56 & {\rtwo} & 54 & {\rone} & $\bigstar$61 & {\rfour} & 59 & {\rfour}\\
+jeditV1 & 37 & {\rone} & 33 &         & 36 &         & $\bigstar$49 & {\rfour} & 45 & {\rthree} & 47 & {\rfour}\\
+jeditV2 & 4 &         & 8 & {\rtwo} & 5 &         & $\bigstar$11 & {\rfour} & 9 & {\rthree} & 9 & {\rthree}\\
+log4jV0 & $\bigstar$62 & {\rfour} & 56 & {\rthree} & 47 & {\rone} & 59 & {\rfour} & 53 & {\rtwo} & 43 &        \\
+luceneV0 & 70 & {\rthree} & $\bigstar$75 & {\rfour} & 56 &         & $\bigstar$75 & {\rfour} & 73 & {\rfour} & $\bigstar$75 & {\rfour}\\
+poiV0 & $\bigstar$78 & {\rfour} & 64 &         & 74 & {\rthree} & 68 & {\rone} & 73 & {\rthree} & 69 & {\rone}\\
+poiV1 & 5 &         & $\bigstar$78 & {\rfour} & 21 & {\rone} & $\bigstar$78 & {\rfour} & 76 & {\rfour} & $\bigstar$78 & {\rfour}\\
+synapseV0 & 0 &         & 2 &         & 40 & {\rthree} & $\bigstar$56 & {\rfour} & 51 & {\rfour} & 55 & {\rfour}\\
+velocityV0 & $\bigstar$51 & {\rfour} & $\bigstar$51 & {\rfour} & 49 &         & $\bigstar$51 & {\rfour} & $\bigstar$51 & {\rfour} & $\bigstar$51 & {\rfour}\\
+xercesV0 & 22 & {\rone} & 20 &         & 21 &         & $\bigstar$27 & {\rfour} & 23 & {\rtwo} & 20 &        \\
+xercesV1 & 25 &         & 39 & {\rone} & 18 &         & 53 & {\rthree} & 68 & {\rfour} & $\bigstar$73 & {\rfour}\\
+
+antV0 & 0 &        & 0 &  & 22 & {\rthree}& 0 &  & $\bigstar$30 & {\rfour}& 0 & \\
+antV1 & $\bigstar$85 & {\rfour}& 0 &  & 37 &        & 0 &  & 39 &        & 0 & \\
+antV2 & 54 & {\rthree}& 0 &  & 45 &        & 0 &  & $\bigstar$57 & {\rfour}& 0 & \\
+camelV0 & 36 &        & 0 &  & 39 & {\rthree}& 0 &  & $\bigstar$40 & {\rfour}& 0 & \\
+camelV1 & 34 &        & 0 &  & 39 & {\rthree}& 0 &  & $\bigstar$42 & {\rfour}& 0 & \\
+ivyV0 & $\bigstar$39 & {\rfour}& 0 &  & 28 &        & 0 &  & 36 & {\rthree}& 0 & \\
+jeditV0 & 54 &        & 0 &  & 56 & {\rone}& 0 &  & $\bigstar$63 & {\rfour}& 0 & \\
+jeditV1 & 39 &        & 0 &  & 44 & {\rthree}& 0 &  & $\bigstar$46 & {\rfour}& 0 & \\
+jeditV2 & 9 & {\rone}& 0 &  & $\bigstar$11 & {\rfour}& 0 &  & 8 &        & 0 & \\
+log4jV0 & 44 &        & 0 &  & 54 & {\rtwo}& 0 &  & $\bigstar$61 & {\rfour}& 0 & \\
+luceneV0 & $\bigstar$73 & {\rfour}& 0 &  & 65 &        & 0 &  & 70 & {\rthree}& 0 & \\
+poiV0 & $\bigstar$50 & {\rfour}& 0 &  & 32 &        & 0 &  & 45 & {\rthree}& 0 & \\
+poiV1 & 74 & {\rtwo}& 0 &  & 68 &        & 0 &  & $\bigstar$78 & {\rfour}& 0 & \\
+synapseV0 & $\bigstar$60 & {\rfour}& 0 &  & 44 &        & 0 &  & 52 & {\rtwo}& 0 & \\
+velocityV0 & 50 &        & 0 &  & 53 & {\rtwo}& 0 &  & $\bigstar$56 & {\rfour}& 0 & \\
+xercesV0 & 25 & {\rone}& 0 &  & 19 &        & 0 &  & $\bigstar$35 & {\rfour}& 0 & \\
+xercesV1 & 21 &        & 0 &  & 35 & {\rthree}& 0 &  & $\bigstar$42 & {\rfour}& 0 & \\
+\end{tabular}
+\caption{f values comparisons, old runs followed by new runs. In new expeirments,  1st, 2nd release are used for training,
+and test on 3rd release.}
+\label{fig:precisionbarscompare}
+\end{figure}
+
+%
+%
+%
+%\begin{figure*}
+%\renewcommand{\baselinestretch}{0.5} 
+%\scriptsize
+%\begin{minipage}{0.81\linewidth}
+%\begin{tabular}{r@{~}|r@{~}l@{~}|r@{~}l@{~}|r@{~}l|r@{~}@{~}l|r@{~}l@{~}|r@{~}l@{~}|r@{~}l}
+%  \multicolumn{1}{c|}{~}&\multicolumn{11}{c}{F } \\
+%  Data set   &   \multicolumn{2}{c}{Naive\_Where}         &   \multicolumn{2}{c}{Tuned\_Where}         &   \multicolumn{2}{c}{Naive\_CART}         &   \multicolumn{2}{c}{Tuned\_CART}    &   \multicolumn{2}{c}{Naive\_RanFst}  &   \multicolumn{2}{c}{Tuned\_RanFst}\\\hline
+%\multicolumn{1}{c}{~}\\
+%antV0 & $\bigstar$39 & {\rfour} & 25 & {\rtwo} & 32 & {\rthree} & 31 & {\rthree} & $\bigstar$39 & {\rfour} & 12 &        \\
+%antV1 & 11 &         & 6 &         & 40 & {\rfour} & $\bigstar$45 & {\rfour} & 39 & {\rfour} & 44 & {\rfour}\\
+%antV2 & 0 &         & $\bigstar$87 & {\rfour} & 44 & {\rtwo} & 1 &         & 50 & {\rtwo} & 51 & {\rtwo}\\
+%camelV0 & 0 &         & 28 & {\rfour} & 9 & {\rone} & 28 & {\rfour} & $\bigstar$34 & {\rfour} & 30 & {\rfour}\\
+%camelV1 & $\bigstar$34 & {\rfour} & $\bigstar$34 & {\rfour} & 31 &         & 32 & {\rone} & 33 & {\rthree} & 31 &        \\
+%ivyV0 & 27 &         & 34 & {\rthree} & 30 & {\rone} & $\bigstar$38 & {\rfour} & 35 & {\rthree} & 33 & {\rtwo}\\
+%jeditV0 & 50 &         & 56 & {\rtwo} & 56 & {\rtwo} & 54 & {\rone} & $\bigstar$61 & {\rfour} & 59 & {\rfour}\\
+%jeditV1 & 37 & {\rone} & 33 &         & 36 &         & $\bigstar$49 & {\rfour} & 45 & {\rthree} & 47 & {\rfour}\\
+%jeditV2 & 4 &         & 8 & {\rtwo} & 5 &         & $\bigstar$11 & {\rfour} & 9 & {\rthree} & 9 & {\rthree}\\
+%log4jV0 & $\bigstar$62 & {\rfour} & 56 & {\rthree} & 47 & {\rone} & 59 & {\rfour} & 53 & {\rtwo} & 43 &        \\
+%luceneV0 & 70 & {\rthree} & $\bigstar$75 & {\rfour} & 56 &         & $\bigstar$75 & {\rfour} & 73 & {\rfour} & $\bigstar$75 & {\rfour}\\
+%poiV0 & $\bigstar$78 & {\rfour} & 64 &         & 74 & {\rthree} & 68 & {\rone} & 73 & {\rthree} & 69 & {\rone}\\
+%poiV1 & 5 &         & $\bigstar$78 & {\rfour} & 21 & {\rone} & $\bigstar$78 & {\rfour} & 76 & {\rfour} & $\bigstar$78 & {\rfour}\\
+%synapseV0 & 0 &         & 2 &         & 40 & {\rthree} & $\bigstar$56 & {\rfour} & 51 & {\rfour} & 55 & {\rfour}\\
+%velocityV0 & $\bigstar$51 & {\rfour} & $\bigstar$51 & {\rfour} & 49 &         & $\bigstar$51 & {\rfour} & $\bigstar$51 & {\rfour} & $\bigstar$51 & {\rfour}\\
+%xercesV0 & 22 & {\rone} & 20 &         & 21 &         & $\bigstar$27 & {\rfour} & 23 & {\rtwo} & 20 &        \\
+%xercesV1 & 25 &         & 39 & {\rone} & 18 &         & 53 & {\rthree} & 68 & {\rfour} & $\bigstar$73 & {\rfour}\\
+%\end{tabular}
+%\end{minipage}\begin{minipage}{.15\linewidth}
+%\begin{tabular}{|p{\linewidth}|}\hline
+%
+%~\\
+%
+%{\bf KEY:}
+%
+%~\\
+%
+%F percentile ranges:
+%
+%~\\
+%
+%80th to 100th = {\rfour}
+%
+%60th to 80th ~ = {\rthree}
+%
+%40th to 60th  ~ = {\rtwo}
+%
+%20th to 40th  ~ = {\rone}
+%
+%~\\
+%
+%An absent bar denotes\newline 0th to 20th percentile.
+%
+%~\\
+%
+%Percentiles computed  separately
+%for each data set.\\\hline
+%\end{tabular}
+%\end{minipage}
+%\caption{F values in tune once and test once experiment. 
+%}\label{fig:nonc}
+%\end{figure*}
+
+%%%%%%%%%%%%%% F bars end%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+ 
+
+\end{document}
+
+
