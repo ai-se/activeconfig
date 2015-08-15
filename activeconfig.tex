@@ -549,21 +549,58 @@ While the exact numbers found in this way
 may differ from the above in some small way, we can report that 
 those repeated runs do not substantively change the above conclusions.
 \ei
-{\em External validity} checks if the results are of relevance
-for other cases, or can be generalized from samples
-to populations.  
-The examples of this paper  only relate to precision, recall, and the F-measure
-but the general principle (that the search bias changes the search conclusions)  holds for all any set of goals. 
-Also,
-the tuning results shown here only came from one  software analytics task 
-(defect prediction from static code attributes).
-There are many other kinds of software analytics tasks 
-(software development effort estimation, social network mining,
-detecting duplicate issue reports, etc) and the implication of this
-study for those tasks is unclear. 
-However,  those other tasks often use the same kinds of learners
-explored in this paper so it is quite possible that
-the conclusions of this paper apply to other SE analytics tasks as well. 
+
+{\em Internal validity}(copied verbatim)
+Regarding SQLite, we cannot measure all possible configurations in reasonable time. Hence, we sampled only 100 configurations to compare prediction and actual performance values. We are aware that this evaluation leaves room for outliers.
+Also, we are aware that measurement bias can cause false interpretations [20]. Since we aim at predicting performance for a special workload, we do not have to vary benchmarks.
+
+
+
+{\em External validity} (copied verbatim) We aimed at increasing external validity by choosing programs from different domains with different configuration mechanisms and implemented with different programming languages. Furthermore, we used programs that are deployed and used in the real-world. Nevertheless, we are aware that the results of our evaluations are not automatically transferable to all configurable programs. In addition to our sample program selection, the strong and exhaustive evaluation (over 60 days of measurement with 5 computers) indicate that our heuristics hold for many practical application scenarios.
+
+{\em Optimizer Bias} (copied verbatim)
+Our reading of the literature is that the experimentation
+in this paper is far larger than what is typically used
+to certify new optimizers. Also, we know of no other
+search-based SE paper that can achieve GALE’s results
+using so few evaluations.
+That said, the applicability of GALE to new models
+is an open question. We have shown that GALE does
+better than NSGA-II and DE, for the configuration search spaces explored
+above. This is not to say that we we have not shown that
+it works better than all optimizers over all data sets.
+There are theoretical reasons to conclude that it is impossible
+to show that any one optimizer always performs
+best. Wolpert and Macready [NFL paper] showed in 1997 that no
+optimizers necessarily work better than any other for all possible optimization problems.
+
+{\em Parameter Bias} (copied verbatim)
+For this study, we did not do extensive parameter tuning:
+NSGA-II and DE were run using their default
+settings while GALE was run using the settings that
+worked well on the first model we studied, which were
+then frozen for the rest of this study. As documented
+above, those parameters were:
+\begin{itemize}
+\item $\mu$ = 100: population size;
+\item $\omega$ = $\mu$: minimum size leaf clusters;
+\item $\lambda$ = 3: premature stopping criteria (sets the maximum
+allowed generations without any improvement
+on any objective).
+\item $\delta$ = 1: the ``accelerator'' that encourages larger
+mutations;
+\item $\gamma$ = 1.5: the ``brake'' that blocks excessive mutation.
+\end{itemize}
+
+If this paper was arguing that these parameters were
+somehow optimal, then it would be required to present
+experiments defending the above settings. However, our
+claim is less than that—we only aim to show that with
+these settings, GALE does as well than standard MOEA
+tools. In future work, we will explore other settings.
+
+
+
 
 That said, there exist some class of data mining papers for which
 tuning may not be required. Consider  Le Goues et al.'s 2012
