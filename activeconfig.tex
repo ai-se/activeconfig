@@ -410,7 +410,7 @@ for defect predictors).
 % \end{table}
   
 Hence, we answer RQ5 as ``no''. Tuning is so fast that
-it could (and should) be used by anyone using defect predictors. The possible reason that tuning is so fast is that the searching space for defect prediction is not complicated, which might result from the tuning range set for each parameter in \tab{parameters}. The early stopping rules applied in this study also helps make tuning fast\wei{added HERE!}
+it could (and should) be used by anyone using defect predictors. The possible reason that tuning is so fast is that the searching space for defect prediction is not complicated, which might result from the tuning range set for each parameter in \tab{parameters}. The early stopping rules applied in this study also helps make tuning fast
 
 \subsection{RQ6: Should we use ``off-the-shelf'' Tunings?}\label{sect:variance}
  
@@ -509,6 +509,24 @@ tuning is so easy and so fast (at least for defect predictors from static code a
 %   \caption{Parameters tuned on different models over the objective of ``F''.}\label{tab:fselect}
 % \end{table*}
 
+ \begin{tabular}{c c c c c c} 
+ \hline
+ Project & Domain & Lang. & LOC & Features & Configs \\  
+ \hline
+ Berkeley DB CE & Database & C & 219,811 & 18 & 2560  \\ 
+ 
+ Berkeley DB JE & Database & Java & 42,596 & 32 & 400 \\
+
+ Apache & Web Server & C & 230,277 & 9 & 192 \\
+
+ SQLite & Database & C & 312,625 & 39 & 3,932,160 \\
+ 
+ LLVM & Compiler & C++ & 47,549 & 11 & 1024 \\ 
+
+ x264 & Video Enc. & C & 45,743 & 16 & 1152 \\ 
+ 
+\end{tabular}
+
 
 \section{Reliability and Validity}\label{sect:construct}
 
@@ -550,15 +568,15 @@ may differ from the above in some small way, we can report that
 those repeated runs do not substantively change the above conclusions.
 \ei
 
-{\em Internal validity}(copied verbatim)
+{\em Internal validity}\textcolor{red}{(copied verbatim)}
 Regarding SQLite, we cannot measure all possible configurations in reasonable time. Hence, we sampled only 100 configurations to compare prediction and actual performance values. We are aware that this evaluation leaves room for outliers.
 Also, we are aware that measurement bias can cause false interpretations [20]. Since we aim at predicting performance for a special workload, we do not have to vary benchmarks.
 
 
 
-{\em External validity} (copied verbatim) We aimed at increasing external validity by choosing programs from different domains with different configuration mechanisms and implemented with different programming languages. Furthermore, we used programs that are deployed and used in the real-world. Nevertheless, we are aware that the results of our evaluations are not automatically transferable to all configurable programs. In addition to our sample program selection, the strong and exhaustive evaluation (over 60 days of measurement with 5 computers) indicate that our heuristics hold for many practical application scenarios.
+{\em External validity} \textcolor{red}{(copied verbatim)} We aimed at increasing external validity by choosing programs from different domains with different configuration mechanisms and implemented with different programming languages. Furthermore, we used programs that are deployed and used in the real-world. Nevertheless, we are aware that the results of our evaluations are not automatically transferable to all configurable programs. In addition to our sample program selection, the strong and exhaustive evaluation (over 60 days of measurement with 5 computers) indicate that our heuristics hold for many practical application scenarios.
 
-{\em Optimizer Bias} (copied verbatim)
+{\em Optimizer Bias} \textcolor{red}{(copied verbatim)}
 Our reading of the literature is that the experimentation
 in this paper is far larger than what is typically used
 to certify new optimizers. Also, we know of no other
@@ -574,7 +592,7 @@ to show that any one optimizer always performs
 best. Wolpert and Macready [NFL paper] showed in 1997 that no
 optimizers necessarily work better than any other for all possible optimization problems.
 
-{\em Parameter Bias} (copied verbatim)
+{\em Parameter Bias} \textcolor{red}{(copied verbatim)}
 For this study, we did not do extensive parameter tuning:
 NSGA-II and DE were run using their default
 settings while GALE was run using the settings that
