@@ -122,7 +122,56 @@ Search-based Software Engineering,Sampling, Machine Learning.
     \item{Fast Learners}
 \ei
 
-\section{Data U}
+\section{Data Used}
+\begin{table*}[!h]
+ 
+ \begin{tabular}{c c c c c c} 
+
+ 
+ \hline
+ Project & Domain & Lang. & LOC & Features & Configs \\  
+ \hline
+ Berkeley DB CE & Database & C & 219,811 & 18 & 2560  \\ 
+ 
+ Berkeley DB JE & Database & Java & 42,596 & 32 & 400 \\
+
+ Apache & Web Server & C & 230,277 & 9 & 192 \\
+
+ SQLite & Database & C & 312,625 & 39 & 3,932,160 \\
+ 
+ LLVM & Compiler & C++ & 47,549 & 11 & 1024 \\ 
+
+ x264 & Video Enc. & C & 45,743 & 16 & 1152 \\ 
+
+\end{tabular}
+ \caption{Overview of the programs used in the evaluations}
+\end{table*}
+
+
+ \begin{table*}[!h]
+ 
+
+ \begin{tabular}{c c } 
+ \hline
+ Project & Benchmark/Job Used  \\  
+ \hline
+ Berkeley DB CE & Vendor Provided  \\ 
+ 
+ Berkeley DB JE & Vendor Provided \\
+
+ Apache & autobench + httperf \\
+
+ SQLite & Vendor Provided \\
+ 
+ LLVM & opt-tools \\ 
+
+ x264 & Sintel(735MB) \\
+ 
+
+\label{BenchMarkUsed} 
+\end{tabular}
+\caption{Overview of the benchmarks used in the evaluations}
+\end{table*}
 \section{Sampling Technique: East-West Where}
 \bi
     \item{WHERE}
@@ -531,55 +580,7 @@ Search-based Software Engineering,Sampling, Machine Learning.
 % }
 %   \caption{Parameters tuned on different models over the objective of ``F''.}\label{tab:fselect}
 % \end{table*}
- \begin{table*}[!h]
  
- \begin{tabular}{c c c c c c} 
-
- 
- \hline
- Project & Domain & Lang. & LOC & Features & Configs \\  
- \hline
- Berkeley DB CE & Database & C & 219,811 & 18 & 2560  \\ 
- 
- Berkeley DB JE & Database & Java & 42,596 & 32 & 400 \\
-
- Apache & Web Server & C & 230,277 & 9 & 192 \\
-
- SQLite & Database & C & 312,625 & 39 & 3,932,160 \\
- 
- LLVM & Compiler & C++ & 47,549 & 11 & 1024 \\ 
-
- x264 & Video Enc. & C & 45,743 & 16 & 1152 \\ 
-
-\end{tabular}
- \caption{Overview of the programs used in the evaluations}
-\end{table*}
-
-
- \begin{table*}[!h]
- 
-
- \begin{tabular}{c c } 
- \hline
- Project & Benchmark/Job Used  \\  
- \hline
- Berkeley DB CE & Vendor Provided  \\ 
- 
- Berkeley DB JE & Vendor Provided \\
-
- Apache & autobench + httperf \\
-
- SQLite & Vendor Provided \\
- 
- LLVM & opt-tools \\ 
-
- x264 & Sintel(735MB) \\
- 
-
-\label{BenchMarkUsed} 
-\end{tabular}
-\caption{Overview of the benchmarks used in the evaluations}
-\end{table*}
 \section{Reliability and Validity}\label{sect:construct}
 
 
