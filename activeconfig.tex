@@ -1,7 +1,7 @@
 \documentclass{sig-alternative}
 % \documentclass[conference]{IEEEtran}
-\usepackage{multirow}
 \usepackage{color}
+\usepackage{listings}
 \usepackage{graphics} 
 \usepackage{cite}
 \usepackage{rotating}
@@ -20,6 +20,34 @@
 \definecolor{darkgray}{gray}{0.6}
 \renewcommand{\algorithmicrequire}{\textbf{Input:}}
 \renewcommand{\algorithmicensure}{\textbf{Output:}}
+\usepackage[table]{xcolor}
+\definecolor{Gray}{rgb}{0.88,1,1}
+\definecolor{Gray}{gray}{0.85}
+\definecolor{Blue}{RGB}{0,29,193}
+\newcommand{\G}{\cellcolor{green}}
+\newcommand{\Y}{\cellcolor{yellow}}
+
+
+\definecolor{MyDarkBlue}{rgb}{0,0.08,0.45} 
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\fontsize{2.7mm}{0.8em}\selectfont,
+    breaklines=true,
+    prebreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+    frame=l,
+    showtabs=false,
+    showspaces=false,
+    showstringspaces=false,
+    keywordstyle=\bfseries,
+    emph={furthest,gale,better,improved,where,fastmap,split,project,mutate,mutate1}, emphstyle=\bfseries\color{blue},
+    stringstyle=\color{green!50!black},
+    commentstyle=\color{gray}\itshape,
+    numbers=left,
+    captionpos=t,
+    escapeinside={\%*}{*)}
+}
+
+
 %%% graph
 \newcommand{\crule}[3][darkgray]{\textcolor{#1}{\rule{#2}{#3}}}
 %\newcommand{\rone}{\crule{1mm}{1.95mm}}
@@ -196,16 +224,123 @@ where, L is a loss function for penalizing errors in prediction. By formulating 
 \bi
     \item{WHERE}
 \ei
+\subsection{WHERE Learning}\label{sec:spectral}
+This section describes how a large space of candidate solutions (configurations) into many smaller regions.
+
+WHERE is a {\em spectral learner}~\cite{kamvar2003spectral}; i.e. given solutions with $d$ possible decisions(features), it re-expresses those $d$ decision variables in terms of the $e$ eigenvectors of that data.
+This speeds up the reasoning since we then only need to explore the $e\ll d$   eigenvectors.
+
+A widely-used spectral learner is a principal components analysis (PCA). For example, PDDP ({\em Principal Direction Divisive Partitioning})~\cite{boley1998principal} recursively partitions data according to the median point of data projected onto the first PCA component of the current partition.
+
+WHERE~\cite{me12d} is a linear time variant of PDDP  that uses FastMap~\cite{Faloutsos1995} to quickly find the first component.
+Platt~\cite{platt05} shows that FastMap is a  Nystr\"om algorithm that finds approximations to eigenvectors.
+As shown in \fig{fastmapCode} on lines 3,4,5, FastMap  projects all data onto a line connecting two distant points\footnote{
+To define distance, WHERE uses the standard Euclidean distance method proposed by Aha et al.~\cite{aha91}; that is: $dist(x,y)= \sqrt{\sum_{i\in d} (x_i - y_i)^2}/\sqrt{ \left\vert{d}\right\vert }$ where distance is computed on the independent decisions $d$ of each candidate solution; all $d_i$ values are normalized min..max, 0..1; and the calculated distance normalized by dividing by the maximum distance across the $d$ decisions.}. 
+FastMap finds these two distant points in near-linear time. 
+The search for the poles needs only $O(N)$ distance comparisons (lines 19 to 24).
+The slowest part of this search is the sort used to find the median $x$ value (line 10) but even that can be reduced to  asymptotically optimal linear-time via the standard median-selection algorithm~\cite{hoare61}.
+
+FastMap returns the data split into two equal halves.
+WHERE recurses on the two halves, terminating when some split has less than $\sqrt{N}$ items.
+
+
+\begin{figure}[!t] 
+\begin{minipage}{3.2in}
+\begin{lstlisting}[mathescape,frame=l,numbers=left]
+def fastmap(data): 
+  "Project data on a line to 2 distant points"
+  z          = random.choose(data)
+  east       = furthest(z, data)
+  west       = furthest(east, data)
+  data.poles = (west,east)
+  c          = dist(west,east)     
+  for one in data.members: 
+    one.pos = project(west,east,c,one)
+  data = sorted(data) # sorted by 'pos'
+  return split(data)
+
+def project(west, east, c, x): 
+  "Project x onto line east to west"
+  a = dist(x,west)
+  b = dist(x,east)
+  return (a*a + c*c - b*b)/(2*c) # cosine rule
+
+def furthest(x,data): # what is furthest from x?
+  out, max = x,0
+  for y in data:
+    d = dist(x,y)
+    if d > max: out, max = y, d
+  return out
+
+def split(data): # Split at median
+   mid = len(data)/2; 
+  return data[mid:], data[:mid]
+\end{lstlisting}
+\caption{Splitting data with FastMap}
+\label{fig:fastmapCode}  
+\end{minipage}
+\end{figure}
 
 We build the predictive model using the popular machine learning technique called Classification and Regression Tree(CART), which has been extensively used in the literature and has been observed to be fast and accurate~\cite{guo2013variability}.
-\subsection{Comparisons}
-\bi
-    \item{from cost-efficient sampling for performance prediction of configurable systems}
-\ei
+
 \subsection{Results}
+
+
 \section{Fast Searcher: GALE}
 \subsection{Approach}
-\subsection{Comparisons}
+\begin{figure}[!b]
+\small
+\begin{tabular}{|p{.95\linewidth}|}\hline
+GALE initially builds a population of points by selecting decisions at random. It then {\em clusters} those decisions into neighborhoods as follows:
+\begin{enumerate}
+\item Find two distant points in that population; call them the {\em east} and {\em west} poles. 
+\item Draw an axis of length $c$ between the poles. 
+\item Let each point be at distance $a,b$ to the {\em east,west} poles.  Using the cosine rule, project each point onto the  axis  at $x=(a^2 + c^2 - b^2)/(2c)$.  
+\item Using the median $x$ value, divide the population.
+\item For each half that is larger than $\sqrt{N}$ of the original population, go to step 1.
+\end{enumerate}
+
+Note that the above requires a distance measure between sets of decisions: GALE uses the standard case-based reasoning measure defined by Aha et al.~\cite{aha91}. Note also that GALE implements step1 via  the FASTMAP~\cite{Faloutsos1995} linear-time
+heuristic:
+\begin{itemize}
+\item Pick any point at random; 
+\item Let {\em east} be the point furthest from that point; 
+\item Let {\em west} be the point furthest from {\em east}.
+\end{itemize}
+
+These final sub-divisions found by this process are the {\em neighborhoods} that GALE will {\em perturb} as follows:
+\begin{itemize}
+\item Find the objective scores of the {\em east,west} poles in each neighborhood.
+\item Using the continuous domination predicate of \fig{moea}, find  the {\em better} pole. 
+\item Perturb all points in that neighborhood by pushing them towards the better pole, by a distance  $c/2$ (recall that  $c$ is the distance between the poles).
+\item Let generation $i+1$ be the combination of all pushed points from all neighborhoods.
+\end{itemize}
+
+From a formal perspective, GALE is an active learner~\cite{Dasgupta2005} that builds a piecewise linear approximation to the Pareto frontier~\cite{Zuluaga:13}.  For each piece, it then pushes the neighborhood up the local gradient.  This  approximation is built in the reduced dimensional space found the FASTMAP  Nystr\"om approximation to the first component of PCA~\cite{platt05}.
+\\\hline
+\end{tabular}
+\caption{Inside GALE}\label{fig:gale}
+\end{figure}
+GALE combines (a) the neighborhood perturbation (described above)  with (b)~the MOEA algorithm of \fig{moea}.  The algorithm reflects over a {\em population} of points, each of which contains {\em decisions} (some inputs to the CDA model).  It then searches for the input decisions that lead to best outcomes.  For example:
+\begin{itemize}
+\item if we adjust the inputs to model (say) high tailwind conditions\ldots
+\item \ldots then GALE can report the best monitoring policies for the pilot of the cockpit instrumentation.
+\end{itemize}
+
+\fig{gale} lists the procedure by which GALE clusters the data into neighborhoods, then perturbs each neighborhood.  In terms of monitoring for brittleness, the key point of GALE is that this process continues until the perturbations stop having any new effect (i.e. they stop generating better objective scores). That is, all GALE solutions are guaranteed not to be brittle.
+
+
+In terms of reducing runtime, the key feature of GALE is that unlike traditional MOEA methods such as NSGA-II~\cite{deb00afast}, GALE  does not automatically generate objective scores for all $N$ decisions.  Instead, as it recursively clusters the data in two (using steps 1,2,3,4,5 in \fig{gale}), GALE only computes the objective scores for the two most distant points in each division.  This means that this binary division of the data terminates after a comparison of just $log_2(N)$ evaluated individuals. This is much less than the $2N$ comparisons required by  traditional methods like NSGA-II.
+
+In practice, this makes GALE run much faster than traditional optimization tools.  Standard MOEA algorithms such as NSGA-II require 3000 to 5000 evaluations to explore the CDA model. GALE, on the other hand, performs the same task using 25 to 50 evaluations~\cite{krallphd}. 
+
+GALE's faster runtimes have  tremendous practical implications:
+\bi
+\item When checking for the stability of the conclusions reached from a randomizing
+algorithm  such as GALE or NSGA-II, it is important to check that the conclusions hold in multiple repeats (say, 20 repeats). 
+\item This number of repeats may practical for GALE but  highly impractical for standard optimization tools.
+\item For example, twenty repeats of CDA takes 1.5 and 100 hours for GALE and NSGA-II, respectively~\cite{krallphd}.
+\ei
 \subsection{Results}
 
 
