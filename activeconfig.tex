@@ -175,32 +175,25 @@ where, L is a loss function for penalizing errors in prediction. By formulating 
     
 \ei
 
-\begin{table*}[!h]
- 
- \begin{tabular}{c c c c c c} 
-
- 
- \hline
- Project & Domain & Lang. & LOC & Features & Configs \\  
- \hline
- Berkeley DB CE & Database & C & 219,811 & 18 & 2560  \\ 
- 
- Berkeley DB JE & Database & Java & 42,596 & 32 & 400 \\
-
- Apache & Web Server & C & 230,277 & 9 & 192 \\
-
- SQLite & Database & C & 312,625 & 39 & 3,932,160 \\
- 
- LLVM & Compiler & C++ & 47,549 & 11 & 1024 \\ 
-
- x264 & Video Enc. & C & 45,743 & 16 & 1152 \\ 
-
+ \begin{figure}[!t]
+\scriptsize
+\begin{tabular}{llllll}
+  \hline
+Project & Domain & Lang. & LOC & Features & Config\\\hline
+BDBC: Berkeley DB   & Database & C & 219,811 & 18 & 2560\\
+BDBJ: Berkeley DB   & Database & Java & 42,596 & 32  & 400\\
+Apache & Web Server & C & 230,277 & 9 & 192\\
+SQLite & Database & C & 312,625 & 39 & 3,932,160\\
+LLVM & Compiler & C++ & 47,549 & 11 & 1024\\
+x264 & Video Enc. & C& 45,743 & 16 & 1152\\\hline
 \end{tabular}
- \caption{Overview of the programs used in the evaluations}
-\end{table*}
+ 
+\caption{Siegmund data.
+For SQLite, the data  contains 4,553 configurations for prediction modeling and 100 additional random configurations for prediction evaluation, see \cite{vapp}.}\label{fig:cpm}
+\end{figure}
 
 
- \begin{table*}[!h]
+ \begin{table}[!t]
  
 
  \begin{tabular}{c c } 
@@ -223,7 +216,7 @@ where, L is a loss function for penalizing errors in prediction. By formulating 
 \label{BenchMarkUsed} 
 \end{tabular}
 \caption{Overview of the benchmarks used in the evaluations}
-\end{table*}
+\end{table}
 \section{Sampling Technique: East-West Where}
 
 \subsection{Approach}
