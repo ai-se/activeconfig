@@ -175,55 +175,39 @@ where, L is a loss function for penalizing errors in prediction. By formulating 
     
 \ei
 
-\begin{table*}[!h]
+\subsection{Experimental Setup}
+
+To answer our research questions, we use data set from our previous work on detecting performance interactions~\cite{SKR+12}. It contains performance measurements of real-world configurable software systems. These systems were selected to cover a broad range of domains (databases, Web servers, video encoder, compiler), programming languages (C, C++, Java), and different sizes regarding number of features and configurations. Table~\ref{tab:subjectsystems} provides an overview of these systems.
  
- \begin{tabular}{c c c c c c} 
-
- 
- \hline
- Project & Domain & Lang. & LOC & Features & Configs \\  
- \hline
- Berkeley DB CE & Database & C & 219,811 & 18 & 2560  \\ 
- 
- Berkeley DB JE & Database & Java & 42,596 & 32 & 400 \\
-
- Apache & Web Server & C & 230,277 & 9 & 192 \\
-
- SQLite & Database & C & 312,625 & 39 & 3,932,160 \\
- 
- LLVM & Compiler & C++ & 47,549 & 11 & 1024 \\ 
-
- x264 & Video Enc. & C & 45,743 & 16 & 1152 \\ 
-
+ \begin{table}[!t]
+\scriptsize
+\begin{tabular}{llllll}
+  \hline
+Project & Domain & Lang. & LOC & Features & Config\\\hline
+BDBC: Berkeley DB   & Database & C & 219,811 & 18 & 2560\\
+BDBJ: Berkeley DB   & Database & Java & 42,596 & 32  & 400\\
+Apache & Web Server & C & 230,277 & 9 & 192\\
+SQLite & Database & C & 312,625 & 39 & 3,932,160\\
+LLVM & Compiler & C++ & 47,549 & 11 & 1024\\
+x264 & Video Enc. & C& 45,743 & 16 & 1152\\\hline
 \end{tabular}
- \caption{Overview of the programs used in the evaluations}
-\end{table*}
+ \label{tab:subjectsystems}
+\caption{Siegmund data.
+For SQLite, the data  contains 4,553 configurations for prediction modeling and 100 additional random configurations for prediction evaluation, see \cite{vapp}.}\label{fig:cpm}
+\end{table}
 
+In detail, we use the following systems in our experiments:
+\begin{compactitem}
+\item \textbf{Berkeley DB CE} is an embedded database system written in C. It is one of the most deployed databases in the world due to its low binary footprint and its configuration abilities. We used the benchmark provided by the vendor to measure response time.
+\item \textbf{Berkeley DB JE} is a complete re-development in Java with full SQL support. Similarly, we used a benchmark provided by the vendor measuring response time.
+\item \textbf{Apache} is a prominent open-source Web server that comes with various configuration options. To measure performance, we used the tools autobench and httperf to generate load on the Web server. We increased the load until the server could not handle any further requests and marked the maximum load as the performance value.
+\item \textbf{SQLite} is an embedded database system deployed over several millions of devices. It supports a vast number of configuration options in terms of compiler flags. As benchmark, we used the benchmark provided by the vendor and measured the response time.
+\item \textbf{LLVM} is a compiler infrastructure written in C++. It provides configuration options to tailor the compilation process. As benchmark, we measured the time to compile LLVM's test suite.
+\item \textbf{x264} is a video encoder in C that provides configuration options to adjust output quality of encoded video files. As a benchmark, we encoded the Sintel trailer (735\,\%MB) from avi to the xH.264 codec and measured encoding time.
+\end{compactitem}
 
- \begin{table*}[!h]
- 
+For all systems, except for SQLite, we obtained the whole population data (i.e., all valid configurations). For SQLite, we measured all configurations corresponding to one-way and two-way interactions and additionally sampled 100 random configurations.
 
- \begin{tabular}{c c } 
- \hline
- Project & Benchmark/Job Used  \\  
- \hline
- Berkeley DB CE & Vendor Provided  \\ 
- 
- Berkeley DB JE & Vendor Provided \\
-
- Apache & autobench + httperf \\
-
- SQLite & Vendor Provided \\
- 
- LLVM & opt-tools \\ 
-
- x264 & Sintel(735MB) \\
- 
-
-\label{BenchMarkUsed} 
-\end{tabular}
-\caption{Overview of the benchmarks used in the evaluations}
-\end{table*}
 \section{Sampling Technique: East-West Where}
 
 \subsection{Approach}
@@ -357,7 +341,10 @@ algorithm  such as GALE or NSGA-II, it is important to check that the conclusion
 \ei
 \subsection{Results}
 
-
+\begin{figure}[!t]
+\includegraphics[width=0.9\linewidth]{Figures/optimizer_result.eps}
+\caption{Solutions found by GALE}\label{fig:performance_graph}
+\end{figure}
 
 
  
