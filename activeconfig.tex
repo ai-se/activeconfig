@@ -155,18 +155,15 @@ Search-based Software Engineering,Sampling, Machine Learning.
     \item{Performance Function $f$ maps the elements of the configuration space to $\mathbb{R}$, which is a surrogate to the performance of a system.   }
  \ei
  
-Our goal is to build performance models that can be build using the few training samples, which then can be used to find optimal configuration of the system (minimize run time of a job). Our work was motivated by the fact that in real world scenario, cost of acquiring optimal configuration is expensive and time consuming \cite{weiss2008maximizing}. To further emphasize that it is expensive to collect complete configuration space (exhaustive search), let us look at an example. Assume that there is a software system with 9 features (configuration space = $2^9$) and a job requires at an average 20 minutes to execute. The total time required to find an optimal configuration is 4300 minutes ($2^9 \times 20$). This problem can be solved if the user can build a performance model with fewer samples ($\ll 2^n$). From a learner perspective, our goal can be described as a sampling technique, which can determine "good sample" for a given system. A "good sample" can be described as a sample if it is small enough to decrease the measurement effort and large enough to increase the prediction accuracy of the model. 
- 
-\bi
-    \item{Challenges}
-    \item{Solutions Proposed}
-    \item{Research Questions}
+Our goal is to build performance models that can be build using the few training samples, which then can be used to find optimal configuration of the system (minimize run time of a job). Our work was motivated by the fact that in real world scenario, cost of acquiring optimal configuration is expensive and time consuming \cite{weiss2008maximizing}. To further emphasize that it is expensive to collect complete configuration space (exhaustive search), let us look at an example. Assume that there is a software system with 9 features (configuration space = $2^9$) and a job requires at an average 20 minutes to execute. The total time required to find an optimal configuration is 4300 minutes ($2^9 \times 20$). This problem can be solved if the user can build a performance model with fewer samples ($\ll 2^n$). From a learner perspective, our goal can be described as a sampling technique, which can determine "good sample" for a given system. A "good sample" can be described as a sample if it is small enough to decrease the measurement effort and large enough to increase the prediction accuracy of the model. We propose a new sampling techniques, which uses a clustering technique and use point/s from clusters to build the sample. We conduct experiments on six real-world configurable system can compare the sampling strategies in terms of total time saved by the sampling techniques wrt. to the baseline strategy ($2/3$ of the sample size).
+
+The backbone of the approaches presented in the paper is cluster the data and select members from the cluster in such as way that those points are representative of the whole cluster. We tried to validate the sampling techniques by answering the following questions:
         \bi
-            \item{Can we achieve a reasonable prediction accuracy based on a small training set which is feasible?}
-            \item{Does less data mean more variance ?}
-            \item{Can we use fast learner to find the configuration with lowest performance?}
+            \item{RQ1: Can a reasonable prediction accuracy be achieved based on a small training set?}
+            \item{RQ2: Does less data used in building the models lead to large variance in the predicted values?}
+            \item{RQ3: Can evolutionary algorithms be used to find the optimal configurations using the model generated?}
         \ei
-\ei
+ 
 \section{Bird's Eye Overview}
 \bi
     \item{Sampling}
