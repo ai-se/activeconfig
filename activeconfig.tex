@@ -139,11 +139,33 @@ Search-based Software Engineering,Sampling, Machine Learning.
  
  
 \section{Introduction}
+ The complexity involving configuring software systems have grown over the recent years \cite{berger2013study}. A configurable system provides configuration options to customize a software system to a given set of requirements. A configuration option is related to a certain feature of the software system and state of the configuration system defines whether the feature is  active in the system. For e.g. The state of the configuration option ITracing of  Berkeley DB Java controls whether tracing is turned on/off (citation). Not all combinations of features can be used(generally) and there are constraints, which needs to be followed while configuring the system. These constraints are defined by a \textit{Feature Model}\cite{kang1990feature} or \textit{Decision Model}\cite{schmid2011comparison}. 
+ 
+ In order for the users to decide on an optimal configuration for a particular job/functionality, they need an understanding of the dependencies between various configuration or perform an exhaustive search of all the configuration options. Exhaustive search is very time consuming given that n number of configuration will result in $2^n$ number of configurations. To reduce the time required to find an optimal configuration, the key challenge is to build a model of the software system using only a small number of sample configuration, in such a way that it can accurately predict the performance of the software system.
+ 
+ Before we proceed to address this challenge we formalize various definitions that would be used throughout the paper:
+ \bi
+    \item{n is the number of features of a system}
+    \item{Configuration of a system with n features can be formalized a Boolean function:\\
+    \center
+    $ f: \left\{{0,1}\right\}^n \to \mathbb{R}$
+    }
+    
+    \item{Configuration Space is the set of all the feasible solution. For eg. given n features, the number of possible configuration is $2^n$ (assuming all the configuration is valid) }
+    \item{Performance Function $f$ maps the elements of the configuration space to $\mathbb{R}$, which is a surrogate to the performance of a system.   }
+ \ei
+ 
+Our goal is to build performance models that can be build using the few training samples, which then can be used to find optimal configuration of the system (minimize run time of a job). Our work was motivated by the fact that in real world scenario, cost of acquiring optimal configuration is expensive and time consuming \cite{weiss2008maximizing}. To further emphasize that it is expensive to collect complete configuration space (exhaustive search), let us look at an example. Assume that there is a software system with 9 features (configuration space = $2^9$) and a job requires at an average 20 minutes to execute. The total time required to find an optimal configuration is 4300 minutes ($2^9 \times 20$). This problem can be solved if the user can build a performance model with fewer samples ($\ll 2^n$). From a learner perspective, our goal can be described as a sampling technique, which can determine "good sample" for a given system. A "good sample" can be described as a sample if it is small enough to decrease the measurement effort and large enough to increase the prediction accuracy of the model. 
  
 \bi
     \item{Challenges}
     \item{Solutions Proposed}
     \item{Research Questions}
+        \bi
+            \item{Can we achieve a reasonable prediction accuracy based on a small training set which is feasible?}
+            \item{Does less data mean more variance ?}
+            \item{Can we use fast learner to find the configuration with lowest performance?}
+        \ei
 \ei
 \section{Bird's Eye Overview}
 \bi
@@ -175,6 +197,8 @@ where, L is a loss function for penalizing errors in prediction. By formulating 
     It should be noted that though the number of possible configurations (C) is equal to $2^N$(binary decision variables), in reality valid configurations(\^{C}) is smaller than C (|C| << |\^C|). 
     
 \ei
+
+
 
 \subsection{Experimental Setup}
 
@@ -215,7 +239,7 @@ For all systems, except for SQLite, we obtained the whole population data (i.e.,
 \bi
     \item{WHERE}
 \ei
-\subsection{WHERE Learning}\label{sec:spectral}
+\subsubsection{WHERE Learning}\label{sec:spectral}
 This section describes how a large space of candidate solutions (configurations) into many smaller regions.
 
 WHERE is a {\em spectral learner}~\cite{kamvar2003spectral}; i.e. given solutions with $d$ possible decisions(features), it re-expresses those $d$ decision variables in terms of the $e$ eigenvectors of that data.
@@ -234,6 +258,9 @@ The slowest part of this search is the sort used to find the median $x$ value (l
 FastMap returns the data split into two equal halves.
 WHERE recurses on the two halves, terminating when some split has less than $\sqrt{N}$ items.
 
+\subsubsection{WHERE East West}
+
+\subsubsection{WHERE Exemplar}
 
 \begin{figure}[!t] 
 \begin{minipage}{3.2in}
