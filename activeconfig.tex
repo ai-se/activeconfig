@@ -165,34 +165,48 @@ The backbone of the approaches presented in the paper is cluster the data and se
         \ei
  
 \section{Bird's Eye Overview}
-\bi
-    \item{Sampling}
-    Figure ~\ref{fig:GeneralProcess} illustrates the general process of performance prediction using sampling. It starts with an initial sample of measured configurations, which are used to build the prediction model. A good initial sample significantly reduces the effort involved with training sample collection. The state of the art approaches involves progressive and projective sampling techniques \cite{sarkar2015cost} and Fourier Transforms \cite{zhang2015performance}. However these approaches assumes the user to know a lot of about the system, which is not a fair assumption. The problem with iterative techniques lies in the step size, which is an engineering decision. In our approach, we use clustering, which uses the first principle component, to determine clusters rather than relying to random sampling methods. Once the clusters are obtained, 'interesting' representative/s from each cluster  is/are collected. Then, we build prediction models using a statistical learning technique called Classification and Regression Tree (CART), which has been demonstrated to be fast and accurate for performance prediction of configurable system \cite{guo2013variability}.
+
+
+    \textbf{Sampling: } Figure ~\ref{fig:GeneralProcess} illustrates the general process of performance prediction using sampling. It starts with an initial sample of measured configurations, which are used to build the prediction model. A good initial sample significantly reduces the effort involved with training sample collection. The state of the art approaches involves progressive and projective sampling techniques \cite{sarkar2015cost} and Fourier Transforms \cite{zhang2015performance}. However these approaches assumes the user to know a lot of about the system, which is not a fair assumption. The problem with iterative techniques lies in the step size, which is an engineering decision. In our approach, we use clustering, which uses the first principle component, to determine clusters rather than relying to random sampling methods. Once the clusters are obtained, 'interesting' representative/s from each cluster  is/are collected. Then, we build prediction models using a statistical learning technique called Classification and Regression Tree (CART), which has been demonstrated to be fast and accurate for performance prediction of configurable system \cite{guo2013variability}.
     
-In our work, we use the time saved by the proposed sampling when compared to the baseline method ($2/3$ of configuration space) is presented along with the prediction accuracy (similar to \cite{guo2013variability, siegmund2012predicting, westermann2012automated}). We also use the cost model introduced in \cite{sarkar2015cost}, that takes into account measurement effort along with prediction accuracy. 
+In our work, we use the time saved by the proposed sampling when compared to the baseline method ($2/3$ of configuration space) is presented along with the prediction accuracy (similar to ~\cite{guo2013variability}, \cite{siegmund2012predicting}, \cite{westermann2012automated}). We also use the cost model introduced in \cite{sarkar2015cost}, that takes into account measurement effort along with prediction accuracy. 
     \begin{figure}[!t]
 \includegraphics[width=0.9\linewidth]{Figures/GeneralProcess.png}
 \caption{ General Process of Performance Modelling }\label{fig:GeneralProcess}
 \end{figure}
-    \item{Fast Learners}
+
+
+    \textbf{Search Algorithms: }Linear time algorithms works well, when the problem scenario is same as the scenarios where the algorithm was developed. But in the real work scenario, the scenarios presented are slightly different from what the algorithms were developed in. For example, one particular technique is available to calculate the minimum-cost allocation of resources for a problem where both the cost function and constraints are linear. The method is fast and reliable. And it is almost applied inappropriately  in real-world settings where the cost function and constraints are almost always nonlinear. In essence, anyone using this method runs the risk of generating the right answer to a problem that does not exist \cite{michalewicz2013solve}. 
+    Another challenge faced by the deterministic algorithms lie in the fact the each new solution
+relies on a single solution as the basis for future exploration with each iteration. They either process complete solutions in their entirety, or they construct the final solution from smaller building blocks. Greedy algorithms,
+Dynamic programming, Branch and bound methods etc. 
+
+Evolutionary algorithms abandons this idea totally and considers multiple solutions at the same time. Evolutionary algorithm starts with an \textit{initial population} (randomly generated, based on some constraints). Since the solutions are drawn from a uniform distribution, typically, this diversity is desirable, although in some cases we might want to initialize all of the available parents to some best-known solution and proceed from there. The chosen \textit{evaluation function} must be capable of differentiating
+between two individuals, i.e., it has to be able to rank one solution ahead
+of another. Those solutions that are better, as determined by the evaluation
+function, are favored to become parents for the next generation of offspring. 
+\textit{Reproduction} refers to  new solutions being generated probabilistically in the neighborhood of old solutions. This process continues till the a \"good enough\" solution is achieved or a hard limit on iterations are reached. This criteria is called the \textit{stopping criteria}.
     
-\ei
+    There has been extensive research in evolutionary algorithms in the recent decades. For example, here is a list of search algorithms used widely in research: \textit{simulated annealing}\cite{bell2013limited, menzies2007business}; various genetic algorithms\cite{goldberg1979complexity} agumented by techniques such as \textit{differential evolution} \cite{storn1997differential}, \textit{tabu search and scatter search}\cite{nebro2008abyss, molina2007sspmo, glover1986general, beausoleil2006moss}; \textit{particle swarm optimization}\cite{pan2008particle}; numerous decomposition approaches that use heuristics to decompose the total space into small problems, then apply a response surface methods\cite{krall2014gale, zuluaga2013active}. GALE, short for Geometric Active Learning Evolution,
+combines spectral learning and response surface methods
+to reduce the number of evaluations needed to assess a set
+of candidate solutions. The algorithm is an active learner;
+i.e. instead of evaluating all instances, it isolates and explores
+only the most informative ones. We explain the working of GALE in section 5.
+
 
 \section{Problem Formulation}
 
-\bi
-    \item{Tables}
-    \item{Feature Models}
-    Feature Model(FM) defines all the N features and all the valid configurations C of a software system. Figure \textcolor{red}{(add figure)} shows the feature model of Berkeley DB(C Version) using the notations defined in ~\cite{kang1990feature}, ~\cite{guo2012consistency}. Feature models are used to check the validity of new mutated solutions generated by the learners (eg. GALE).
+
+    Configurations of a software system may not be independent, such that we cannot measure arbitrary configurations. Researchers have explored the presence of complex domain dependencies. With constraint between features, in theory there can be multiple minimal configuration (for example, in the presence of mutually exclusive features). This is called as \textit{Feature Models(FM)}. FM defines all the N features and all the valid configurations C of a software system. Figure ~\ref{fig:bdbc}  shows the feature model of Berkeley DB(C Version) using the notations defined in ~\cite{kang1990feature}, ~\cite{guo2012consistency}. Feature models are used to check the validity of new mutated solutions generated by the learners (eg. GALE).
     
 \begin{figure}[!t]
 \includegraphics[width=0.9\linewidth]{Figures/BDBC.eps}
 \caption{ Berkeley database feature model   (``C'' version). }\label{fig:bdbc}
 \end{figure}
     
-    \item{Data Definition}
     The features on the software system is represented as a set of binary decision variables. A feature, when turned on, corresponds to 1, and 0 otherwise. All the features of a system is represented a vector F = $<f_1, f_2, ...,f_N>$, where N is the number of features of the software system. The dependent variable corresponding to a configuration(F) is a performance score, P(F), which the performance measurement.
-    \item{Learning Problem}
+
     Performance of system can be modelled using the configuration as the independent variable and the performance metric as a dependent variable. Modelling a software system is to find a hypothesis function(h), such that h(F) predicts P(F) accurately. This can be represented as:\\
 \begin{center}
     $ h: C \mapsto \rm I\!R$ s.t. $L(h(F), P(F))$ is minimized\\
@@ -200,12 +214,7 @@ In our work, we use the time saved by the proposed sampling when compared to the
 
 where, L is a loss function for penalizing errors in prediction. By formulating the performance prediction using the method described, we can transform the problem into a learning problem. 
     It should be noted that though the number of possible configurations (C) is equal to $2^N$(binary decision variables), in reality valid configurations(\^{C}) is smaller than C (|C| << |\^C|). 
-    
-\ei
 
-
-
-\subsection{Experimental Setup}
 
 To answer our research questions, we use data set from our previous work on detecting performance interactions~\cite{SKR+12}. It contains performance measurements of real-world configurable software systems. These systems were selected to cover a broad range of domains (databases, Web servers, video encoder, compiler), programming languages (C, C++, Java), and different sizes regarding number of features and configurations. Table~\ref{tab:subjectsystems} provides an overview of these systems.
  
@@ -254,18 +263,11 @@ A widely-used spectral learner is a principal components analysis (PCA). For exa
 
 WHERE~\cite{me12d} is a linear time variant of PDDP  that uses FastMap~\cite{Faloutsos1995} to quickly find the first component.
 Platt~\cite{platt05} shows that FastMap is a  Nystr\"om algorithm that finds approximations to eigenvectors.
-As shown in \fig{fastmapCode} on lines 3,4,5, FastMap  projects all data onto a line connecting two distant points\footnote{
+As shown in \fig{fastmapCode} on lines 3,4,5, FastMap  projects all data onto a line connecting two distant points(poles)\footnote{
 To define distance, WHERE uses the standard Euclidean distance method proposed by Aha et al.~\cite{aha91}; that is: $dist(x,y)= \sqrt{\sum_{i\in d} (x_i - y_i)^2}/\sqrt{ \left\vert{d}\right\vert }$ where distance is computed on the independent decisions $d$ of each candidate solution; all $d_i$ values are normalized min..max, 0..1; and the calculated distance normalized by dividing by the maximum distance across the $d$ decisions.}. 
 FastMap finds these two distant points in near-linear time. 
 The search for the poles needs only $O(N)$ distance comparisons (lines 19 to 24).
 The slowest part of this search is the sort used to find the median $x$ value (line 10) but even that can be reduced to  asymptotically optimal linear-time via the standard median-selection algorithm~\cite{hoare61}.
-
-FastMap returns the data split into two equal halves.
-WHERE recurses on the two halves, terminating when some split has less than $\sqrt{N}$ items.
-
-\subsubsection{WHERE East West}
-
-\subsubsection{WHERE Exemplar}
 
 \begin{figure}[!t] 
 \begin{minipage}{3.2in}
@@ -304,7 +306,22 @@ def split(data): # Split at median
 \end{minipage}
 \end{figure}
 
-We build the predictive model using the popular machine learning technique called Classification and Regression Tree(CART), which has been extensively used in the literature and has been observed to be fast and accurate~\cite{guo2013variability}.
+FastMap returns the data split into two equal halves.
+WHERE recurses on the two halves, terminating when some split has less than $\sqrt{N}$ items. To summarize, the WHERE module of the technique takes data points as inputs and returns log(N) number of clusters.
+
+Next two subsections describes various technique of selecting points in such a way that the point select is an representative of the cluster
+\subsubsection{WHERE East West}
+This technique is a variant to the WHERE spectral learner discussed above. WHERE splits the data into smaller clusters, each of which is characterized by two distant points (poles). 
+It is assumed  that the technique only needs to evaluate
+the most informative subset consisting of the poles used to
+recursively divide the data. The recursive binary division of the solutions(M), and that this technique uses two solutions in each cluster, which means the technique uses only $2log_2(M)$.
+
+\subsubsection{WHERE Exemplar}
+This technique as the above technique is also an variant of the WHERE spectral learner. The technique assumes the best point (exemplar) as the representative of each cluster. 
+
+
+
+We use the points sampled, using the technique described above, to build the predictive model using the popular machine learning technique called Classification and Regression Tree(CART), which has been extensively used in the literature and has been observed to be fast and accurate~\cite{guo2013variability}.
 
 \subsection{Results}
 \begin{figure}[!t]
