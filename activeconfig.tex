@@ -167,7 +167,15 @@ The backbone of the approaches presented in the paper is cluster the data and se
 \section{Bird's Eye Overview}
 \bi
     \item{Sampling}
+    Figure ~\ref{fig:GeneralProcess} illustrates the general process of performance prediction using sampling. It starts with an initial sample of measured configurations, which are used to build the prediction model. A good initial sample significantly reduces the effort involved with training sample collection. The state of the art approaches involves progressive and projective sampling techniques \cite{sarkar2015cost} and Fourier Transforms \cite{zhang2015performance}. However these approaches assumes the user to know a lot of about the system, which is not a fair assumption. The problem with iterative techniques lies in the step size, which is an engineering decision. In our approach, we use clustering, which uses the first principle component, to determine clusters rather than relying to random sampling methods. Once the clusters are obtained, 'interesting' representative/s from each cluster  is/are collected. Then, we build prediction models using a statistical learning technique called Classification and Regression Tree (CART), which has been demonstrated to be fast and accurate for performance prediction of configurable system \cite{guo2013variability}.
+    
+In our work, we use the time saved by the proposed sampling when compared to the baseline method ($2/3$ of configuration space) is presented along with the prediction accuracy (similar to \cite{guo2013variability, siegmund2012predicting, westermann2012automated}). We also use the cost model introduced in \cite{sarkar2015cost}, that takes into account measurement effort along with prediction accuracy. 
+    \begin{figure}[!t]
+\includegraphics[width=0.9\linewidth]{Figures/GeneralProcess.png}
+\caption{ General Process of Performance Modelling }\label{fig:GeneralProcess}
+\end{figure}
     \item{Fast Learners}
+    
 \ei
 
 \section{Problem Formulation}
