@@ -5,10 +5,12 @@
 \usepackage{graphics} 
 \usepackage{cite}
 \usepackage{paralist}
+\usepackage{siunitx}
 \usepackage{rotating}
 \usepackage{eqparbox}
 \usepackage{graphics}
 \usepackage{colortbl} 
+\usepackage{multirow}
 \usepackage{times}
 \usepackage{balance}
 \usepackage{picture}
@@ -147,8 +149,9 @@ Search-based Software Engineering,Sampling, Machine Learning.
  \bi
     \item{n is the number of features of a system}
     \item{Configuration of a system with n features can be formalized a Boolean function:\\
-    \center
+\begin{center}
     $ f: \left\{{0,1}\right\}^n \to \mathbb{R}$
+\end{center}
     }
     
     \item{Configuration Space is the set of all the feasible solution. For eg. given n features, the number of possible configuration is $2^n$ (assuming all the configuration is valid) }
@@ -159,7 +162,7 @@ Our goal is to build performance models that can be build using the few training
 
 The backbone of the approaches presented in the paper is cluster the data and select members from the cluster in such as way that those points are representative of the whole cluster. We tried to validate the sampling techniques by answering the following questions:
         \bi
-            \item{RQ1: Can a reasonable prediction accuracy be achieved based on a small training set?}
+            \item{RQ1: Can a reasonable prediction accuracy be achieved based on subset of a training set?}
             \item{RQ2: Does less data used in building the models lead to large variance in the predicted values?}
             \item{RQ3: Can evolutionary algorithms be used to find the optimal configurations using the model generated?}
         \ei
@@ -244,20 +247,28 @@ In detail, we use the following systems in our experiments:
 \item \textbf{LLVM} is a compiler infrastructure written in C++. It provides configuration options to tailor the compilation process. As benchmark, we measured the time to compile LLVM's test suite.
 \item \textbf{x264} is a video encoder in C that provides configuration options to adjust output quality of encoded video files. As a benchmark, we encoded the Sintel trailer (735\,\%MB) from avi to the xH.264 codec and measured encoding time.
 \end{compactitem}
+The data in these
+data sets have a continuous class (run time of the compiled system)
+so the performance of a quality predictor can be measured in terms
+of difference between the predicted runtime $p$ of test case items
+and their actual runtimes $a$ using 
+
+\begin{equation}\label{eq:1}
+MRE = \frac{abs(s-a)}{a} \times 100
+\end{equation}
+
 
 For all systems, except for SQLite, we obtained the whole population data (i.e., all valid configurations). For SQLite, we measured all configurations corresponding to one-way and two-way interactions and additionally sampled 100 random configurations.
 
 \section{Sampling Technique: East-West Where}
 \begin{figure}[!t]
 \includegraphics[width=0.9\linewidth]{Figures/SamplingProcess.png}
-\caption{Description of Sampling Process}\label{fig:Sampling Process}
+\caption{Description of Sampling Process. Part 1 describes the training process where as, part 2 describes the testing process.}\label{fig:Sampling Process}
 \end{figure}
 \subsection{Approach}
-\bi
-    \item{WHERE}
-\ei
+This section describes how a large space of candidate solutions (configurations) is clustered into many smaller regions.
 \subsubsection{WHERE Learning}\label{sec:spectral}
-This section describes how a large space of candidate solutions (configurations) into many smaller regions.
+
 
 WHERE is a {\em spectral learner}~\cite{kamvar2003spectral}; i.e. given solutions with $d$ possible decisions(features), it re-expresses those $d$ decision variables in terms of the $e$ eigenvectors of that data.
 This speeds up the reasoning since we then only need to explore the $e\ll d$   eigenvectors.
@@ -313,13 +324,13 @@ FastMap returns the data split into two equal halves.
 WHERE recurses on the two halves, terminating when some split has less than $\sqrt{N}$ items. To summarize, the WHERE module of the technique takes data points as inputs and returns log(N) number of clusters.
 
 Next two subsections describes various technique of selecting points in such a way that the point select is an representative of the cluster
-\subsubsection{WHERE East West}
+\subsubsection{WHERE East West}\label{where_east_west}
 This technique is a variant to the WHERE spectral learner discussed above. WHERE splits the data into smaller clusters, each of which is characterized by two distant points (poles). 
 It is assumed  that the technique only needs to evaluate
 the most informative subset consisting of the poles used to
 recursively divide the data. The recursive binary division of the solutions(M), and that this technique uses two solutions in each cluster, which means the technique uses only $2log_2(M)$.
 
-\subsubsection{WHERE Exemplar}
+\subsubsection{WHERE Exemplar}\label{where_exemplar}
 This technique as the above technique is also an variant of the WHERE spectral learner. The technique assumes the best point (exemplar) as the representative of each cluster. 
 
 
@@ -327,14 +338,70 @@ This technique as the above technique is also an variant of the WHERE spectral l
 We use the points sampled, using the technique described above, to build the predictive model using the popular machine learning technique called Classification and Regression Tree(CART), which has been extensively used in the literature and has been observed to be fast and accurate~\cite{guo2013variability}.
 
 \subsection{Results}
+By conducting experiments on six real-world configurable systems, we aim at answering the following research questions
+
+\textit{A. Can a reasonable prediction accuracy be achieved based on subset of a training set?}\\
+\\
+Figure ~\ref{fig:sampling_accuracy} shows how the variation of the  prediction accuracy wrt. to the training set. The x-axis of the graph represents the percentage of the training set used to train the learner (CART) and the y-axis represents the MRE as defined in \ref{eq:1}. The technique being compared are \textit{WHERE east-west}, \textit{WHERE exemplar} and \textit{baseline} (use $2/3$ of the dataset to train CART) In our experiments, a low MRE is an indicator of good sampling technique. Our assumption based on the machine learning literature(ref needed) is as the size of the training set increases the accuracy of the predictor must increase. But the point that we are trying to make with this experimetn is to show that the quantity of the data doesn't matter but how much information is provided by the examples. In sub-graph 1 (Apache), the WHERE east-west performs as well as the baseline technique, where as WHERE exemplar perform worse than the other techniques for most of the training set sizes. WHERE-exemplar only works well when the 90\% of the data set is used to train CART. Sub-graph 3 shows an very interesting property as the number of training samples available for training increases the accuracy of the predictor decreases (which is counter-intuitive). The results of the WHERE exemplar gives us enough evidence to believe that the solution with the best performance score is not a good representative of the cluster. On the other hand, the poles of a cluster is a indeed a good representative of the cluster.\\~\\
 
 
-Figure ~\ref{fig:sampling_accuracy} shows how the prediction accuracy
+
+
 \begin{figure}[!t]
 \includegraphics[width=0.9\linewidth]{Figures/SamplingAccuracy.eps}
 \caption{Behavior of accuracy of WHERE-exemplar, baseline, WHERE-east-west wrt. to different training set sizes }\label{fig:sampling_accuracy}
 \end{figure}
 
+
+
+
+
+
+\begin{table*}
+\centering
+\sisetup{round-mode=places}
+
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|ll|}
+\hline
+\multirow{2}{*}{Techniques}           & \multicolumn{2}{c|}{0.5}                               & \multicolumn{2}{c|}{0.6}                               & \multicolumn{2}{c|}{0.7}                               & \multicolumn{2}{c|}{0.8}                               & \multicolumn{2}{c|}{0.9}                                         & Data Sets                                 \\ \cline{2-11}
+                                      & \multicolumn{1}{c|}{Median} & \multicolumn{1}{c|}{IQR} & \multicolumn{1}{c|}{Median} & \multicolumn{1}{c|}{IQR} & \multicolumn{1}{c|}{Median} & \multicolumn{1}{c|}{IQR} & \multicolumn{1}{c|}{Median} & \multicolumn{1}{c|}{IQR} & \multicolumn{1}{c|}{Median} & \multicolumn{1}{c|}{IQR}            &                                           \\ \hline
+\multicolumn{1}{|l|}{Baseline}        & 6.10                & 0.10             & 6.29                & 0.70             & 5.36                & 0.07             & 4.91                & 0.09             & 3.99                & \multicolumn{1}{l|}{0}             & \multirow{3}{*}{Apache}                   \\
+\multicolumn{1}{|l|}{WHERE Exemplar}  & 22.06               & 1.79             & 20.23               & 2.35             & 20.26               & 1.66             & 21.81               & 2.94             & 11.05               & \multicolumn{1}{l|}{\cellcolor[HTML]{9B9B9B}6.74}  &                                           \\
+\multicolumn{1}{|l|}{WHERE east west} & 8.69                & 1.33             & 8.31                & 1.30             & 9.03                & 1.11              & 7.38                & 1.26             & 8.52                & \multicolumn{1}{l|}{2.93}  &                                           \\ \hline
+\multicolumn{1}{|l|}{Baseline}        & 0.43                & 0.23             & 0.03                & 0.16             & 0.36                & 0.56             & 0.76                & 0.96             & 1.17                & \multicolumn{1}{l|}{1.37}  & \multirow{3}{*}{Berkeley DB C}            \\
+\multicolumn{1}{|l|}{WHERE Exemplar}  & 5.21                & \cellcolor[HTML]{9B9B9B}7.09             & 7.49                & \cellcolor[HTML]{9B9B9B}6.50             & 11.10               & \cellcolor[HTML]{9B9B9B}6.57            & 8.04                 & \cellcolor[HTML]{9B9B9B}7.05             & 13.30               & \multicolumn{1}{l|}{\cellcolor[HTML]{9B9B9B}10.33} &                                           \\
+\multicolumn{1}{|l|}{WHERE east west} & 0.90                & 0.23             & 0.90                & 0.23             & 0.90                & 0.23             & 0.91                & 0.23             & 0.91                & \multicolumn{1}{l|}{0.23}  &                                           \\ \hline
+\multicolumn{1}{|l|}{Baseline}        & 2.19                & 0.12             & 2.14                & 0.16             & 2.73                & 0.04             & 2.43                & 0.02             & 3.33                & \multicolumn{1}{l|}{0.05}  & \multirow{3}{*}{Berkeley DB Java}         \\
+\multicolumn{1}{|l|}{WHERE Exemplar}  & 14.42               & 0.28             & 14.97               & 0.16             & 15.99               & 0.31             & 3.50                & 0.25             & 4.27                & \multicolumn{1}{l|}{0.53}  &                                           \\
+\multicolumn{1}{|l|}{WHERE east west} & 2.60                & 0.32             & 2.69                & 0.28             & 2.61                & 0.24             & 3.02                & 0.62             & 1.77               & \multicolumn{1}{l|}{0.60}  &                                           \\ \hline
+\multicolumn{1}{|l|}{Baseline}        & 1.53                & 0.01             & 1.61                & 0.02             & 1.74                & 0.02             & 1.60                & 0.04             & 1.40                 & \multicolumn{1}{l|}{0.32}  & \multirow{3}{*}{LLVM}                     \\
+\multicolumn{1}{|l|}{WHERE Exemplar}  & 3.04                & 1.14             & 2.30                & 0.34             & 2.08                & 0.38             & 2.73               & 0.57             & 2.39                & \multicolumn{1}{l|}{0.36}  &                                           \\
+\multicolumn{1}{|l|}{WHERE east west} & 2.44                & 0.32             & 2.05                & 0.33             & 2.11                & 0.31             & 1.98                 & 0.51             & 1.97                & \multicolumn{1}{l|}{0.63}  &                                           \\ \hline
+\multicolumn{1}{|l|}{Baseline}        & 4.53                & 0.02             & 4.53                & 0.02           & 4.53                & 0.02             & 4.53                & 0.02            & 4.53                & \multicolumn{1}{l|}{0.02}  & \multirow{3}{*}{SQL}                         \\
+\multicolumn{1}{|l|}{WHERE Exemplar}  & 7.27                & 0.44             & 7.72                & 0.41              & 7.94                & 0.39             & 8.11                & 0.49             & 8.34                & \multicolumn{1}{l|}{0.36}  &                                           \\
+\multicolumn{1}{|l|}{WHERE east west} & 6.30                 & 0.24             & 6.52                & 0.28             & 6.52                & 0.28             & 6.52                & 0.28           & 6.52                & \multicolumn{1}{l|}{0.28}  &                                           \\ \hline
+\multicolumn{1}{|l|}{Baseline}        & 0.09               & 0.09             & 0.09                & 0.09             & 0.07                & 0.07             & 0.05                & 0.05             & 0.06                & \multicolumn{1}{l|}{0.06}  & \multirow{3}{*}{X264} \\
+\multicolumn{1}{|l|}{WHERE Exemplar}  & 14.03               & \cellcolor[HTML]{9B9B9B}8.26              & 7.92                 & 1.96             & 10.37               & \cellcolor[HTML]{9B9B9B}3.81             & 9.50                & \cellcolor[HTML]{9B9B9B}3.62             & 10.84               & \multicolumn{1}{l|}{\cellcolor[HTML]{9B9B9B}9.72}  & \multicolumn{1}{c|}{}                      \\
+\multicolumn{1}{|l|}{WHERE east west} & 2.72                & 0.69             & 1.31                & 0.64              & 1.35                & 0.65             & 1.37                & 0.73             & 1.50                & \multicolumn{1}{l|}{0.85}  & \multicolumn{1}{c|}{}           \\\hline           
+
+\end{tabular}
+
+\caption{The raw scores from the experiment. Each row represents how different techniques(column 1) perform in a dataset(last column). Decimal point numbers on the top of the table represent the percentage of data used to build the CART. The highlighted cells represents cases, where the variable is greater than 3\%.}
+\label{variance_table}
+\end{table*}
+
+\textit{B. Does less data used in building the models lead to large variance in the predicted values?}\\
+
+We have shown with sufficient evidence that models can be trained using less data, while achieving the accuracy attained by using larger data sample. 
+The another aspect, which needs to be considered at this point is the variability that is introduced  when a smaller(filtered) dataset used to train CART. 
+Figure ~\ref{variance_table} shows the raw scores from the experiment. Each row represents how different techniques(column 1) perform in a dataset(last column). Decimal point numbers on the top of the table represent the percentage of data used to build the CART. The cells highlighted with grey are the cases where the variance is greater than 3\%. The data presented in the table is an evidence to the fact  that \textit{WHERE east-west} doesn't introduce a large variance($[0.23, 2.93]$) where as \textit{WHERE exemplar} is not useful as a sampling technique (this also validates the conclusions drawn in the previous section). 
+
+
+In Figure \ref{fig:performance_graph}, we show the amount of time saved by various sampling methods. The x-axis of the graph represent the percentage of data used to build the CART model. The y-axis shows the time saved by the various sampling methods. There are take away from the figure are:
+\bi
+    \item{The sampled population remains same even if the amount of training set increases. This shows that the method is scalable and only depends on the number of features in the dataset rather than the number of rows.}
+    \item{From the previous sections, we know that \textit{WHERE east west} achieves the 'almost' the same accuracy and variance is under control. This result actually shows that \textit{WHERE east west} saves time while preserving accuracy and variability.}
+\ei
 \begin{figure}[!t]
 \includegraphics[width=0.9\linewidth]{Figures/performance_graph.eps}
 \caption{Time saved by WHERE based techniques compared to the baseline techniques }\label{fig:performance_graph}
