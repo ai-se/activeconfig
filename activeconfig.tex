@@ -399,13 +399,15 @@ Figure ~\ref{variance_table} shows the raw scores from the experiment. Each row 
 
 In Figure \ref{fig:performance_graph}, we show the amount of time saved by various sampling methods. The x-axis of the graph represent the percentage of data used to build the CART model. The y-axis shows the time saved by the various sampling methods. There are take away from the figure are:
 \bi
-    \item{The sampled population remains same even if the amount of training set increases. This shows that the method is scalable and only depends on the number of features in the dataset rather than the number of rows.}
-    \item{From the previous sections, we know that \textit{WHERE east west} achieves the 'almost' the same accuracy and variance is under control. This result actually shows that \textit{WHERE east west} saves time while preserving accuracy and variability.}
+    \item{The sampled population remains constant even if the amount of training set increases. This shows that the method is scalable and only depends on the number of features in the dataset rather than the number of rows.}
+    \item{From the previous sections, we know that \textit{WHERE east west} achieves 'almost' same accuracy, which mean the technique saves time while preserving accuracy and variability.}
 \ei
 \begin{figure}[!t]
 \includegraphics[width=0.9\linewidth]{Figures/performance_graph.eps}
-\caption{Time saved by WHERE based techniques compared to the baseline techniques }\label{fig:performance_graph}
+\caption{Time saved by sampling techniques when compared to exhaustive search(all possible combinations)}\label{fig:performance_graph}
 \end{figure}
+
+These results, along with the fact that the size of the sampled population is smaller compared to the configuration space, shows us that the \textit{WHERE east west} can indeed save time and effort, when the cost of collecting training samples is expensive.
 
 \section{Fast Searcher: GALE}
 \subsection{Approach}
@@ -450,6 +452,44 @@ GALE combines (a) the neighborhood perturbation (described above)  with (b)~the 
 
 \fig{gale} lists the procedure by which GALE clusters the data into neighborhoods, then perturbs each neighborhood.  In terms of monitoring for brittleness, the key point of GALE is that this process continues until the perturbations stop having any new effect (i.e. they stop generating better objective scores). That is, all GALE solutions are guaranteed not to be brittle.
 
+\begin{figure}[!t]
+\small
+\begin{tabular}{|p{.95\linewidth}|}\hline
+An evolutionary multi-objective optimization algorithm requires at least two  operators:
+{\em cull} and {\em perturb}:
+\begin{enumerate}
+\item Generate an initial population by randomly selecting decisions;
+\item {\em Cull} the individuals with the lower objective scores.
+\item Generate a new population $P_n$ by {\em perturbing} the decisions of the surviving individuals (e.g. via random mutation or grafting together parts of the decisions of different individuals)
+\item Halt if $P_n$ no better than prior generations $P_{m<n}$.
+\item Else, go to step 2.
+\end{enumerate}
+One way to implement the culling (step 2) is via {\em domination}; i.e. remove one example if it can be shown that it is worse that (a.k.a. ``is dominated by'') some other examples. 
+
+Two forms of domination are {\em binary} and {\em continuous} domination.  In {\em binary domination}, one individual $x$ dominates $y$ if all $x$'s objectives are never worse than  the objectives in  $y$ but at least one objective in solution $x$ is better than its counterpart in $y$; i.e.
+\[ \begin{array}{c}
+\left\{ 
+     \forall o_j  \in \textit{objectives}\;\mid\; \neg ( o_{j,x} \prec o_{j,y}) \right\} 
+\\
+ \left\{
+\exists o_j \in \textit{objectives} \;\mid\; o_{j,x} \succ y_{j,y}\right\}
+\end{array}
+\]
+ where ($\prec,\succ$) tests if an objective score in one individual is (worse,better) than in the other individual.
+
+An alternate culling method is the {\em continuous domination} predicate~\cite{Zitzler04indicator-basedselection} that favors $y$ over $x$ if $x$ ``losses'' least: 
+\begin{equation}\label{eq:cdom}
+\begin{array}{rcl}
+\textit{worse}(x,y)& =& \textit{loss}(x,y) > \textit{loss}(y,x)\\
+\textit{loss}(x,y)& = &\sum_j^n -e^{\Delta(j,x,y,n)}/n\\
+\Delta(j,x,y,n) & = & w_j(o_{j,x}  - o_{j,y})/n
+\end{array}
+\end{equation}
+where  ``$n$'' is the number of objectives and $w_j\in \{-1,1\}$ depending on whether we seek to maximize goal $x_J$.  
+\\\hline
+\end{tabular}
+\caption{Inside an MOEA.}\label{fig:moea}
+\end{figure}
 
 In terms of reducing runtime, the key feature of GALE is that unlike traditional MOEA methods such as NSGA-II~\cite{deb00afast}, GALE  does not automatically generate objective scores for all $N$ decisions.  Instead, as it recursively clusters the data in two (using steps 1,2,3,4,5 in \fig{gale}), GALE only computes the objective scores for the two most distant points in each division.  This means that this binary division of the data terminates after a comparison of just $log_2(N)$ evaluated individuals. This is much less than the $2N$ comparisons required by  traditional methods like NSGA-II.
 
