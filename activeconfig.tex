@@ -2,9 +2,10 @@
 % \documentclass[conference]{IEEEtran}
 \usepackage{color}
 \usepackage{listings}
-\usepackage{graphics} 
+\usepackage{graphicx} 
 \usepackage{cite}
 \usepackage{paralist}
+\usepackage[table,xcdraw]{xcolor}
 \usepackage{siunitx}
 \usepackage{rotating}
 \usepackage{eqparbox}
@@ -133,6 +134,7 @@ I.2.6 [Artificial Intelligence]: Induction
  
 \vspace{1mm}
 \noindent
+
 {\bf Keywords:} Performance prediction, Active Learning, 
 Multi-Objective Optimization,
 Search-based Software Engineering,Sampling, Machine Learning.
@@ -141,14 +143,17 @@ Search-based Software Engineering,Sampling, Machine Learning.
  
  
 \section{Introduction}
- The complexity involving configuring software systems have grown over the recent years \cite{berger2013study}. A configurable system provides configuration options to customize a software system to a given set of requirements. A configuration option is related to a certain feature of the software system and state of the configuration system defines whether the feature is  active in the system. For e.g. The state of the configuration option ITracing of  Berkeley DB Java controls whether tracing is turned on/off (citation). Not all combinations of features can be used(generally) and there are constraints, which needs to be followed while configuring the system. These constraints are defined by a \textit{Feature Model}\cite{kang1990feature} or \textit{Decision Model}\cite{schmid2011comparison}. 
+ The complexity involving configuring software systems have grown over the recent years \cite{berger2013study}. A configurable system provides configuration options to customize a software system to a given set of requirements. 
+ A configuration option is related to a certain feature of the software system and state of the configuration system defines whether the feature is  active in the system.
+ For e.g. The state of the configuration option ITracing of  Berkeley DB Java controls whether tracing is turned on/off (citation). Not all combinations of features can be used(generally) and there are constraints, which needs to be followed while configuring the system. These constraints are defined by a \textit{Feature Model}\cite{kang1990feature} or \textit{Decision Model}\cite{schmid2011comparison}. 
  
  In order for the users to decide on an optimal configuration for a particular job/functionality, they need an understanding of the dependencies between various configuration or perform an exhaustive search of all the configuration options. Exhaustive search is very time consuming given that n number of configuration will result in $2^n$ number of configurations. To reduce the time required to find an optimal configuration, the key challenge is to build a model of the software system using only a small number of sample configuration, in such a way that it can accurately predict the performance of the software system.
  
  Before we proceed to address this challenge we formalize various definitions that would be used throughout the paper:
  \bi
     \item{n is the number of features of a system}
-    \item{Configuration of a system with n features can be formalized a Boolean function:\\
+    \item{Configuration of a system with n features can be 
+    formalized a Boolean function:\\
 \begin{center}
     $ f: \left\{{0,1}\right\}^n \to \mathbb{R}$
 \end{center}
@@ -210,7 +215,8 @@ only the most informative ones. We explain the working of GALE in section 5.
     
     The features on the software system is represented as a set of binary decision variables. A feature, when turned on, corresponds to 1, and 0 otherwise. All the features of a system is represented a vector F = $<f_1, f_2, ...,f_N>$, where N is the number of features of the software system. The dependent variable corresponding to a configuration(F) is a performance score, P(F), which the performance measurement.
 
-    Performance of system can be modelled using the configuration as the independent variable and the performance metric as a dependent variable. Modelling a software system is to find a hypothesis function(h), such that h(F) predicts P(F) accurately. This can be represented as:\\
+    Performance of system can be modelled using the configuration as the independent variable and the performance metric as a dependent variable. 
+    Modelling a software system is to find a hypothesis function(h), such that h(F) predicts P(F) accurately. This can be represented as:\\
 \begin{center}
     $ h: C \mapsto \rm I\!R$ s.t. $L(h(F), P(F))$ is minimized\\
 \end{center}
@@ -219,7 +225,8 @@ where, L is a loss function for penalizing errors in prediction. By formulating 
     It should be noted that though the number of possible configurations (C) is equal to $2^N$(binary decision variables), in reality valid configurations(\^{C}) is smaller than C (|C| << |\^C|). 
 
 
-To answer our research questions, we use data set from our previous work on detecting performance interactions~\cite{SKR+12}. It contains performance measurements of real-world configurable software systems. These systems were selected to cover a broad range of domains (databases, Web servers, video encoder, compiler), programming languages (C, C++, Java), and different sizes regarding number of features and configurations. Table~\ref{tab:subjectsystems} provides an overview of these systems.
+To answer our research questions, we use data set from our previous work on detecting performance interactions~\cite{SKR+12}. It contains performance measurements of real-world configurable software systems.
+These systems were selected to cover a broad range of domains (databases, Web servers, video encoder, compiler), programming languages (C, C++, Java), and different sizes regarding number of features and configurations. Table~\ref{tab:subjectsystems} provides an overview of these systems.
  
  \begin{table}[!t]
 \scriptsize
@@ -275,7 +282,8 @@ This speeds up the reasoning since we then only need to explore the $e\ll d$   e
 
 A widely-used spectral learner is a principal components analysis (PCA). For example, PDDP ({\em Principal Direction Divisive Partitioning})~\cite{boley1998principal} recursively partitions data according to the median point of data projected onto the first PCA component of the current partition.
 
-WHERE~\cite{me12d} is a linear time variant of PDDP  that uses FastMap~\cite{Faloutsos1995} to quickly find the first component.
+WHERE~\cite{me12d} is a linear time variant of PDDP  
+that uses FastMap~\cite{Faloutsos1995} to quickly find the first component.
 Platt~\cite{platt05} shows that FastMap is a  Nystr\"om algorithm that finds approximations to eigenvectors.
 As shown in \fig{fastmapCode} on lines 3,4,5, FastMap  projects all data onto a line connecting two distant points(poles)\footnote{
 To define distance, WHERE uses the standard Euclidean distance method proposed by Aha et al.~\cite{aha91}; that is: $dist(x,y)= \sqrt{\sum_{i\in d} (x_i - y_i)^2}/\sqrt{ \left\vert{d}\right\vert }$ where distance is computed on the independent decisions $d$ of each candidate solution; all $d_i$ values are normalized min..max, 0..1; and the calculated distance normalized by dividing by the maximum distance across the $d$ decisions.}. 
@@ -338,9 +346,11 @@ This technique as the above technique is also an variant of the WHERE spectral l
 We use the points sampled, using the technique described above, to build the predictive model using the popular machine learning technique called Classification and Regression Tree(CART), which has been extensively used in the literature and has been observed to be fast and accurate~\cite{guo2013variability}.
 
 \subsection{Results}
-Our sampling methods are stochastic in nature and hence we have repeated the experiments 20 times to reported the variance(which represents stability of our results). By conducting experiments on six real-world configurable systems, we aim at answering the following research questions
+Our sampling methods are stochastic in nature and hence we have repeated the experiments 20 times to reported the variance(which represents stability of our results). 
+By conducting experiments on six real-world configurable systems, we aim at answering the following research questions
 
-\textit{A. Can a reasonable prediction accuracy be achieved based on subset of a training set?}\\
+\textit{A. Can a reasonable prediction accuracy be achieved based on 
+subset of a training set?}\\
 \\
 Figure ~\ref{fig:sampling_accuracy} shows how the variation of the  prediction accuracy wrt. to the training set. The x-axis of the graph represents the percentage of the training set used to train the learner (CART) and the y-axis represents the MRE as defined in \ref{eq:1}. The technique being compared are \textit{WHERE east-west}, \textit{WHERE exemplar} and \textit{baseline} (use $2/3$ of the dataset to train CART) In our experiments, a low MRE is an indicator of good sampling technique. Our assumption based on the machine learning literature(ref needed) is as the size of the training set increases the accuracy of the predictor must increase. But the point that we are trying to make with this experimetn is to show that the quantity of the data doesn't matter but how much information is provided by the examples. In sub-graph 1 (Apache), the WHERE east-west performs as well as the baseline technique, where as WHERE exemplar perform worse than the other techniques for most of the training set sizes. WHERE-exemplar only works well when the 90\% of the data set is used to train CART. Sub-graph 3 shows an very interesting property as the number of training samples available for training increases the accuracy of the predictor decreases (which is counter-intuitive). The results of the WHERE exemplar gives us enough evidence to believe that the solution with the best performance score is not a good representative of the cluster. On the other hand, the poles of a cluster is a indeed a good representative of the cluster.\\~\\
 
@@ -390,9 +400,11 @@ Figure ~\ref{fig:sampling_accuracy} shows how the variation of the  prediction a
 \label{variance_table}
 \end{table*}
 
-\textit{B. Does less data used in building the models lead to large variance in the predicted values?}\\
+\textit{B. Does less data used in building the models lead to large
+variance in the predicted values?}\\
 
-We have shown with sufficient evidence that models can be trained using less data, while achieving the accuracy attained by using larger data sample. 
+We have shown with sufficient evidence that models can be trained using less data, while achieving the accuracy
+attained by using larger data sample. 
 The another aspect, which needs to be considered at this point is the variability that is introduced  when a smaller(filtered) dataset used to train CART. 
 Figure ~\ref{variance_table} shows the raw scores from the experiment. Each row represents how different techniques(column 1) perform in a dataset(last column). Decimal point numbers on the top of the table represent the percentage of data used to build the CART. The cells highlighted with grey are the cases where the variance is greater than 3\%. The data presented in the table is an evidence to the fact  that \textit{WHERE east-west} doesn't introduce a large variance($[0.23, 2.93]$) where as \textit{WHERE exemplar} is not useful as a sampling technique (this also validates the conclusions drawn in the previous section). 
 
@@ -400,7 +412,8 @@ Figure ~\ref{variance_table} shows the raw scores from the experiment. Each row 
 In Figure \ref{fig:performance_graph}, we show the amount of time saved by various sampling methods. The x-axis of the graph represent the percentage of data used to build the CART model. The y-axis shows the time saved by the various sampling methods. There are take away from the figure are:
 \bi
     \item{The sampled population remains constant even if the amount of training set increases. This shows that the method is scalable and only depends on the number of features in the dataset rather than the number of rows.}
-    \item{From the previous sections, we know that \textit{WHERE east west} achieves 'almost' same accuracy, which mean the technique saves time while preserving accuracy and variability.}
+    \item{From the previous sections, we know that \textit{WHERE east west} achieves 'almost' same accuracy,
+    which mean the technique saves time while preserving accuracy and variability.}
 \ei
 \begin{figure}[!t]
 \includegraphics[width=0.9\linewidth]{Figures/performance_graph.eps}
@@ -440,7 +453,8 @@ These final sub-divisions found by this process are the {\em neighborhoods} that
 \item Let generation $i+1$ be the combination of all pushed points from all neighborhoods.
 \end{itemize}
 
-From a formal perspective, GALE is an active learner~\cite{Dasgupta2005} that builds a piecewise linear approximation to the Pareto frontier~\cite{Zuluaga:13}.  For each piece, it then pushes the neighborhood up the local gradient.  This  approximation is built in the reduced dimensional space found the FASTMAP  Nystr\"om approximation to the first component of PCA~\cite{platt05}.
+From a formal perspective, GALE is an active learner~\cite{Dasgupta2005} that builds a piecewise linear approximation to the Pareto frontier~\cite{Zuluaga:13}.  
+For each piece, it then pushes the neighborhood up the local gradient.  This  approximation is built in the reduced dimensional space found the FASTMAP  Nystr\"om approximation to the first component of PCA~\cite{platt05}.
 \\\hline
 \end{tabular}
 \caption{Inside GALE}\label{fig:gale}
@@ -474,8 +488,7 @@ Two forms of domination are {\em binary} and {\em continuous} domination.  In {\
 \\
  \left\{
 \exists o_j \in \textit{objectives} \;\mid\; o_{j,x} \succ y_{j,y}\right\}
-\end{array}
-\]
+\end{array}\]
  where ($\prec,\succ$) tests if an objective score in one individual is (worse,better) than in the other individual.
 
 An alternate culling method is the {\em continuous domination} predicate~\cite{Zitzler04indicator-basedselection} that favors $y$ over $x$ if $x$ ``losses'' least: 
@@ -560,6 +573,23 @@ Also, we are aware that measurement bias can cause false interpretations [20]. S
 
 
 {\em External validity} \textcolor{red}{(copied verbatim)} We aimed at increasing external validity by choosing programs from different domains with different configuration mechanisms and implemented with different programming languages. Furthermore, we used programs that are deployed and used in the real-world. Nevertheless, we are aware that the results of our evaluations are not automatically transferable to all configurable programs. In addition to our sample program selection, the strong and exhaustive evaluation (over 60 days of measurement with 5 computers) indicate that our heuristics hold for many practical application scenarios.
+
+
+\begin{table}
+\centering
+\scriptsize
+\caption{My caption}
+\label{my-label}
+\begin{tabular}{|l|l|l|l|l|l|l|}
+\hline
+{\bf Searcher}  & {\bf Apache} & {\bf \begin{tabular}[c]{@{}l@{}}Berkeley \\ DB C\end{tabular}} &  {\bf \begin{tabular}[c]{@{}l@{}}Berkeley \\ DB Java\end{tabular}} & {\bf LLVM} & {\bf SQL} & {\bf X264}                      \\ \hline
+{\bf \it GALE}  & 840          & 0.35                                                         & 2960                                        & 199.68   & 244.23    & 12.61                         \\ \hline
+{\bf \it NSGA2} & 840          & 0.35                                                         & 2960                                        & 199.68   & 244.23    & 12.61                         \\ \hline
+{\bf \it DE}    & 840          & 0.35                                                         & 2960                                        & 199.68   & 244.23    & \cellcolor[HTML]{9B9B9B}12.51 \\ \hline
+\end{tabular}
+\end{table}
+
+
 
 {\em Optimizer Bias} \textcolor{red}{(copied verbatim)}
 Our reading of the literature is that the experimentation
