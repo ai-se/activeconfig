@@ -623,32 +623,15 @@ it is unfair to hobble one competitor with poor tunings.
 
 \section{Conclusions}
 
-Our exploration of the six research
-questions listed in the introduction
-show that when learning defect predictors for static code
-attributes,   analytics without parameter tuning is considered {\em harmful} and {\em misleading}:
+We introduce two new sampling techniques called \textit{WHERE-east-west} and \textit{WHERE exemplar} for performance-prediction of configurable systems. To evaluate and compare the techniques, we used the time saved and prediction accuracy. We conducted empirical studies on six real-world configurable systems to determine an ideal sampling strategy for performance prediction of configurable software system. Our key findings are:
 \bi
-\item Tuning improves the performance scores of a predictor.
-That improvement is usually positive (see \fig{deltas}) and sometimes
-it can be quite   dramatic (e.g. precision changing from 2\% to 98\%). \item 
-Tuning changes conclusions on what learners are better than others.
-Hence, it is time to revisit numerous prior publications of our own~
-and others~
-\item
-Also,
-tuning changes conclusions on what factors are most important in software development.
-Once again, this means that old papers may need to be revised including those
-some of our own~
+    \item{Clustering can also be used as a part of the process of sampling and can reduce the number of examples required to train a model}
+    \item{Less data does help to build stable models since the variance is always lower than 6\%}
+    \item{The model is stable enough so that any optimizer can use the model to find optimal configuration.}
+    \item{Using extreme points of the first principle component is a good representative of the entire cluster.}
 \ei
-Accordingly, we strongly advise that data miners should not be used ``off-the-shelf'' with their default tunings. 
-\fig{features} shows just how much tuning can alter default settings
-both for different data sets and for different goals. 
 
-Since the results from tuning are unstable,
-tuning needs to be repeated
-whenever data or goals are changed.
-Fortunately, the cost of find good tunings is not excessive since, at least for
-static code defect predictors, tuning is easy and fast.
+Our empirical findings are meant to help the stakeholders in finding optimal configurations to achieve the desired performance scores. In the future...
 
 \section{Future Work}
 
