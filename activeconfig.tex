@@ -338,7 +338,7 @@ This technique as the above technique is also an variant of the WHERE spectral l
 We use the points sampled, using the technique described above, to build the predictive model using the popular machine learning technique called Classification and Regression Tree(CART), which has been extensively used in the literature and has been observed to be fast and accurate~\cite{guo2013variability}.
 
 \subsection{Results}
-By conducting experiments on six real-world configurable systems, we aim at answering the following research questions
+Our sampling methods are stochastic in nature and hence we have repeated the experiments 20 times to reported the variance(which represents stability of our results). By conducting experiments on six real-world configurable systems, we aim at answering the following research questions
 
 \textit{A. Can a reasonable prediction accuracy be achieved based on subset of a training set?}\\
 \\
@@ -410,6 +410,7 @@ In Figure \ref{fig:performance_graph}, we show the amount of time saved by vario
 These results, along with the fact that the size of the sampled population is smaller compared to the configuration space, shows us that the \textit{WHERE east west} can indeed save time and effort, when the cost of collecting training samples is expensive.
 
 \section{Fast Searcher: GALE}
+Once we have the software performance model build using any sampling technique, the obvious next step is to find the optimal configuration such that the performance score of that particular configuration is the minimal. At this point, we can use any searcher to find the optimal configuration of a system(modelled by CART). In this section, we introduce GALE, which has proven to find near optimal solution with minimum model evaluations as possible. 
 \subsection{Approach}
 \begin{figure}[!b]
 \small
@@ -444,13 +445,13 @@ From a formal perspective, GALE is an active learner~\cite{Dasgupta2005} that bu
 \end{tabular}
 \caption{Inside GALE}\label{fig:gale}
 \end{figure}
-GALE combines (a) the neighborhood perturbation (described above)  with (b)~the MOEA algorithm of \fig{moea}.  The algorithm reflects over a {\em population} of points, each of which contains {\em decisions} (some inputs to the CDA model).  It then searches for the input decisions that lead to best outcomes.  For example:
+GALE combines (a) the neighborhood perturbation (described above)  with (b)~the MOEA algorithm of \fig{moea}.  The algorithm reflects over a {\em population} of points, each of which contains {\em decisions} (configurations of a software system).  It then searches for the input decisions that lead to best outcomes.  For example:
 \begin{itemize}
-\item if we adjust the inputs to model (say) high tailwind conditions\ldots
-\item \ldots then GALE can report the best monitoring policies for the pilot of the cockpit instrumentation.
+\item we adjust the inputs to CART (modelling the performance score of the software system)
+\item GALE can report the best configuration for the system such that the performance score is (near) lowest.
 \end{itemize}
 
-\fig{gale} lists the procedure by which GALE clusters the data into neighborhoods, then perturbs each neighborhood.  In terms of monitoring for brittleness, the key point of GALE is that this process continues until the perturbations stop having any new effect (i.e. they stop generating better objective scores). That is, all GALE solutions are guaranteed not to be brittle.
+\fig{gale} lists the procedure by which GALE clusters the data into neighborhoods, then perturbs each neighborhood.  In terms of monitoring for brittleness, the key point of GALE is that this process continues until the perturbations stop having any new effect (i.e. they stop generating lower performance scores). That is, all GALE solutions are guaranteed not to be brittle.
 
 \begin{figure}[!t]
 \small
@@ -493,21 +494,21 @@ where  ``$n$'' is the number of objectives and $w_j\in \{-1,1\}$ depending on wh
 
 In terms of reducing runtime, the key feature of GALE is that unlike traditional MOEA methods such as NSGA-II~\cite{deb00afast}, GALE  does not automatically generate objective scores for all $N$ decisions.  Instead, as it recursively clusters the data in two (using steps 1,2,3,4,5 in \fig{gale}), GALE only computes the objective scores for the two most distant points in each division.  This means that this binary division of the data terminates after a comparison of just $log_2(N)$ evaluated individuals. This is much less than the $2N$ comparisons required by  traditional methods like NSGA-II.
 
-In practice, this makes GALE run much faster than traditional optimization tools.  Standard MOEA algorithms such as NSGA-II require 3000 to 5000 evaluations to explore the CDA model. GALE, on the other hand, performs the same task using 25 to 50 evaluations~\cite{krallphd}. 
+The perturbing module of GALE was modified for this problem. Since this problem has a constrained solution space, the perturbing module was made sensitive by including the feature model so, that GALE can recognize invalid solutions . If the solution generated after perturbing the solution, is not a valid solution, the solution is not considered for future perturbation.
 
-GALE's faster runtimes have  tremendous practical implications:
-\bi
-\item When checking for the stability of the conclusions reached from a randomizing
-algorithm  such as GALE or NSGA-II, it is important to check that the conclusions hold in multiple repeats (say, 20 repeats). 
-\item This number of repeats may practical for GALE but  highly impractical for standard optimization tools.
-\item For example, twenty repeats of CDA takes 1.5 and 100 hours for GALE and NSGA-II, respectively~\cite{krallphd}.
-\ei
 \subsection{Results}
 
 \begin{figure}[!t]
 \includegraphics[width=0.9\linewidth]{Figures/optimizer_result.eps}
 \caption{Solutions found by GALE}\label{fig:performance_graph}
 \end{figure}
+
+We try to answer the following research question in this section\\
+
+\textit{C. Can evolutionary algorithms be used to find the optimal
+configurations using the model generated?}
+\\
+Figure ~\ref{fig:performance_graph} presents the results after running GALE with the performance model. The figure shows the distribution of the performance score (sorted in the ascending order). In the figure we would like to show that GALE has been able to find the configuration/s with minimal performance scores. The green spot on the graphs shows the solution found as the minimum scores. At this point, we would like to point out the GALE doesn't always find the optimal solutions but find solutions close to the optimal. For example, GALE is about to find the third best configuration for SQL lite. We show here that using the software model build using \textit{WHERE east west}, we have been able near optimal solution. We believe that this further validates the usefulness of our approach.  
 
 
  
