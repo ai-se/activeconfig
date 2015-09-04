@@ -145,15 +145,15 @@ Search-based Software Engineering,Sampling, Machine Learning.
 \section{Introduction}
  The complexity involving configuring software systems have grown over the recent years \cite{berger2013study}. A configurable system provides configuration options to customize a software system to a given set of requirements. 
  A configuration option is related to a certain feature of the software system and state of the configuration system defines whether the feature is  active in the system.
- For e.g. The state of the configuration option ITracing of  Berkeley DB Java controls whether tracing is turned on/off (citation). Not all combinations of features can be used(generally) and there are constraints, which needs to be followed while configuring the system. These constraints are defined by a \textit{Feature Model}\cite{kang1990feature} or \textit{Decision Model}\cite{schmid2011comparison}. 
+ For e.g. The state of the configuration option ITracing of  Berkeley DB Java controls whether tracing is turned on/off (citation). Not all combinations of features can be used(generally) and there are constraints, which needs to be followed while configuring a system. These constraints are defined by a \textit{Feature Model}\cite{kang1990feature} or \textit{Decision Model}\cite{schmid2011comparison}. 
  
- In order for the users to decide on an optimal configuration for a particular job/functionality, they need an understanding of the dependencies between various configuration or perform an exhaustive search of all the configuration options. Exhaustive search is very time consuming given that n number of configuration will result in $2^n$ number of configurations. To reduce the time required to find an optimal configuration, the key challenge is to build a model of the software system using only a small number of sample configuration, in such a way that it can accurately predict the performance of the software system.
+ In order for the users to decide on an optimal configuration for a particular job/functionality, they need an understanding of the dependencies between various configuration or perform an exhaustive search of all the configuration options. Exhaustive search is very time consuming given that n number of configuration will result in $2^n$ number of configurations. To reduce the time required to find an optimal configuration, the key challenge is to build a model of the software system using only a small number of sample configuration, in such a way that it can accurately predict the performance of the software system. This model can be then used to find the optimal configuration using a meta-heuristic algorithm like GALE etc. 
  
  Before we proceed to address this challenge we formalize various definitions that would be used throughout the paper:
  \bi
     \item{n is the number of features of a system}
     \item{Configuration of a system with n features can be 
-    formalized a Boolean function:\\
+    formalized as a Boolean function:\\
 \begin{center}
     $ f: \left\{{0,1}\right\}^n \to \mathbb{R}$
 \end{center}
@@ -163,9 +163,9 @@ Search-based Software Engineering,Sampling, Machine Learning.
     \item{Performance Function $f$ maps the elements of the configuration space to $\mathbb{R}$, which is a surrogate to the performance of a system.   }
  \ei
  
-Our goal is to build performance models that can be build using the few training samples, which then can be used to find optimal configuration of the system (minimize run time of a job). Our work was motivated by the fact that in real world scenario, cost of acquiring optimal configuration is expensive and time consuming \cite{weiss2008maximizing}. To further emphasize that it is expensive to collect complete configuration space (exhaustive search), let us look at an example. Assume that there is a software system with 9 features (configuration space = $2^9$) and a job requires at an average 20 minutes to execute. The total time required to find an optimal configuration is 4300 minutes ($2^9 \times 20$). This problem can be solved if the user can build a performance model with fewer samples ($\ll 2^n$). From a learner perspective, our goal can be described as a sampling technique, which can determine "good sample" for a given system. A "good sample" can be described as a sample if it is small enough to decrease the measurement effort and large enough to increase the prediction accuracy of the model. We propose a new sampling techniques, which uses a clustering technique and use point/s from clusters to build the sample. We conduct experiments on six real-world configurable system can compare the sampling strategies in terms of total time saved by the sampling techniques wrt. to the baseline strategy ($2/3$ of the sample size).
+Our goal is to build performance models that can be build using the few training samples, which then can be used to find optimal configuration of the system (minimize run time of a job). Our work was motivated by the fact that in real world scenario, cost of acquiring optimal configuration is expensive and time consuming \cite{weiss2008maximizing}. To further emphasize that it is expensive to collect complete configuration space (exhaustive search), let us look at an example. Assume that there is a software system with 9 features (configuration space = $2^9$) and a job requires at an average 20 minutes to execute. The total time required to find an optimal configuration, using exhaustive search, is 4300 minutes ($2^9 \times 20$). This problem can be solved in a short amount of time, if the user can build a performance model with fewer samples ($\ll 2^n$). From a learner perspective, our goal can be described as a sampling technique, which can determine "good sample" for a given system. A "good sample" can be described as a sample if it is small enough to decrease the measurement effort and large enough to increase the prediction accuracy of the model. We propose two new sampling techniques, which uses a clustering technique and use point/s from clusters to build the sample. We conduct experiments on six real-world configurable system to compare the sampling strategies in terms of total time saved by the sampling techniques wrt. to the baseline strategy ($2/3$ of the sample size).
 
-The backbone of the approaches presented in the paper is cluster the data and select members from the cluster in such as way that those points are representative of the whole cluster. We tried to validate the sampling techniques by answering the following questions:
+The backbone of the approaches presented in the paper can be summarized as clustering the configurable space and select members from the cluster in such as way that those points are representative of the whole cluster. We tried to validate the sampling techniques by answering the following questions:
         \bi
             \item{RQ1: Can a reasonable prediction accuracy be achieved based on subset of a training set?}
             \item{RQ2: Does less data used in building the models lead to large variance in the predicted values?}
@@ -175,9 +175,9 @@ The backbone of the approaches presented in the paper is cluster the data and se
 \section{Bird's Eye Overview}
 
 
-    \textbf{Sampling: } Figure ~\ref{fig:GeneralProcess} illustrates the general process of performance prediction using sampling. It starts with an initial sample of measured configurations, which are used to build the prediction model. A good initial sample significantly reduces the effort involved with training sample collection. The state of the art approaches involves progressive and projective sampling techniques \cite{sarkar2015cost} and Fourier Transforms \cite{zhang2015performance}. However these approaches assumes the user to know a lot of about the system, which is not a fair assumption. The problem with iterative techniques lies in the step size, which is an engineering decision. In our approach, we use clustering, which uses the first principle component, to determine clusters rather than relying to random sampling methods. Once the clusters are obtained, 'interesting' representative/s from each cluster  is/are collected. Then, we build prediction models using a statistical learning technique called Classification and Regression Tree (CART), which has been demonstrated to be fast and accurate for performance prediction of configurable system \cite{guo2013variability}.
+    \textbf{Sampling: } Figure ~\ref{fig:GeneralProcess} illustrates the general process of performance prediction using sampling. It starts with an initial sample of measured configurations, which are used to build the prediction model. A good initial sample significantly reduces the effort involved with training sample collection. The state of the art approaches involves progressive and projective sampling techniques \cite{sarkar2015cost} and Fourier Transforms \cite{zhang2015performance}. However these approaches assumes the user to know a lot of about the system, which is not a fair assumption. The problem with iterative techniques lies in the step size, which is an engineering decision(aka black art). In our approach, we use clustering, which uses the first principle component, to determine clusters rather than relying to random sampling methods. Once the clusters are obtained, \'interesting\' representative/s from each cluster  is/are collected. Then these points are used to build prediction models using a statistical learning technique called Classification and Regression Tree (CART), which has been demonstrated to be fast and accurate for performance prediction of configurable system \cite{guo2013variability}.
     
-In our work, we use the time saved by the proposed sampling when compared to the baseline method ($2/3$ of configuration space) is presented along with the prediction accuracy (similar to ~\cite{guo2013variability}, \cite{siegmund2012predicting}, \cite{westermann2012automated}). We also use the cost model introduced in \cite{sarkar2015cost}, that takes into account measurement effort along with prediction accuracy. 
+In our work, we use the time saved by the proposed sampling when compared to the exhaustive search is presented along with the prediction accuracy (similar to ~\cite{guo2013variability}, \cite{siegmund2012predicting}, \cite{westermann2012automated}). 
     \begin{figure}[!t]
 \includegraphics[width=0.9\linewidth]{Figures/GeneralProcess.png}
 \caption{ General Process of Performance Modelling }\label{fig:GeneralProcess}
@@ -206,7 +206,7 @@ only the most informative ones. We explain the working of GALE in section 5.
 \section{Problem Formulation}
 
 
-    Configurations of a software system may not be independent, such that we cannot measure arbitrary configurations. Researchers have explored the presence of complex domain dependencies. With constraint between features, in theory there can be multiple minimal configuration (for example, in the presence of mutually exclusive features). This is called as \textit{Feature Models(FM)}. FM defines all the N features and all the valid configurations C of a software system. Figure ~\ref{fig:bdbc}  shows the feature model of Berkeley DB(C Version) using the notations defined in ~\cite{kang1990feature}, ~\cite{guo2012consistency}. Feature models are used to check the validity of new mutated solutions generated by the learners (eg. GALE).
+    Configurations of a software system may not be independent, such that we cannot measure arbitrary configurations. Researchers have explored the presence of complex domain dependencies. With constraint between features, in theory there can be multiple minimal configuration (for example, in the presence of mutually exclusive features). These dependencies are captured well by \textit{Feature Models(FM)}. FM defines all the N features and all the valid configurations C of a software system. Figure ~\ref{fig:bdbc}  shows the feature model of Berkeley DB(C Version) using the notations defined in ~\cite{kang1990feature}, ~\cite{guo2012consistency}. Feature models are used to check the validity of new mutated solutions generated by the learners (eg. GALE).
     
 \begin{figure}[!t]
 \includegraphics[width=0.9\linewidth]{Figures/BDBC.eps}
@@ -273,7 +273,7 @@ For all systems, except for SQLite, we obtained the whole population data (i.e.,
 \caption{Description of Sampling Process. Part 1 describes the training process where as, part 2 describes the testing process.}\label{fig:Sampling Process}
 \end{figure}
 \subsection{Approach}
-This section describes how a large space of candidate solutions (configurations) is clustered into many smaller regions.
+This section describes how a large space of candidate solutions (configurations) is clustered into many smaller clusters.
 \subsubsection{WHERE Learning}\label{sec:spectral}
 
 
@@ -333,26 +333,26 @@ WHERE recurses on the two halves, terminating when some split has less than $\sq
 
 Next two subsections describes various technique of selecting points in such a way that the point select is an representative of the cluster
 \subsubsection{WHERE East West}\label{where_east_west}
-This technique is a variant to the WHERE spectral learner discussed above. WHERE splits the data into smaller clusters, each of which is characterized by two distant points (poles). 
+This technique borrows from WHERE spectral learner discussed above and uses the clusters to perform clustering. WHERE splits the data into smaller clusters, each of which is characterized by two distant points (poles). 
 It is assumed  that the technique only needs to evaluate
 the most informative subset consisting of the poles used to
 recursively divide the data. The recursive binary division of the solutions(M), and that this technique uses two solutions in each cluster, which means the technique uses only $2log_2(M)$.
 
 \subsubsection{WHERE Exemplar}\label{where_exemplar}
-This technique as the above technique is also an variant of the WHERE spectral learner. The technique assumes the best point (exemplar) as the representative of each cluster. 
+This technique as the above technique is also uses the WHERE spectral learner as a precursor to sampling. The technique assumes the best point (exemplar) as the representative of each cluster. This technique uses one solution from each cluster(best) and hence $log_2(M)$ number of training examples, where M is the size of the configuration space.
 
 
 
 We use the points sampled, using the technique described above, to build the predictive model using the popular machine learning technique called Classification and Regression Tree(CART), which has been extensively used in the literature and has been observed to be fast and accurate~\cite{guo2013variability}.
 
 \subsection{Results}
-Our sampling methods are stochastic in nature and hence we have repeated the experiments 20 times to reported the variance(which represents stability of our results). 
+Our sampling methods are stochastic in nature and hence we have repeated the experiments 20 times to report the variance(which represents stability of our results). 
 By conducting experiments on six real-world configurable systems, we aim at answering the following research questions
 
 \textit{A. Can a reasonable prediction accuracy be achieved based on 
 subset of a training set?}\\
 \\
-Figure ~\ref{fig:sampling_accuracy} shows how the variation of the  prediction accuracy wrt. to the training set. The x-axis of the graph represents the percentage of the training set used to train the learner (CART) and the y-axis represents the MRE as defined in \ref{eq:1}. The technique being compared are \textit{WHERE east-west}, \textit{WHERE exemplar} and \textit{baseline} (use $2/3$ of the dataset to train CART) In our experiments, a low MRE is an indicator of good sampling technique. Our assumption based on the machine learning literature(ref needed) is as the size of the training set increases the accuracy of the predictor must increase. But the point that we are trying to make with this experimetn is to show that the quantity of the data doesn't matter but how much information is provided by the examples. In sub-graph 1 (Apache), the WHERE east-west performs as well as the baseline technique, where as WHERE exemplar perform worse than the other techniques for most of the training set sizes. WHERE-exemplar only works well when the 90\% of the data set is used to train CART. Sub-graph 3 shows an very interesting property as the number of training samples available for training increases the accuracy of the predictor decreases (which is counter-intuitive). The results of the WHERE exemplar gives us enough evidence to believe that the solution with the best performance score is not a good representative of the cluster. On the other hand, the poles of a cluster is a indeed a good representative of the cluster.\\~\\
+Figure ~\ref{fig:sampling_accuracy} shows how the variation of the  prediction accuracy wrt. to the size of the training set (used before sampling). The x-axis of the graph represents the percentage of the training set used to train the learner (CART) and the y-axis represents the MRE as defined in equation \ref{eq:1}. The technique being compared are \textit{WHERE east-west}, \textit{WHERE exemplar} and \textit{baseline} (use $2/3$ of the dataset to train CART) In our experiments, a low MRE is an indicator of good sampling technique. Our assumption based on the machine learning literature(ref needed) is, as the size of the training set increases the accuracy of the predictor must improve. But the point that we are trying to make with this experiment is to show that the quantity of the data doesn't matter but how much information is provided by the examples. In sub-graph 1 (Apache), the WHERE east-west performs as well as the baseline technique, where as WHERE exemplar perform worse than the other techniques for most of the training set sizes. WHERE-exemplar only works well when the 90\% of the data set is available for clustering. Sub-graph 3 shows an very interesting property as the number of training samples available for training increases the accuracy of the predictor decreases (which is counter-intuitive). The results of the WHERE exemplar provides evidence to believe that the solution with the best performance score is not a good representative of the cluster. On the other hand, the poles of a cluster is a indeed a good representative of the cluster.\\~\\
 
 
 
@@ -404,20 +404,20 @@ Figure ~\ref{fig:sampling_accuracy} shows how the variation of the  prediction a
 variance in the predicted values?}\\
 
 We have shown with sufficient evidence that models can be trained using less data, while achieving the accuracy
-attained by using larger data sample. 
-The another aspect, which needs to be considered at this point is the variability that is introduced  when a smaller(filtered) dataset used to train CART. 
+attained by using larger training data. 
+The another aspect, which needs to be considered at this point is the variability that is introduced  when a sampled dataset used to train CART. 
 Figure ~\ref{variance_table} shows the raw scores from the experiment. Each row represents how different techniques(column 1) perform in a dataset(last column). Decimal point numbers on the top of the table represent the percentage of data used to build the CART. The cells highlighted with grey are the cases where the variance is greater than 3\%. The data presented in the table is an evidence to the fact  that \textit{WHERE east-west} doesn't introduce a large variance($[0.23, 2.93]$) where as \textit{WHERE exemplar} is not useful as a sampling technique (this also validates the conclusions drawn in the previous section). 
 
 
-In Figure \ref{fig:performance_graph}, we show the amount of time saved by various sampling methods. The x-axis of the graph represent the percentage of data used to build the CART model. The y-axis shows the time saved by the various sampling methods. There are take away from the figure are:
+In Figure \ref{fig:time_saved}, we show the amount of time saved by various sampling methods. The x-axis of the graph represent the percentage of data used to build the CART model. The y-axis shows the time saved by the various sampling methods. There are take away from the figure are:
 \bi
     \item{The sampled population remains constant even if the amount of training set increases. This shows that the method is scalable and only depends on the number of features in the dataset rather than the number of rows.}
     \item{From the previous sections, we know that \textit{WHERE east west} achieves 'almost' same accuracy,
-    which mean the technique saves time while preserving accuracy and variability.}
+    which mean the technique saves time while preserving accuracy and reducing variability.}
 \ei
 \begin{figure}[!t]
 \includegraphics[width=0.9\linewidth]{Figures/performance_graph.eps}
-\caption{Time saved by sampling techniques when compared to exhaustive search(all possible combinations)}\label{fig:performance_graph}
+\caption{Time saved by sampling techniques when compared to exhaustive search(all possible combinations)}\label{fig:time_saved}
 \end{figure}
 
 These results, along with the fact that the size of the sampled population is smaller compared to the configuration space, shows us that the \textit{WHERE east west} can indeed save time and effort, when the cost of collecting training samples is expensive.
@@ -459,7 +459,7 @@ For each piece, it then pushes the neighborhood up the local gradient.  This  ap
 \end{tabular}
 \caption{Inside GALE}\label{fig:gale}
 \end{figure}
-GALE combines (a) the neighborhood perturbation (described above)  with (b)~the MOEA algorithm of \fig{moea}.  The algorithm reflects over a {\em population} of points, each of which contains {\em decisions} (configurations of a software system).  It then searches for the input decisions that lead to best outcomes.  For example:
+GALE combines (a) the neighborhood perturbation  with (b)~the MOEA algorithm of \fig{moea}.  The algorithm reflects over a {\em population} of points, each of which contains {\em decisions} (configurations of a software system).  It then searches for the input decisions that lead to best outcomes.  For example:
 \begin{itemize}
 \item we adjust the inputs to CART (modelling the performance score of the software system)
 \item GALE can report the best configuration for the system such that the performance score is (near) lowest.
@@ -544,70 +544,39 @@ investigates what the researcher purports to investigate.
 {\em Internal validity} checks if the differences found in
 the treatments can be ascribed to the treatments under study. 
 One internal validity issue with our experiments is the choice
-of {\em training, tuning, and testing} data sets discussed in 
+of {\em training and testing} data sets discussed in 
 \tion{design}. Recall that while all our learners used the same
 {\em testing} data set, our untuned learners were only given
-access to {\em training} while DEs could get feedback from
+access to {\em training} while GALE could get feedback from
 {\em training} and
-{\em tuning}.  This means that, potentially,  the performance increases
-reported above are merely an artificat of the DEs being able to access
-more data. However:
-\bi
-\item Note that
-DEs assess their performance using a model built from {\em training}
-then applied to the {\em tuning} data. If we gave the untuned
-learners double the training data, then this would be inherently
-biased against DEs.
-\item In practice, this is much ado about nothing. We have
-repeated all the experiments of this paper with the untuned
-learners building models from {\em training} + {\em tuning}.
-While the exact numbers found in this way
-may differ from the above in some small way, we can report that 
-those repeated runs do not substantively change the above conclusions.
-\ei
+{\em tuning}.  
 
-{\em Internal validity}\textcolor{red}{(copied verbatim)}
+{\em Internal validity}
 Regarding SQLite, we cannot measure all possible configurations in reasonable time. Hence, we sampled only 100 configurations to compare prediction and actual performance values. We are aware that this evaluation leaves room for outliers.
 Also, we are aware that measurement bias can cause false interpretations [20]. Since we aim at predicting performance for a special workload, we do not have to vary benchmarks.
 
 
 
-{\em External validity} \textcolor{red}{(copied verbatim)} We aimed at increasing external validity by choosing programs from different domains with different configuration mechanisms and implemented with different programming languages. Furthermore, we used programs that are deployed and used in the real-world. Nevertheless, we are aware that the results of our evaluations are not automatically transferable to all configurable programs. In addition to our sample program selection, the strong and exhaustive evaluation (over 60 days of measurement with 5 computers) indicate that our heuristics hold for many practical application scenarios.
-
+{\em External validity}  We aimed at increasing the external validity by choosing programs from different domains with different configuration mechanisms and implemented with different programming languages. Furthermore, the programs used are deployed and used in real world. Nevertheless, assuming the evaluations to be automatically transferable  to all configurable programs is not fair. To further strengthen the external validity we run the model(generated by \textit{WHERE east west} against other searchers like NSGAII and differential evolution algorithms\cite{storn1997differential}. This is to validate teh fact that the model doesn't only work for GALE style of perturbation. In Table \ref{external_validity}, we see that the models developed is valid for all searchers, as all searchers are able to find the near optimal solutions.
 
 \begin{table}
 \centering
 \scriptsize
-\caption{My caption}
-\label{my-label}
+
 \begin{tabular}{|l|l|l|l|l|l|l|}
 \hline
 {\bf Searcher}  & {\bf Apache} & {\bf \begin{tabular}[c]{@{}l@{}}Berkeley \\ DB C\end{tabular}} &  {\bf \begin{tabular}[c]{@{}l@{}}Berkeley \\ DB Java\end{tabular}} & {\bf LLVM} & {\bf SQL} & {\bf X264}                      \\ \hline
 {\bf \it GALE}  & 840          & 0.35                                                         & 2960                                        & 199.68   & 244.23    & 12.61                         \\ \hline
 {\bf \it NSGA2} & 840          & 0.35                                                         & 2960                                        & 199.68   & 244.23    & 12.61                         \\ \hline
 {\bf \it DE}    & 840          & 0.35                                                         & 2960                                        & 199.68   & 244.23    & \cellcolor[HTML]{9B9B9B}12.51 \\ \hline
+
 \end{tabular}
+\caption{The minimum performance scores as found by learners GALE, NSGAII and DE. The scores here show that all the learners are able to find configuration with minimum scores}
+\label{external_validity}
 \end{table}
 
 
-
-{\em Optimizer Bias} \textcolor{red}{(copied verbatim)}
-Our reading of the literature is that the experimentation
-in this paper is far larger than what is typically used
-to certify new optimizers. Also, we know of no other
-search-based SE paper that can achieve GALE’s results
-using so few evaluations.
-That said, the applicability of GALE to new models
-is an open question. We have shown that GALE does
-better than NSGA-II and DE, for the configuration search spaces explored
-above. This is not to say that we we have not shown that
-it works better than all optimizers over all data sets.
-There are theoretical reasons to conclude that it is impossible
-to show that any one optimizer always performs
-best. Wolpert and Macready [NFL paper] showed in 1997 that no
-optimizers necessarily work better than any other for all possible optimization problems.
-
-{\em Parameter Bias} \textcolor{red}{(copied verbatim)}
+{\em Parameter Bias} 
 For this study, we did not do extensive parameter tuning:
 NSGA-II and DE were run using their default
 settings while GALE was run using the settings that
@@ -628,8 +597,8 @@ mutations;
 If this paper was arguing that these parameters were
 somehow optimal, then it would be required to present
 experiments defending the above settings. However, our
-claim is less than that—we only aim to show that with
-these settings, GALE does as well than standard MOEA
+claim is less than that\—we only aim to show that with
+these settings, GALE does as well than standard searching
 tools. In future work, we will explore other settings.
 
 
@@ -665,32 +634,12 @@ Our empirical findings are meant to help the stakeholders in finding optimal con
 
 \section{Future Work}
 
- As noted by
-F\"{u}rnkranz~
-problem that seeks the smallest model with the highest performance, 
-that generalizes best for
-future examples (perhaps learned in minimal time using the least amount of data).
-In this view, we are using DE to optimize an optimizer. Perhaps a better approach might be
-to dispense with the separation of ``optimizer'' and ``learner'' and combine them both
-into one system that learns how to tune itself as it executes. If this view is useful,
-then instead of adding elaborations to data miners (as done in this paper, or by researchers
-exploring hyper-heuristics~
-mining with a single system that rapidly performs both tasks.
-
-Another issue for future work is the implications of these
-conclusions to other kinds of software analytics.
- This paper has explored  {\em some} learners using {\em one}  optimizer. Hence, we can make
-no claim that DE is the {\em best} optimizer for {\em all} learners.
-Rather, our point is that there exists at least some learners
-whose performance can be dramatically improved by 
-at least one simple optimization scheme.  We hope that this work inspires
-much future work as this community develops and debugs best practices for tuning
-software analytics.
+TO BE FILLED
  
  
 
 \section*{Acknowledgments}
-The work has partially funded by a National Science Foundation CISE CCF award \#1506586.
+TO BE FILLED
  
 \vspace*{0.5mm}
  
