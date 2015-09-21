@@ -53,9 +53,9 @@ rc('font',**{'family':'sans-serif','sans-serif':['Helvetica'], 'size':9.5})
 
 f, (ax1, ax2, ax3, ax4, ax5, ax6) = plt.subplots(6, 1, sharex='col', sharey='row')
 
-r1 = ax1.bar(index, data["apache"]["base_line"], bar_width,alpha=opacity,color='r',error_kw=error_config)
-r2 = ax1.bar(index + bar_width, data["apache"]["random_where"], bar_width,alpha=opacity,color='y',error_kw=error_config)
-r3 = ax1.bar(index + 2*bar_width, data["apache"]["east_west_where"], bar_width,alpha=opacity,color='g',error_kw=error_config)
+r1 = ax1.bar(index + bar_width, data["apache"]["base_line"], bar_width,alpha=opacity,color='r',error_kw=error_config)
+r2 = ax1.bar(index + 2*bar_width, data["apache"]["random_where"], bar_width,alpha=opacity,color='y',error_kw=error_config)
+r3 = ax1.bar(index + 3*bar_width, data["apache"]["east_west_where"], bar_width,alpha=opacity,color='g',error_kw=error_config)
 ax1.yaxis.offsetText.set_visible(False)
 ax1.set_yticks(np.arange(0, 160, 30))
 
@@ -69,10 +69,10 @@ ax1.text(right, 0.5*(bottom+top), 'Apache',
 
 
 # ax2.set_title('Berkeley DB C')
-#r1 = ax1.bar(index, data["BDBC"]["base_line"], bar_width,alpha=opacity,color='b',error_kw=error_config)
-r1 = ax2.bar(index, data["BDBC"]["base_line"], bar_width,alpha=opacity,color='r',error_kw=error_config)
-r2 = ax2.bar(index + bar_width, data["BDBC"]["random_where"], bar_width,alpha=opacity,color='y',error_kw=error_config)
-r3 = ax2.bar(index + 2*bar_width, data["BDBC"]["east_west_where"], bar_width,alpha=opacity,color='g',error_kw=error_config)
+#r1 = ax1.bar(index + bar_width, data["BDBC"]["base_line"], bar_width,alpha=opacity,color='b',error_kw=error_config)
+r1 = ax2.bar(index + bar_width, data["BDBC"]["base_line"], bar_width,alpha=opacity,color='r',error_kw=error_config)
+r2 = ax2.bar(index + 2*bar_width, data["BDBC"]["random_where"], bar_width,alpha=opacity,color='y',error_kw=error_config)
+r3 = ax2.bar(index + 3*bar_width, data["BDBC"]["east_west_where"], bar_width,alpha=opacity,color='g',error_kw=error_config)
 ax2.yaxis.offsetText.set_visible(False)
 ax2.set_yticks(np.arange(0, 2100, 500))
 ax2.text(right, 0.5*(bottom+top), 'BDBC',
@@ -84,10 +84,10 @@ ax2.text(right, 0.5*(bottom+top), 'BDBC',
 
 
 # ax3.set_title('Berkeley DB Java')
-#r1 = ax1.bar(index, data["BDBJ"]["base_line"], bar_width,alpha=opacity,color='b',error_kw=error_config)
-r1 = ax3.bar(index, data["BDBJ"]["base_line"], bar_width,alpha=opacity,color='r',error_kw=error_config)
-r2 = ax3.bar(index + bar_width, data["BDBJ"]["random_where"], bar_width,alpha=opacity,color='y',error_kw=error_config)
-r3 = ax3.bar(index + 2*bar_width, data["BDBJ"]["east_west_where"], bar_width,alpha=opacity,color='g',error_kw=error_config)
+#r1 = ax1.bar(index + bar_width, data["BDBJ"]["base_line"], bar_width,alpha=opacity,color='b',error_kw=error_config)
+r1 = ax3.bar(index + bar_width, data["BDBJ"]["base_line"], bar_width,alpha=opacity,color='r',error_kw=error_config)
+r2 = ax3.bar(index + 2*bar_width, data["BDBJ"]["random_where"], bar_width,alpha=opacity,color='y',error_kw=error_config)
+r3 = ax3.bar(index + 3*bar_width, data["BDBJ"]["east_west_where"], bar_width,alpha=opacity,color='g',error_kw=error_config)
 ax3.set_yticks(np.arange(0, 150, 30))
 ax3.yaxis.offsetText.set_visible(False)
 ax3.text(right, 0.5*(bottom+top), 'BDBJ',
@@ -99,10 +99,10 @@ ax3.text(right, 0.5*(bottom+top), 'BDBJ',
 
 
 # ax4.set_title('LLVM')
-#r1 = ax1.bar(index, data["LLVM"]["base_line"], bar_width,alpha=opacity,color='b',error_kw=error_config)
-r1 = ax4.bar(index, data["LLVM"]["base_line"], bar_width,alpha=opacity,color='r',error_kw=error_config)
-r2 = ax4.bar(index + bar_width, data["LLVM"]["random_where"], bar_width,alpha=opacity,color='y',error_kw=error_config)
-r3 = ax4.bar(index + 2*bar_width, data["LLVM"]["east_west_where"], bar_width,alpha=opacity,color='g',error_kw=error_config)
+#r1 = ax1.bar(index + bar_width, data["LLVM"]["base_line"], bar_width,alpha=opacity,color='b',error_kw=error_config)
+r1 = ax4.bar(index + bar_width, data["LLVM"]["base_line"], bar_width,alpha=opacity,color='r',error_kw=error_config)
+r2 = ax4.bar(index + 2*bar_width, data["LLVM"]["random_where"], bar_width,alpha=opacity,color='y',error_kw=error_config)
+r3 = ax4.bar(index + 3*bar_width, data["LLVM"]["east_west_where"], bar_width,alpha=opacity,color='g',error_kw=error_config)
 ax4.set_yticks(np.arange(0, 900, 200))
 ax4.yaxis.offsetText.set_visible(False)
 ax4.text(right, 0.5*(bottom+top), 'LLVM',
@@ -114,10 +114,10 @@ ax4.text(right, 0.5*(bottom+top), 'LLVM',
 
 
 
-#r1 = ax1.bar(index, data["SQL"]["base_line"], bar_width,alpha=opacity,color='b',error_kw=error_config)
-r1 = ax5.bar(index, data["SQL"]["base_line"], bar_width,alpha=opacity,color='r',error_kw=error_config)
-r2 = ax5.bar(index + bar_width, data["SQL"]["random_where"], bar_width,alpha=opacity,color='y',error_kw=error_config)
-r3 = ax5.bar(index + 2*bar_width, data["SQL"]["east_west_where"], bar_width,alpha=opacity,color='g',error_kw=error_config)
+#r1 = ax1.bar(index + bar_width, data["SQL"]["base_line"], bar_width,alpha=opacity,color='b',error_kw=error_config)
+r1 = ax5.bar(index + bar_width, data["SQL"]["base_line"], bar_width,alpha=opacity,color='r',error_kw=error_config)
+r2 = ax5.bar(index + 2*bar_width, data["SQL"]["random_where"], bar_width,alpha=opacity,color='y',error_kw=error_config)
+r3 = ax5.bar(index + 3*bar_width, data["SQL"]["east_west_where"], bar_width,alpha=opacity,color='g',error_kw=error_config)
 ax5.set_yticks(np.arange(0, 4000, 1000))
 ax5.yaxis.offsetText.set_visible(False)
 ax5.text(right, 0.5*(bottom+top), 'SQL',
@@ -128,10 +128,10 @@ ax5.text(right, 0.5*(bottom+top), 'SQL',
         transform=ax5.transAxes)
 
 # ax6.set_title('X264')
-#r1 = ax1.bar(index, data["X264"]["base_line"], bar_width,alpha=opacity,color='b',error_kw=error_config)
-r1 = ax6.bar(index, data["X264"]["base_line"], bar_width,alpha=opacity,color='r',error_kw=error_config)
-r2 = ax6.bar(index + bar_width, data["X264"]["random_where"], bar_width,alpha=opacity,color='y',error_kw=error_config)
-r3 = ax6.bar(index + 2*bar_width, data["X264"]["east_west_where"], bar_width,alpha=opacity,color='g',error_kw=error_config)
+#r1 = ax1.bar(index + bar_width, data["X264"]["base_line"], bar_width,alpha=opacity,color='b',error_kw=error_config)
+r1 = ax6.bar(index + bar_width, data["X264"]["base_line"], bar_width,alpha=opacity,color='r',error_kw=error_config)
+r2 = ax6.bar(index + 2*bar_width, data["X264"]["random_where"], bar_width,alpha=opacity,color='y',error_kw=error_config)
+r3 = ax6.bar(index + 3*bar_width, data["X264"]["east_west_where"], bar_width,alpha=opacity,color='g',error_kw=error_config)
 ax6.set_yticks(np.arange(0, 1000, 200))
 ax6.yaxis.offsetText.set_visible(False)
 ax6.text(right, 0.5*(bottom+top), 'X264',
@@ -143,12 +143,12 @@ ax6.text(right, 0.5*(bottom+top), 'X264',
 
 
 
-plt.figlegend([ r1, r2, r3], [ "Where Exemplar", "Where Random",  "Where East West"], frameon=False, loc='lower center', bbox_to_anchor=(0.5, -0.0145), fancybox=True, ncol=2)
+plt.figlegend([ r1, r2, r3], [ "Where Exemplar", "Where Random",  "Where East West"], frameon=False, loc='lower center', bbox_to_anchor=(0.5, -0.0145), fancybox=True, ncol=3)
 f.text(0.04, 0.5, 'Number of Evaluations', va='center', rotation='vertical', fontsize=11)
-plt.xticks([10, 20, 30, 40], ['10', '20', '40', '80'])
+plt.xticks([15, 25, 35, 45], ['10', '20', '40', '80'])
 f.set_size_inches(6.0, 8.5)
 f.subplots_adjust(wspace=0, hspace=0)
-# plt.ylabel("Time saved(%)", fontsize=11)
+plt.xlabel("Percentage of Data(%)", fontsize=11)
 # plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
 # plt.tight_layout()
 # plt.show()

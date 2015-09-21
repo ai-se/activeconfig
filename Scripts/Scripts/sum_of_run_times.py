@@ -150,7 +150,7 @@ ax6.text(right, 0.5*(bottom+top), 'X264',
 
 plt.figlegend([ r2, r3], ["Where Random",  "Where East West"], frameon=False, loc='lower center', bbox_to_anchor=(0.5, -0.0145), fancybox=True, ncol=2)
 f.text(0.04, 0.5, 'Percentage of Total Runtime Required(%)', va='center', rotation='vertical', fontsize=11)
-plt.xticks([10, 20, 30, 40], ['10', '20', '40', '80'])
+plt.xticks([15, 25, 35, 45], ['10', '20', '40', '80'])
 f.set_size_inches(6.0, 8.5)
 f.subplots_adjust(wspace=0, hspace=0)
 plt.xlabel("Percentage of Data(%)", fontsize=11)
