@@ -190,10 +190,7 @@ of candidate solutions. The algorithm is an active learner;
 i.e. instead of evaluating all instances, it isolates and explores
 only the most informative ones. We explain the working of GALE in section 5.
 
-    \begin{figure}[!t]
-\includegraphics[width=0.9\linewidth]{Figures/evaluation_graph.eps}
-\caption{ General Process of Performance Modelling }\label{fig:GeneralProcess}
-\end{figure}
+
 
 
 \section{Problem Formulation}
@@ -355,6 +352,15 @@ Figure ~\ref{fig:sampling_accuracy} shows how the variation of the  prediction a
 \caption{Behavior of accuracy of WHERE-exemplar, baseline, WHERE-east-west wrt. to different training set sizes }\label{fig:sampling_accuracy}
 \end{figure}
 
+    \begin{figure}[!t]
+\includegraphics[width=0.9\linewidth]{Figures/evaluation_graph.eps}
+\caption{ Comparing evaluations of different approaches }\label{fig:Evaluations}
+\end{figure}
+
+    \begin{figure}[!t]
+\includegraphics[width=0.9\linewidth]{Figures/sum_of_run_times_graph.eps}
+\caption{ Comparing the runtimes of two promising approaches }\label{fig:Runtimes}
+\end{figure}
 
 
 \textit{B. Does less data used in building the models lead to large
@@ -372,10 +378,7 @@ In Figure \ref{fig:time_saved}, we show the amount of time saved by various samp
     \item{From the previous sections, we know that \textit{WHERE east west} achieves 'almost' same accuracy,
     which mean the technique saves time while preserving accuracy and reducing variability.}
 \ei
-\begin{figure}[!t]
-\includegraphics[width=0.9\linewidth]{Figures/performance_graph.eps}
-\caption{Time saved by sampling techniques when compared to exhaustive search(all possible combinations)}\label{fig:time_saved}
-\end{figure}
+
 
 These results, along with the fact that the size of the sampled population is smaller compared to the configuration space, shows us that the \textit{WHERE east west} can indeed save time and effort, when the cost of collecting training samples is expensive.
 
@@ -489,45 +492,6 @@ The perturbing module of GALE was modified for this problem. Since this problem 
 
 \hline \end{tabular}}\\[-0.1cm]
 
-% %{\small \textbf{Lucene}\\[0.1cm]}
-%   {\small Lucene \begin{tabular}{{l@{~~~~}l@{~~~~}r@{~~~~}r@{~~}c@{}r}}
-% \arrayrulecolor{lightgray}
-% \rowcolor{lightgray}\textbf{Rank} & \textbf{Treatment} & \textbf{Median} & \textbf{IQR} & \\
-%   1 &        XTREE &    60  &  11 & \quart{42}{6}{45}{79} \\
-% \hline  2 &           CD+FS &    51  &  4 & \quart{36}{4}{39}{79} \\
-%   2 &        CD &    48  &  4 & \quart{37}{4}{39}{79} \\
-% \hline  3 &          BIC &    37  &  2 & \quart{35}{2}{36}{79} \\
-% \hline \end{tabular}}\\[-0.1cm]
-
-% %{\small \textbf{Poi}\\[0.1cm]}
-%   {\small Poi~~~~~~~ \begin{tabular}{{l@{~~~~}l@{~~~~}r@{~~~~}r@{~~}c@{}r}}
-% \arrayrulecolor{lightgray}
-% \rowcolor{lightgray}\textbf{Rank} & \textbf{Treatment} & \textbf{Median} & \textbf{IQR} & \\
-%   1 &        XTREE &    56  &  1 & \quart{40}{8}{44}{79} \\
-% \hline  2 &           CD &    44  & 16 & \quart{29}{13}{35}{79} \\
-%   2 &          BIC &    43  &  9 & \quart{30}{7}{34}{79} \\
-%   2 &        CD+FS &    40  &  5 & \quart{30}{4}{31}{79} \\
-% \hline \end{tabular}}\\[-0.1cm]
-
-% %{\small \textbf{Ivy}\\[0.1cm]}
-%   {\small Ivy~~~~~~ ~ \begin{tabular}{{l@{~~~~}l@{~~~~}r@{~~~~}r@{~~}c@{}r}}
-% \arrayrulecolor{lightgray}
-% \rowcolor{lightgray}\textbf{Rank} & \textbf{Treatment} & \textbf{Median} & \textbf{IQR} & \\
-%   1 &        XTREE &    46  &  8 & \quart{33.6}{6.4}{36.8}{79} \\
-% \hline 2 &          BIC &    40  &  2 & \quart{31}{2}{32}{79} \\
-% \hline  3 &           CD &    20  &  5 & \quart{15}{4}{15}{79} \\
-%   3 &        CD+FS &    18  &  0 & \quart{14}{0}{14}{79} \\
-% \hline \end{tabular}}\\[-0.1cm]
-
-% %{\small \textbf{Jedit}\\[0.1cm]}
-%   {\small  Jedit~~~~~~ \begin{tabular}{{l@{~~~}l@{~~~~}r@{~~~~}r@{~~}c@{}r}}
-% \arrayrulecolor{lightgray}
-% \rowcolor{lightgray}\textbf{Rank} & \textbf{Treatment} & \textbf{Median} & \textbf{IQR} & \\
-%   1 &        XTREE &    55  &  1 & \quart{35}{8}{45}{79} \\
-% \hline  2 &           CD &    45  &  9 & \quart{28}{7}{35}{79} \\
-%   2 &        CD+FS &    45  &  9 & \quart{28}{7}{35}{79} \\
-%   2 &          BIC &    45  &  0 & \quart{35}{0}{35}{79} \\
-% \hline \end{tabular}}\\[-0.1cm]
 \caption{Results on  Jureczko   data sets. Results from 40 repeats.
 Ratios of (1)~number of examples with defects 
 (expected in the test
