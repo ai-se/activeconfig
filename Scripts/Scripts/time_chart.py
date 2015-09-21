@@ -10,7 +10,7 @@ def get_data(filename):
     lines = open(filename, "r").readlines()
     for i, line in enumerate(lines):
         if i == 0: continue
-        temp = line.split(",")
+        temp = line[:-2].split(",")
         temp[-1] = temp[-1].replace("\n", "")
         if float(temp[0]) not in filter: continue
         saved_percentage = float(temp[-3])/float(temp[-2]) * 100

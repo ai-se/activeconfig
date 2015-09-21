@@ -12,7 +12,7 @@ def median_mre_scores():
             if i == 0: continue
             temp = line.split(",")
             temp[-1] = temp[-1].replace("\n", "")
-            if temp[-1] in data.keys(): data[temp[-1]].append(round(float(temp[1]) * 100, 2))
+            if temp[-1] in data.keys(): data[temp[-1]].append(round(float(temp[2]) * 100, 2))
             else:  data[temp[-1]] = [round(float(temp[1])*100, 2)]
         return data
 
@@ -21,7 +21,7 @@ def median_mre_scores():
     for file in files:
         name = file[:-4].split("_")[1]
         data[name] = get_data(file)
-    print data.keys()
+    # print data.keys()
     return data
 
 
@@ -146,5 +146,5 @@ f.text(0.04, 0.5, 'MRE', va='center', rotation='vertical', fontsize=11)
 plt.xlabel("Percentage of Data")
 # plt.subplot_tool()
 # f.tight_layout()
-plt.savefig('SamplingAccuracy.eps', format='eps')
+plt.savefig('Variance.eps', format='eps')
 # plt.show()
