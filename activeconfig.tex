@@ -359,8 +359,8 @@ Figure ~\ref{fig:sampling_accuracy} shows how the variation of the  prediction a
 \end{figure}
 
 \begin{figure}[!t]
-\includegraphics[width=0.9\linewidth]{Figures/SamplingAccuracy.eps}
-\caption{Behavior of accuracy of WHERE-exemplar, baseline, WHERE-east-west wrt. to different training set sizes }\label{fig:sampling_accuracy}
+\includegraphics[width=0.9\linewidth]{Figures/Variance.eps}
+\caption{Variances }\label{fig:Variance}
 \end{figure}
 
     \begin{figure}[!t]
@@ -538,11 +538,11 @@ Also, we are aware that measurement bias can cause false interpretations [20]. S
 
 \begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|l|}
 \hline
-                           & \multicolumn{2}{l|}{Apache} & \multicolumn{2}{l|}{\begin{tabular}[c]{@{}l@{}}Berkeley \\ DB C\end{tabular}} & \multicolumn{2}{l|}{\begin{tabular}[c]{@{}l@{}}Berkeley \\ DB Java\end{tabular}} & \multicolumn{2}{l|}{LLVM} & \multicolumn{2}{l|}{SQL}                                   & \multicolumn{2}{l|}{X264} \\ \cline{2-13} 
-\multirow{-2}{*}{Searcher} & Median         & IQR        & Median                                 & IQR                                  & Median                                   & IQR                                   & Median        & IQR       & Median                         & IQR                       & Median       & IQR        \\ \hline
-GALE                       & 900            & 60         & 0.3617                                 & 0.003                                & 3139                                     & 70                                    & 201.703       & 1.31      & 13.1689                        & 0.195                     & 246.273      & 2.227      \\ \hline
-DE                         & 900            & 60         & 0.3617                                 & 0.003                                & 3139                                     & 70                                    & 201.703       & 1.31      & \cellcolor[HTML]{656565}13.024 & \cellcolor[HTML]{656565}0 & 246.273      & 2.227      \\ \hline
-NSGA2                      & 900            & 60         & 0.3617                                 & 0.003                                & 3139                                     & 70                                    & 201.703       & 1.31      & \cellcolor[HTML]{656565}13.024 & \cellcolor[HTML]{656565}0 & 246.273      & 2.227      \\ \hline
+\multirow{2}{*}{Searcher} & \multicolumn{2}{l|}{Apache} & \multicolumn{2}{l|}{\begin{tabular}[c]{@{}l@{}}Berkeley \\ DB C\end{tabular}} & \multicolumn{2}{l|}{\begin{tabular}[c]{@{}l@{}}Berkeley \\ DB Java\end{tabular}} & \multicolumn{2}{l|}{LLVM} & \multicolumn{2}{l|}{SQL} & \multicolumn{2}{l|}{X264} \\ \cline{2-13} 
+                          & Median         & IQR        & Median                                 & IQR                                  & Median                                   & IQR                                   & Median       & IQR        & Median      & IQR        & Median       & IQR        \\ \hline
+GALE                      & 870            & 0          & 0.3633                                 & 0.004                                & 3139                                     & 70                                    & 202.23       & 3.98       & 13.1284     & 0.2411     & 247.717      & 3.34       \\ \hline
+DE                        & 840            & 0          & 0.3589                                 & 0.002                                & 3139                                     & 70                                    & 199.68       & 0          & 13.079      & 0          & 244.27       & 0.003      \\ \hline
+NSGA2                     & 840            & 0          & 0.3536                                 & 0.005                                & 3139                                     & 70                                    & 199.68       & 0          & 13.079      & 0.406      & 244.27       & 0.05       \\ \hline
 \end{tabular}}
 \caption{The minimum performance scores as found by learners GALE, NSGAII and DE. The scores here show that all the learners are able to find configuration with minimum scores}
 \label{external_validity}
