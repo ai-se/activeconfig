@@ -334,7 +334,7 @@ the most informative subset consisting of the poles used to
 recursively divide the data. The recursive binary division of the solutions(M), and that this technique uses two solutions in each cluster, which means the technique uses only $2log_2(M)$.
 
 \subsubsection{WHERE Random}\label{where_random}
-This technique uses WHERE spectral learner to cluster the data points and randomly chooses a point from the clusters. It is assumed that a random point in the cluster can be used as a representative to all the points in cluster. This technique only requires to one evluation per cluster.
+This technique uses WHERE spectral learner to cluster the data points and randomly chooses a point from the clusters. It is assumed that a random point in the cluster can be used as a representative to all the points in cluster. This technique only requires to one evaluation per cluster.
 
 
 
@@ -348,10 +348,15 @@ By conducting experiments on six real-world configurable systems, we aim at answ
 \textit{A. Can a reasonable prediction accuracy be achieved based on 
 subset of a training set?}\\
 \\
-Figure ~\ref{fig:sampling_accuracy} shows how the variation of the  prediction accuracy wrt. to the size of the training set (used before sampling). The x-axis of the graph represents the percentage of the training set used to train the learner (CART) and the y-axis represents the MRE as defined in equation \ref{eq:1}. The technique being compared are \textit{WHERE east-west}, \textit{WHERE exemplar} and \textit{baseline} (use $2/3$ of the dataset to train CART) In our experiments, a low MRE is an indicator of good sampling technique. Our assumption based on the machine learning literature(ref needed) is, as the size of the training set increases the accuracy of the predictor must improve. But the point that we are trying to make with this experiment is to show that the quantity of the data doesn't matter but how much information is provided by the examples. In sub-graph 1 (Apache), the WHERE east-west performs as well as the baseline technique, where as WHERE exemplar perform worse than the other techniques for most of the training set sizes. WHERE-exemplar only works well when the 90\% of the data set is available for clustering. Sub-graph 3 shows an very interesting property as the number of training samples available for training increases the accuracy of the predictor decreases (which is counter-intuitive). The results of the WHERE exemplar provides evidence to believe that the solution with the best performance score is not a good representative of the cluster. On the other hand, the poles of a cluster is a indeed a good representative of the cluster.\\~\\
+Figure ~\ref{fig:sampling_accuracy} shows how the variation of the  prediction accuracy wrt. to the size of the training set (used before sampling). The x-axis of the graph represents the percentage of the training set used to train the learner (CART) and the y-axis represents the MRE as defined in equation \ref{eq:1}. The WHERE based sampling techniques are compared to \textit{baseline}.  In our experiments, a low MRE is an indicator of good sampling technique. Our assumption based on the machine learning literature(ref needed) is, as the size of the training set increases the accuracy of the predictor must improve. Using this experiment, we are trying to make a case for 'informative' data samples(as obtained by WHERE east But the point that we are trying to make with this experiment is to show that the quantity of the data doesn't matter but how much information is provided by the examples. In sub-graph 1 (Apache), the WHERE east-west performs as well as the baseline technique, where as WHERE exemplar perform worse than the other techniques for most of the training set sizes. WHERE-exemplar only works well when the 90\% of the data set is available for clustering. Sub-graph 3 shows an very interesting property as the number of training samples available for training increases the accuracy of the predictor decreases (which is counter-intuitive). The results of the WHERE exemplar provides evidence to believe that the solution with the best performance score is not a good representative of the cluster. On the other hand, the poles of a cluster is a indeed a good representative of the cluster.\\~\\
 
 
 
+
+\begin{figure}[!t]
+\includegraphics[width=0.9\linewidth]{Figures/SamplingAccuracy.eps}
+\caption{Behavior of accuracy of WHERE-exemplar, baseline, WHERE-east-west wrt. to different training set sizes }\label{fig:sampling_accuracy}
+\end{figure}
 
 \begin{figure}[!t]
 \includegraphics[width=0.9\linewidth]{Figures/SamplingAccuracy.eps}
