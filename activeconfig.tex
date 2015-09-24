@@ -342,26 +342,25 @@ This technique uses WHERE spectral learner to cluster the data points and random
 We use the points sampled, using the technique described above, to build the predictive model using the popular machine learning technique called Classification and Regression Tree(CART), which has been extensively used in the literature and has been observed to be fast and accurate~\cite{guo2013variability}.
 
 \subsection{Results}
-Our sampling methods are stochastic in nature and hence we have repeated the experiments 20 times to report the variance(which represents stability of our results). 
-By conducting experiments on six real-world configurable systems, we aim at answering the following research questions
+
+Using the experiments, we try to make a case for "less quantity, more data". We consider our technique as variant of a compression algorithm. The clustering algorithm (WHERE), find clusters of data points (clustered on the first principle component) with similar properties. Sampling from every cluster means we are including all the variations presented in the dataset. 
+By conducting the experiment on six real world datasets we try to answer the following research questions.
 
 \textit{A. Can a reasonable prediction accuracy be achieved based on 
 subset of a training set?}\\
 \\
-Figure ~\ref{fig:sampling_accuracy} shows how the variation of the  prediction accuracy wrt. to the size of the training set (used before sampling). The x-axis of the graph represents the percentage of the training set used to train the learner (CART) and the y-axis represents the MRE as defined in equation \ref{eq:1}. The WHERE based sampling techniques are compared to \textit{baseline}.  In our experiments, a low MRE is an indicator of good sampling technique. Our assumption based on the machine learning literature(ref needed) is, as the size of the training set increases the accuracy of the predictor must improve. Using this experiment, we are trying to make a case for 'informative' data samples(as obtained by WHERE east But the point that we are trying to make with this experiment is to show that the quantity of the data doesn't matter but how much information is provided by the examples. In sub-graph 1 (Apache), the WHERE east-west performs as well as the baseline technique, where as WHERE exemplar perform worse than the other techniques for most of the training set sizes. WHERE-exemplar only works well when the 90\% of the data set is available for clustering. Sub-graph 3 shows an very interesting property as the number of training samples available for training increases the accuracy of the predictor decreases (which is counter-intuitive). The results of the WHERE exemplar provides evidence to believe that the solution with the best performance score is not a good representative of the cluster. On the other hand, the poles of a cluster is a indeed a good representative of the cluster.\\~\\
+Figure ~\ref{fig:sampling_accuracy} show us how accuracy measured in terms of MRE, measure when the size of the dataset used is varied. X-axis represents the size of the dta used as a training set. For eg. Apache has 192 instances (all possible combinations), when 20\% of the data is used. It means 38 instances are chosen at random(without replacement) and this subset of the dataset is used as an input to the sampling techniques. In the figure we see that WHERE east-west and WHERE random are achieving the same accuracy, while WHERE exemplar is consistently performing worse than the other methods. We also observe is sampling on 40\% of the data is enough to model the configuration space. 
 
+Since our objective is to reduce th enumber of examples required to train a model, it is important to compare the number of examples required to train a model(CART). Figure ~\ref{fig:Evaluations} we see that WHERE random and WHERE east-west use less number of evaluations as compared to the WHERe exemplar From this point forward we don't consider WHERE exemplar since, it requires more number of evaluations and don't do as well as other techniques. 
 
-
+Figure ~\ref{fig:Runtimes} shows that WHERE random and WHERE east-west, both techniques require less than 10\% and 20\% (when compared to exhaustive search) respectively.
 
 \begin{figure}[!t]
 \includegraphics[width=0.9\linewidth]{Figures/SamplingAccuracy.eps}
 \caption{Behavior of accuracy of WHERE-exemplar, baseline, WHERE-east-west wrt. to different training set sizes }\label{fig:sampling_accuracy}
 \end{figure}
 
-\begin{figure}[!t]
-\includegraphics[width=0.9\linewidth]{Figures/Variance.eps}
-\caption{Variances }\label{fig:Variance}
-\end{figure}
+
 
     \begin{figure}[!t]
 \includegraphics[width=0.9\linewidth]{Figures/evaluation_graph.eps}
@@ -380,8 +379,11 @@ variance in the predicted values?}\\
 We have shown with sufficient evidence that models can be trained using less data, while achieving the accuracy
 attained by using larger training data. 
 The another aspect, which needs to be considered at this point is the variability that is introduced  when a sampled dataset used to train CART. 
-Figure ~\ref{variance_table} shows the raw scores from the experiment. Each row represents how different techniques(column 1) perform in a dataset(last column). Decimal point numbers on the top of the table represent the percentage of data used to build the CART. The cells highlighted with grey are the cases where the variance is greater than 3\%. The data presented in the table is an evidence to the fact  that \textit{WHERE east-west} doesn't introduce a large variance($[0.23, 2.93]$) where as \textit{WHERE exemplar} is not useful as a sampling technique (this also validates the conclusions drawn in the previous section). 
-
+Figure ~\ref{fig:Variance} shows the variance is under 10\%, when the sampling techniques use atleast 40\% of the data. 
+\begin{figure}[!t]
+\includegraphics[width=0.9\linewidth]{Figures/Variance.eps}
+\caption{Variances }\label{fig:Variance}
+\end{figure}
 
 In Figure \ref{fig:time_saved}, we show the amount of time saved by various sampling methods. The x-axis of the graph represent the percentage of data used to build the CART model. The y-axis shows the time saved by the various sampling methods. There are take away from the figure are:
 \bi
@@ -494,7 +496,7 @@ We try to answer the following research question in this section\\
 \textit{C. Can evolutionary algorithms be used to find the optimal
 configurations using the model generated?}
 \\
-Figure ~\ref{fig:performance_graph} presents the results after running GALE with the performance model. The figure shows the distribution of the performance score (sorted in the ascending order). In the figure we would like to show that GALE has been able to find the configuration/s with minimal performance scores. The green spot on the graphs shows the solution found as the minimum scores. At this point, we would like to point out the GALE doesn't always find the optimal solutions but find solutions close to the optimal. For example, GALE is about to find the third best configuration for SQL lite. We show here that using the software model build using \textit{WHERE east west}, we have been able near optimal solution. We believe that this further validates the usefulness of our approach.  
+Figure ~\ref{fig:performance_graph} presents the results after running GALE with the performance model. The figure shows the distribution of the performance score (sorted in the ascending order). In the figure we would like to show that GALE has been able to find the configuration/s with (almost)minimal performance scores. The graph shows the distribution of the scores.  At this point, we would like to point out the GALE doesn't always find the optimal solutions but find solutions close to the optimal. For example, GALE is about to find the third best configuration for SQL lite. The blue, red and yellow dot represents the 25, 50 and 75 percentile solutions found by GALE. It is to be noted that the solutions found by GALE are relatively stable(variance of the solutions found are low) and is very close to the actual medium. For SQL, the solutions found couldn't be compared with the ground truth since the configurations were not available(given that an exhaustive search was not possible since number of configurations is 39). We show here that using the software model build using \textit{WHERE random}, we have been able near optimal solution. Similar results can be found by models build using the \textit{WHERE east-west}. We believe that this further validates the usefulness of our approach.  
 
 
  
