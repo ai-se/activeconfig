@@ -15,6 +15,8 @@
 \usepackage{times}
 \usepackage{balance}
 \usepackage{picture}
+
+\usepackage{verbatim}
 \usepackage{algorithm}
 \usepackage{algorithmicx}
 \usepackage{algpseudocode}
@@ -70,7 +72,6 @@
 % \newcommand{\rfive}{}
 \newcommand{\wei}[1]{\textcolor{red}{Wei: #1}} 
 \newcommand{\Menzies}[1]{\textcolor{red}{Dr.Menzies: #1}} 
-
 %% timm tricks
 \newcommand{\bi}{\begin{itemize}}%[leftmargin=0.4cm]}
 \newcommand{\ei}{\end{itemize}}
@@ -103,7 +104,7 @@
 
 \begin{document}
 % \conferenceinfo{FSE}{'15 Bergamo, Italy}
-\title{ A Little Sampling Goes A Long Way}
+\title{Active Learning for Predicting and Optimizing Program Runtimes}
 \numberofauthors{2}
 \author{
         \alignauthor Vivek Nair, Tim Menzies, Xipeng Shen 
@@ -141,9 +142,47 @@ Search-based Software Engineering,Sampling, Machine Learning.
 
 \pagenumbering{arabic} %XXX delete before submission
  
+\begin{comment}
+
+note that our analysis is divided into (1) a clustering method on the independent variables (settings to the Makefiles) then (2) an execution of a subset of the clustered data
+
+where we win is that we do (2) very few times (recall that this is time consuming bit)  . you cans ee where we win in fig5, fig6
+
+\end{comment}
  
 \section{Introduction}
- The complexity involving configuring software systems have grown  over the recent years \cite{berger2013study}. A configurable system provides configuration options to customize a software system to a given set of requirements. With custom softwares being a possibility, analyzing performance is very important to the stakeholders using these systems. However, in case of configurable systems due to the state space explosion problem \cite{yilmaz2006covering}, the number of variants increases exponentially with the number of features (provided by the system). This makes the benchmarking process expensive, since exhaustive search becomes infeasible. Xu et.al \cite{xu2015hey} reports that users face tremendous difficulties to find the right configurations from the large configuration space. 
+The big question for your approach is, however, how should we rate the quality (e.g., accuracy, feasibility, usefulness) of a solution (i.e., the estimated optimal configuration) 
+\bi
+\item Valid;
+\item Compared with ground truth.
+\ei
+The first point can be addressed using {\em feature models} which are a lightweight notation
+for describing valid combinations of configurations within a  system~\cite{kang1990feature}. In the rig
+described below, our optimizer is programmed to reject all configurations that violate
+feature models describing valid Makefile settings.
+
+As to the second point, to generate that ground truth we can generate and compile and execute
+a  very large set of configurations. Within that set, there exists some fastest runtime $T_0$--
+and we would assert our optimizer is useful if it can recommend a system that executes
+with time $T_1 \approx T_0$.
+
+As an aside, we note that when discussing this rig with colleagues, they ask if we have the ground truth, why do any optimizations? The answer is that the validation rig used
+in this paper is {\em different} to how this this method would be applied {\em after}
+it has been validated. It is true that to {\em validate} this approach, we must compile
+and execute hundreds to thousands (or more) variations of the Makefiles. Using that information,
+we can test what would happen if:
+\bi
+\item We sample just a few variations (say, $N=64$ or less);
+\item Then build an optimizer to study those variations is order to propose a best, most fastest configuration;
+\item Then compile that proposed configuration to find $T_1$ (the runtime of the compiled code generated from that proposed configuration).
+\ei
+To assess $T_1$, we need to compare it to the $T_0$ (the  the fastest runtime of any configuration). Hence, to validate the rig, we need many configurations. However, given the results of this paper, we assert that it
+in practice, it
+would be acceptable to quickly sample (say) $N=64$ configurations (selected in an intelligent manner,  using the methods described below).
+
+~\hrule~
+
+The complexity involving configuring software systems have grown  over the recent years \cite{berger2013study}. A configurable system provides configuration options to customize a software system to a given set of requirements. With custom softwares being a possibility, analyzing performance is very important to the stakeholders using these systems. However, in case of configurable systems due to the state space explosion problem \cite{yilmaz2006covering}, the number of variants increases exponentially with the number of features (provided by the system). This makes the benchmarking process expensive, since exhaustive search becomes infeasible. Xu et.al \cite{xu2015hey} reports that users face tremendous difficulties to find the right configurations from the large configuration space. 
  
  In order for the users to decide on an optimal configuration for a particular job/functionality, they need an understanding of the dependencies between various configuration or perform an exhaustive search of all the configuration options. Exhaustive search is very time consuming given that n number of configuration will result in $2^n$ number of configurations. To reduce the time required to find an optimal configuration, the key challenge is to build a model of the software system using only a small number of sample configuration, in such a way that it can accurately predict the performance of the software system. This model can be then used to find the optimal configuration using a meta-heuristic algorithm like GALE etc. 
  
@@ -164,12 +203,14 @@ The rest of the paper is organized as follows. Section 2 introduces the backgrou
 \section{Background}
 
 
-    \textbf{Sampling: } Figure ~\ref{fig:GeneralProcess} illustrates the general process of performance prediction using sampling. It starts with an initial sample of measured configurations, which are used to build the prediction model. A good initial sample significantly reduces the effort involved with training sample collection. The state of the art approaches involves progressive and projective sampling techniques \cite{sarkar2015cost} and Fourier Transforms \cite{zhang2015performance}. However these approaches assumes the user to know a lot of about the system, which is not a fair assumption. The problem with iterative techniques lies in the step size, which is an engineering decision(aka black art). In our approach, we use clustering, which uses the first principle component, to determine clusters rather than relying to random sampling methods. Once the clusters are obtained, \'interesting\' representative/s from each cluster  is/are collected. Then these points are used to build prediction models using a statistical learning technique called Classification and Regression Tree (CART), which has been demonstrated to be fast and accurate for performance prediction of configurable system \cite{guo2013variability}.
+    \textbf{Sampling: } Figure ~\ref{fig:GeneralProcess} illustrates the general process of performance prediction using sampling. It starts with an initial sample of measured configurations, which are used to build the prediction model. A good initial sample significantly reduces the effort involved with training sample collection. The boxes in yellow describes the current state of the art sampling process, where as the boxes in grey are the new approach proposed in the paper. 
+    
+    The state of the art approaches involves progressive and projective sampling techniques \cite{sarkar2015cost} and Fourier Transforms \cite{zhang2015performance}. However these approaches assumes the user to know a lot of about the system, which is not a fair assumption. The problem with iterative techniques lies in the step size, which is an engineering decision(aka black art). In our approach, we use clustering, which uses the first principle component, to determine clusters rather than relying to random sampling methods. Once the clusters are obtained, \'interesting\' representative/s from each cluster  is/are collected. Then these points are used to build prediction models using a statistical learning technique called Classification and Regression Tree (CART), which has been demonstrated to be fast and accurate for performance prediction of configurable system \cite{guo2013variability}.
     
 In our work, we use the time saved by the proposed sampling when compared to the exhaustive search is presented along with the prediction accuracy (similar to ~\cite{guo2013variability}, \cite{siegmund2012predicting}, \cite{westermann2012automated}). 
     \begin{figure}[!t]
 \includegraphics[width=0.9\linewidth]{Figures/GeneralProcess.png}
-\caption{ General Process of Performance Modelling }\label{fig:GeneralProcess}
+\caption{ General Process of Performance Modelling. }\label{fig:GeneralProcess}
 \end{figure}
 
 
@@ -257,6 +298,8 @@ MRE = \frac{abs(s-a)}{a} \times 100
 
 
 For all systems, except for SQLite, we obtained the whole population data (i.e., all valid configurations). For SQLite, we measured all configurations corresponding to one-way and two-way interactions and additionally sampled 100 random configurations.
+
+To evaluate our approach, we  implemented our techniques in Python and run it against data constructed from real-world software systems across different domains. 
 
 \section{Sampling Technique: East-West Where}
 % \begin{figure}[!t]
@@ -349,9 +392,9 @@ subset of a training set?}\\
 \\
 Figure ~\ref{fig:sampling_accuracy} show us how accuracy measured in terms of MRE, measure when the size of the dataset used is varied. X-axis represents the size of the dta used as a training set. For eg. Apache has 192 instances (all possible combinations), when 20\% of the data is used. It means 38 instances are chosen at random(without replacement) and this subset of the dataset is used as an input to the sampling techniques. In the figure we see that WHERE east-west and WHERE random are achieving the same accuracy, while WHERE exemplar is consistently performing worse than the other methods. We also observe is sampling on 40\% of the data is enough to model the configuration space. 
 
-Since our objective is to reduce th enumber of examples required to train a model, it is important to compare the number of examples required to train a model(CART). Figure ~\ref{fig:Evaluations} we see that WHERE random and WHERE east-west use less number of evaluations as compared to the WHERe exemplar From this point forward we don't consider WHERE exemplar since, it requires more number of evaluations and don't do as well as other techniques. 
+Since our objective is to reduce th enumber of examples required to train a model, it is important to compare the number of examples required to train a model(CART). In figure ~\ref{fig:Evaluations}, we see that WHERE random and WHERE east-west use far less number of evaluations as compared to the WHERE exemplar. From this point forward we don't consider WHERE exemplar while comparing different approaches, since it requires more number of evaluations and don't do as well as other techniques. 
 
-Figure ~\ref{fig:Runtimes} shows that WHERE random and WHERE east-west, both techniques require less than 10\% and 20\% (when compared to exhaustive search) respectively.
+Figure ~\ref{fig:Runtimes} shows that WHERE random and WHERE east-west, both techniques require less than 10\% and 20\% (when compared to exhaustive search) respectively. The numbers on the top of the cluster bars are the total time required to perform an exhaustive search. For eg. to execute all the possible combinations of configuration of Apache requires 78 hours, where  WHERE random can build a model in less that 5 hours. 
 
 \begin{figure}[!t]
 \includegraphics[width=0.9\linewidth]{Figures/SamplingAccuracy.eps}
@@ -362,7 +405,7 @@ Figure ~\ref{fig:Runtimes} shows that WHERE random and WHERE east-west, both tec
 
     \begin{figure}[!t]
 \includegraphics[width=0.9\linewidth]{Figures/evaluation_graph.eps}
-\caption{ Comparing evaluations of different approaches }\label{fig:Evaluations}
+\caption{ Comparing evaluations of different approaches.  }\label{fig:Evaluations}
 \end{figure}
 
     \begin{figure}[!t]
@@ -596,7 +639,7 @@ it is unfair to hobble one competitor with poor tunings.
 
 \section{Conclusions}
 
-We introduce three new sampling techniques called \textit{WHERE-east-west}, \textit{WHERE random} and \textit{WHERE exemplar} for performance-prediction of configurable systems. To evaluate and compare the techniques, we used the time saved and prediction accuracy. We conducted empirical studies on six real-world configurable systems to determine an ideal sampling strategy for performance prediction of configurable software system. Our key findings are:
+We introduce three new sampling techniques called \textit{WHERE-east-west}, \textit{WHERE random} and \textit{WHERE exemplar} for performance-prediction of configurable systems. To evaluate and compare the techniques, we used prediction accuracy, run times and number of evaluations. We conducted empirical studies on six real-world configurable systems to determine an ideal sampling strategy for performance prediction of configurable software system. Our key findings are:
 \bi
     \item{Clustering can also be used as a part of the process of sampling and can reduce the number of examples required to train a model}
     \item{Less data does help to build stable models since the variance is always lower than 6\%}
