@@ -1,0 +1,38 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+% \usepackage[table,xcdraw]{xcolor}
+% If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
+\begin{table*}[]
+\centering
+\caption{Comparison with Norbert et.al \cite{siegmund2012predicting}}
+\label{my-label}
+\begin{tabular}{|l|l|l|ll|l|l|}
+\hline
+                                   &                                              &                                            & \multicolumn{2}{l|}{\textbf{FaultRate(Them)}}                                    & \multicolumn{2}{l|}{\textbf{FaultRate(US)}}   \\ \cline{4-7} 
+\multirow{-2}{*}{\textbf{Program}} & \multirow{-2}{*}{\textbf{Measurement(Them)}} & \multirow{-2}{*}{\textbf{Measurement(Us)}} & \multicolumn{1}{l|}{\textbf{Mean}}                & \textbf{Std}                 & \textbf{Mean}         & \textbf{Std}          \\ \hline
+                                   & 15                                           &                                            & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}44.1} & \cellcolor[HTML]{C0C0C0}42.3 &                       &                       \\ \cline{2-2} \cline{4-5}
+                                   & 139                                          &                                            & \multicolumn{1}{l|}{3.9}                          & 5.3                          &                       &                       \\ \cline{2-2} \cline{4-5}
+                                   & 160                                          &                                            & \multicolumn{1}{l|}{2.8}                          & 3.7                          &                       &                       \\ \cline{2-2} \cline{4-5}
+\multirow{-4}{*}{BDBC}             & 164                                          & \multirow{-4}{*}{64}                       & \multicolumn{1}{l|}{2.8}                          & 3.7                          & \multirow{-4}{*}{9.3} & \multirow{-4}{*}{6.8} \\ \hline
+                                   & 10                                           &                                            & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}17.7} & \cellcolor[HTML]{C0C0C0}19.6 &                       &                       \\ \cline{2-2} \cline{4-5}
+                                   & 48                                           &                                            & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}8.5}  & \cellcolor[HTML]{C0C0C0}9.6  &                       &                       \\ \cline{2-2} \cline{4-5}
+                                   & 116                                          &                                            & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}3.8}  & \cellcolor[HTML]{C0C0C0}5.7  &                       &                       \\ \cline{2-2} \cline{4-5}
+\multirow{-4}{*}{BDBJ}             & 162                                          & \multirow{-4}{*}{64}                       & \multicolumn{1}{l|}{1.7}                          & 3.5                          & \multirow{-4}{*}{2.7} & \multirow{-4}{*}{0.7} \\ \hline
+                                   & 9                                            &                                            & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}14.9} & \cellcolor[HTML]{C0C0C0}24.8 &                       &                       \\ \cline{2-2} \cline{4-5}
+                                   & 29                                           &                                            & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}7.7}  & \cellcolor[HTML]{C0C0C0}11.2 &                       &                       \\ \cline{2-2} \cline{4-5}
+                                   & 80                                           &                                            & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}11.6} & \cellcolor[HTML]{C0C0C0}22.7 &                       &                       \\ \cline{2-2} \cline{4-5}
+\multirow{-4}{*}{Apache}           & 143                                          & \multirow{-4}{*}{16}                       & \multicolumn{1}{l|}{5.3}                          & 10.8                         & \multirow{-4}{*}{9.9} & \multirow{-4}{*}{2.4} \\ \hline
+                                   & 26                                           &                                            & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}7.8}  & \cellcolor[HTML]{C0C0C0}9.2  &                       &                       \\ \cline{2-2} \cline{4-5}
+                                   & 566                                          &                                            & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}9.3}  & \cellcolor[HTML]{C0C0C0}12.5 &                       &                       \\ \cline{2-2} \cline{4-5}
+                                   & 566                                          &                                            & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}7.1}  & \cellcolor[HTML]{C0C0C0}9.1  &                       &                       \\ \cline{2-2} \cline{4-5}
+\multirow{-4}{*}{SQL}              & 569                                          & \multirow{-4}{*}{64}                       & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}7}    & \cellcolor[HTML]{C0C0C0}9    & \multirow{-4}{*}{5.6} & \multirow{-4}{*}{0.2} \\ \hline
+                                   & 11                                           &                                            & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}7.8}  & \cellcolor[HTML]{C0C0C0}9    &                       &                       \\ \cline{2-2} \cline{4-5}
+                                   & 62                                           &                                            & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}7.4}  & \cellcolor[HTML]{C0C0C0}10.2 &                       &                       \\ \cline{2-2} \cline{4-5}
+                                   & 62                                           &                                            & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}7.4}  & \cellcolor[HTML]{C0C0C0}10.2 &                       &                       \\ \cline{2-2} \cline{4-5}
+\multirow{-4}{*}{LLVM}             & 88                                           & \multirow{-4}{*}{32}                       & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}5.7}  & \cellcolor[HTML]{C0C0C0}7    & \multirow{-4}{*}{3.3} & \multirow{-4}{*}{0.3} \\ \hline
+                                   & 12                                           &                                            & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}29.8} & \cellcolor[HTML]{C0C0C0}22   &                       &                       \\ \cline{2-2} \cline{4-5}
+                                   & 81                                           &                                            & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}17.9} & \cellcolor[HTML]{C0C0C0}27.2 &                       &                       \\ \cline{2-2} \cline{4-5}
+                                   & 89                                           &                                            & \multicolumn{1}{l|}{5.1}                          & 15.1                         &                       &                       \\ \cline{2-2} \cline{4-5}
+\multirow{-4}{*}{x264}             & 89                                           & \multirow{-4}{*}{32}                       & 5.1                                               & 15.1                         & \multirow{-4}{*}{6.6} & \multirow{-4}{*}{0.5} \\ \hline
+\end{tabular}
+\end{table*}
