@@ -332,7 +332,7 @@ For example, the software runtime data used in this paper required  26 days of C
 
 \subsection{Spectral Clustering}\label{sect:spect}
 
-The minimal sampling method explored in this paper is based on spectral clusterers
+The minimal sampling method explored in this paper is based on a spectral clusterering algorithm
 that  explore the spectrum (eigenvalues) of a distance matrix between  configurations to  perform dimensionality  reduction.
 Spectral methods have been used before for a variety of data mining applications.
 Algorithms like PDDP~\cite{boley98} use spectral methods such as principle component analysis (PCA) to
@@ -389,18 +389,34 @@ per level of recursion, which is far less than the $O(N^2)$
 required by PCA~\cite{Du2008}
 or other clustering algorithms such as K-Means~\cite{hamerly2010making}.
 
-When recursive spectral clustering terminates, our minimal sampling policy (which we will call $S_1$) is then applied:
+\subsection{Sampling}
+When recursive spectral clustering terminates, our  sampling policy (which we will call $S_1$) is then applied:
 \begin{quote}
 $S_1$: Compile and execute one  configurations,  picked at random, from each leaf cluster.
 \end{quote}
 We use this sampling policy since, later in this paper, we have also explored a range of alternate sampling policies
-and found that $S_1$ performs better other sampling methods:
+and found that $S_1$ performs better others"
 \bi
 \item $S_2$: East-West sampling: compile and execute the {\em East,West} poles of the leaf clusters;
-\item $S_3$: Exemplar sampling: compile and execute the centroid of each leaf cluster;
+\item $S_3$: Exemplar sampling: compile and execute all items in all leaves and return the one
+with lowest runtime score.
 \ei
-Using the data collected this way, we then use the CART decision tree learner \cite{breiman1984} to build a predictor for runtimes. 
-This predictor is then tested on data {\em not} used in the above spectral clustering processing (see below for details). For each each test item, we find out how long it {\em actually} takes to run and compare that
+Note that $S_2$ is {\em not} a {\em minimal} sampling policy (since it executes all configurations). 
+We use it here as a baseline
+against which we can compare the other, more minimal, sampling polices.
+
+\subsection{Regression Tree Learning}
+Using the data collected this way, we then use the CART regression tree learner \cite{breiman1984} to build a predictor for runtimes. Regression tree learners seek the attribute range split that most increases
+our ability to make accurate predictions:
+\bi
+\item Let a split divide $n$ items  into   with $n_1$ and $n_2$ items
+with standard deviations on the target variable of $\sigma_1$, $\sigma_2$.
+\item The best split is the one that minimizes $\frac{n_1}{n}\sigma_1 + \frac{n_2}{n}\sigma_2$.
+\ei
+The best split CART divides the data on the best split seen in any attribute, the recurses into each split.
+\subsection{Measuring Error}
+
+The predictor built by CART  is then tested on data {\em not} used in the above spectral clustering processing (see below for details). For each each test item, we find out how long it {\em actually} takes to run and compare that
 to the {\em prediction} from CART. The resulting prediction error is then computed using:
 \begin{equation}\label{eq:err}
 \mathit{error}=\frac{\mathit{abs}(\mathit{predicted} - \mathit{actual})}{\mathit{actual}}*100
@@ -443,7 +459,7 @@ by replacing  PCA with FASTMAP (prior work have called this
 method ``WHERE''~\cite{me12d});
 (3)~the $S_1$ sample method that explores the leaf clusters found by this recursive division;
 and (4)~the CART regression tree learner that converts the data from the samples collected by $S_1$
-into a runtime prediction model~\cite{breiman84}.
+into a runtime prediction model~\cite{breiman1984}.
 That is,
 \begin{center}
 WHERE = PDDP - PCA + FASTMAP\\\noindent
