@@ -725,14 +725,14 @@ A core function in evolutionary optimizers are the
 
 \section{Results}
 
-{\bf XXX vivek: remove WHERE from figures. add $S_i$}
+\textcolor{red}{\st{\bf XXX vivek: remove WHERE from figures. add $S_i$}}
 
 \begin{figure}[!t]
 \includegraphics[width=0.9\linewidth]{Figures/SamplingAccuracy.eps}
 \caption{Error seen in the predictions made by WHAT with four different
 sampling policies. Note that. on the y-axis,  {\em lower} errors are {\em better}. 
-XXX Vivek. what is the difference between baseline and exempler. both use all the data?
-also, need to rename these with the new words of this paper.}\label{fig:sampling_accuracy}
+\textcolor{red}{\st{XXX Vivek. what is the difference between baseline and exempler. both use all the data?
+also, need to rename these with the new words of this paper.}}}\label{fig:sampling_accuracy}
 \end{figure}
 
 \subsection{RQ1 results}
@@ -757,9 +757,9 @@ some subset of 100\% of the runtimes seen in configurations
 from 0 to X\%.
 \ei
 
-{\bf XXX VIVEK: (1) are the WHERE random results at X=0.4 the same values as those on \fig{my-label};
-(2) pls change x axis to 20,40,60,80; (3) i still don't get the difference between where exemplar
-and baseline given that baseline samples all}
+{\bf XXX VIVEK: (1) are the WHERE random results at X=0.4 the same values as those on \fig{my-label}; \textcolor{red}{Yes}
+(2) \st{pls change x axis to 20,40,60,80};(3) i still don't get the difference between where exemplar
+and baseline given that baseline samples all}\textcolor{red}{Examplar uses one the best solution in a cluster as a sample, so the number of samples = number of clusters. But baseline uses all the members of all the clusters}
 
 In  \fig{sampling_accuracy}, {\em lower} y-aixis values are {\em better} since this shows lower
 prediction errors. Note that:
@@ -790,7 +790,7 @@ $S_1$ only uses {\em one}).
 \item $S_1$ only needs runtime information on a few dozen (or less) runtimes to generate
 the predictions with the lower errors seen in \fig{sampling_accuracy}.
 \ei
-{\bf XXX VIVEK: need a log scale on the y-axis of \fig{Evaluations}}.
+\st{\bf XXX VIVEK: need a log scale on the y-axis of \fig{Evaluations} } \textcolor{red}{I have changed the figure and I think it looks good. What do you think?}
 
 Combining \fig{sampling_accuracy} and \fig{Evaluations} results, we conclude that:
 \bi
