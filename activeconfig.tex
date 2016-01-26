@@ -420,7 +420,6 @@ of a minimal sampling policy.
 
 
 
-
 WHAT is somewhat different from other spectral
 learners explored in, say, image processing applications~\cite{shi00}.
 The image processing papers do not address
@@ -428,10 +427,10 @@ our key contribution presented in this paper  (defining
  a minimal sampling policy to predict runtimes).
 Also,
 standard spectral method requires some $O(N^2)$ matrix multiplication to compute, say, the components
-of PCA~\cite{ilin10}. Worse, in the case of hierarchical division methods like PDDP,
+of PCA~\cite{ilin10}. Worse, in the case of hierarchical division methods such as PDDP,
 that polynomial time inference must be repeated at every level of the hierarchy.
 Competitive results can be achieved
-using an $O(2N)$ analysis we have developed previously~\cite{me12d}, which is  based on  a heuristic proposed by
+using an $O(2N)$ analysis that we have developed previously~\cite{me12d}, which is  based on  a heuristic proposed by
 Faloutsos and Lin~\cite{Faloutsos1995}
 (which
 Platt has
@@ -443,7 +442,7 @@ Platt has
 $n$
 examples $n_1,n_2,..$. The FASTMAP heuristic
 picks any
-point $n_i$ at random then  finds
+point $n_i$ at random and  finds
  the point  {\em West}~$\in n$ that is
 furthest away\footnote{
  For this work, we use the standard Euclidean measure recommended for
@@ -463,9 +462,9 @@ $a=\mathit{dist}(n_i,\mathit{West})$,
 $b=\mathit{dist}(n_i,\mathit{East})$,
 $x=(a^2 + c^2 - b^2)/(2c)$.
 This  $x$ value is the projection of $n_i$
-on the line  running  from {\em East} to {\em West}.  We divides
+on the line  running  from {\em East} to {\em West}.  We divide
 the examples based on the median value of the projection($x$),
-then recurse on each half. Recursion on
+then recurse on each half. The recursion on
 $n$ initial
 examples stops when a sub-region
 contains less that  $M$ examples (e.g. 
@@ -482,9 +481,9 @@ $S_1$: Compile and execute one  configurations,  picked at random, from each lea
 \end{quote}
 We use this sampling policy since, later in this paper, we show $S_1$ performs better than:
 \bi
-\item $S_2$: East-West sampling: compile and execute the {\em East,West} poles of the leaf clusters;
+\item $S_2$: East-West sampling: compile and execute the {\em East} and {\em West} poles of the leaf clusters;
 \item $S_3$: Exemplar sampling: compile and execute all items in all leaves and return the one
-with lowest runtime score.
+with lowest run-time score.
 \ei
 Note that $S_3$ is {\em not} a {\em minimal} sampling policy (since it executes all configurations). 
 We use it here as one  baseline
@@ -495,22 +494,21 @@ using information gathered after executing
 all configurations).
 
 \subsection{Regression Tree Learning}
-Using the data collected this way, we then use the CART regression tree learner \cite{breiman1984} to build a predictor for runtimes. Regression tree learners seek the attribute range split that most increases
+After collecting the data using one of the sampling policies, we then use the CART regression tree learner \cite{breiman1984} to build a predictor for runtimes. Regression tree learners seek the attribute range split that most increases
 our ability to make accurate predictions.
-CART explores splits that divide $n$ samples  into   with $n_1$ and $n_2$ samples where each sample  has a  standard deviations on the target variable of $\sigma_1$, $\sigma_2$.
+CART explores splits that divide $n$ samples  into   with $n_1$ and $n_2$ samples, where each sample  has a  standard deviation on the target variable of $\sigma_1$ and  $\sigma_2$.
 CART finds the ``best'' split; i.e. the one that minimizes $\frac{n_1}{n}\sigma_1 + \frac{n_2}{n}\sigma_2$.
 Using this best split, CART divides the data, then recurses into each split.
  
 
-The predictors built by CART  is then tested on data not used in the above spectral learning processing (see below for details). For each  test item, we find out how long it {\em actually} takes to run and compare that
+The validity of the predictors built by CART  is then tested on testing data. There is no intersection between the training data (spectral learning processing) and the testing data (see below for details). For each  test item, we find out how long it {\em actually} takes to run and compare that
 to the {\em prediction} from CART. The resulting prediction error is then computed using:
 \begin{equation}\label{eq:err}
 \mathit{error}=\frac{\mathit{abs}(\mathit{predicted} - \mathit{actual})}{\mathit{actual}}*100
 \end{equation}
 
-\st{Note that our use of CART} 
 \section{Research Questions} 
-In summary, WHAT is combines
+In summary, WHAT  combines:
 (1) the FASTMAP method of Faloutsos and Lin~\cite{Faloutsos1995};
 (2)~a spectral learning algorithm initially   inspired by    Boley's PDDP system~\cite{boley98}, which we modify
 by replacing  PCA with FASTMAP (prior work have called this
@@ -526,46 +524,38 @@ WHAT& =  & WHERE + $S_1$ + CART
 \end{tabular}
 \end{center}
 This combination of methods has not been previously explored in the
-software engineering literature.
+software engineering literature but is promising because (i) it explores the underlying dimension of the space, (ii) it is not domain specific \footnote{This method also works for non-numerical data.} and (iii) it is fast 
 
 
-Hence, in that eigenspace, it might be true that only small
+Since our model explores the spectral space, it might be true that only small
 number of samples are required to explore it all.
-On the other hand, a model built from a very small sample of the available data might
-be very inaccurate and unstable; i.e. it exhibit very large mean errors and standard deviations on the error.
+But, a model built from a very small sample of the available data might
+be very inaccurate and unstable; i.e. it may exhibit very large mean errors and standard deviations on the error.
 
 Also, if we learn models from very small regions of the training data,
-then it is  possible that that learner will miss {\em trends} in that data
+then it is  possible that that learner will miss {\em trends} in the data
 between the sample points. Such trends are useful when building {\em optimizers};
 i.e. devices that input one configuration and propose an alternate
 configuration that has (say) faster runtimes. Such optimizers might
 need to evaluate hundreds to millions of alternate configurations. 
 To speed up that process, optimizers can use a {\em surrogate model}\footnote{Also known as response surface methods, meta models, or emulators.}
-that  mimic the outputs of a system of interest, while being computationally cheap(er) to evaluate~\cite{loshchilov13}. For example, when optimizing
-runtimes, we might ask the CART regression tree for a performance
+that  mimics the outputs of a system of interest, while being computationally cheap(er) to evaluate~\cite{loshchilov13}. For example, when optimizing
+runtimes, we might ask the CART  for a performance
 prediction (rather than compile and execute
 configurations).  Note that such surrogate-based
 reasoning critically depends on how well the surrogate can guide optimization.
 
-{\bf XXX Vivek: is there any overlap in the
-configurations generated by the optimizer and the
-examples used to train the surrogate}
-
-{\bf XXX Vivek: check the regression tree branch with
-fastest runtime. is the optimizer output
-something that could be just read from that branch?}
-
 
 Therefore, to assess our sampling policies, we must compare:
 \bi
-\item Performance scores (runtimes) generated from our minimal sampling policy;
-\item The variance on the performance scores (to check for the stability
+\item Performance scores (run-times) generated from our minimal sampling policy;
+\item The variance of the performance scores (to check for the stability
 of those performance predictions);
-\item The optimization support offered by the performance predictor.
+\item The optimization support offered by the performance predictor i.e. can the model work in tandem with other off-the-shelf optimizers to generate useful solutions
 \ei
 The above concerns leads to four research questions:
 \bi
-\item {\bf RQ1:} {\em Can the WHAT  +$S_1$ spectral learning generate good predictions after only
+\item {\bf RQ1:} {\em Can  WHAT  +$S_1$ spectral learning generate good predictions after only
 executing a small number of configurations?}
 \ei
 Here, by ``good'' we mean that the predictions found via sampling with WHAT+$S_1$ are as good, or better,
@@ -577,15 +567,15 @@ Does less data used in building the models lead to large variability in the pred
 Can ``good'' surrogate models (to be used in optimizers)
 be built from minimal samples?}
 \ei
-Note that {\bf RQ2,RQ3} are of particular concern with out approach
+Note that {\bf RQ2, RQ3} are of particular concern with our approach
 since we are sampling so little from the total space of possible
 configurations.
 \bi
-\item {\bf RQ4:} {\em Compared to the start of the art in minimal sampling for
-learning runtime predictors from product lines, how good is WHAT with $S_1$?}
+\item {\bf RQ4:} {\em Compared to the state-of-the-art in minimal sampling for
+learning run-time predictors from product lines, how good is WHAT with $S_1$?}
 \ei
 To answer this last question, we will compare WHAT with $S_1$
-          against the FW, PW, HO, HS methods of Siegmund et al. (described above in \tion{addit}).
+          against the FW, PW, HO, HS heuristics of Siegmund et al. (described above in \tion{addit}).
  
 \section{Experiments}
 
@@ -595,7 +585,7 @@ All the materials required to reproduce this work are available at \url{https://
 
 \subsection{Case Study Materials}
 
-This study explores feature models of the products lines listed in \fig{subjectsystems}.
+This study explores feature models, along with the run-time measurements obtained from real time measurements, of the products lines listed in \fig{subjectsystems}.
 Also, to compare our results from minimal sub-sampling to those obtained 
 from a larger sample, we use data sets showing the runtimes associated with
 compiling and executing {\em nearly all} configurations\footnote{http://openscience.us/repo/performance-predict/cpm.html}.
@@ -609,18 +599,17 @@ we will pay particular attention to the variance of the SQLite results).
 
 \subsection{Experimental Rig}
 
-{\st{\bf XXX vivek. all sqls should be sql lite}}
-
-
- 
-
-
 
 {\bf RQ1,RQ2} require the construction and assessment of numerous runtime predictors from small samples
 of the data. The following rig implements that construction process.
 
-For each product line, we built a table of data, one row per legal configuration.
-To this table we added a column showing the runtimes for each configuration.
+For each product line, we built a table of data, one row per valid configuration. We then run all configurations of all software systems
+and record the performance scores (i.e., that are invoked by a benchmark).
+The exception is SQLite in which we measure only the
+configurations needed to detect interactions and additionally
+100 random configurations to evaluate the accuracy of
+predictions.  
+To this table we added a column showing the performance score (obtained from the real time measurements) for each configuration (refer to section 2.
 
 Next, 20 times, we repeated the following procedure (the figure of 20 repeats was
 selected using the central limit theorem). Note that the following rig ensures that
@@ -628,7 +617,7 @@ we never test any prediction model on the data used to build that model.
 \bi
 \item For each  product line in \{BDBC, BDBJ, Apache, SQLite, LLVM, x264\},
 \bi
-\item Randomized the order of the rows in their table of data;
+\item Randomize the order of the rows in their table of data;
 \item For $X$ in \{10, 20, 30... , 90\};
 \bi
 \item Let {\em Train} be the first $X$\% of the data 
@@ -644,10 +633,10 @@ measure of \eq{err}.
 \ei
 {\bf RQ2} required testing the standard deviation of the predictions. To support that test, we:
 \bi
-\item Found the $X$-th point in the above experiments where all predictions stop improving;
+\item Determine the $X$-th point in the above experiments where all predictions stop improving;
 \item Measure the standard deviation of the error at that point, across our 20 repeats.
 \ei
-As shown below, all our results plateaued after studying $X=40$\% of the legal configurations
+As shown in figure \ref{fig:sampling_accuracy}, all our results plateaued after studying $X=40$\% of the valid configurations
  \footnote{Just to clarify one frequently asked question about this work, we note
 that our rig ``studies'' 40\% of the data, we do not mean that our predictive models
  require access to runtimes from the 40\% of the data. Rather, by ``study'' we mean   reflect 
@@ -666,7 +655,7 @@ known for that product line.
 \ei
 This last item requires access to some ``ground truth'' of runtimes for a very
 large number of configurations. For this experiment, we have access to that ground truth
-(since we have access to nearly all the configurations. While that ground truth for this
+(since we have access to nearly all the configurations). While that ground truth is required for this
 validation study, we note that, once our methods satisfy this validation study,
 they would not not be needed in if practitioners choose to use WHAT in their own work.
 
@@ -717,7 +706,6 @@ A core function in evolutionary optimizers are the
 
 \section{Results}
 
-\textcolor{red}{\st{\bf XXX vivek: remove WHERE from figures. add $S_i$}}
 
 \begin{figure}[!t]
 \includegraphics[width=0.9\linewidth]{Figures/SamplingAccuracy.eps}
@@ -728,13 +716,13 @@ also, need to rename these with the new words of this paper.}}}\label{fig:sampli
 \end{figure}
 
 \subsection{RQ1 results}
-{\em Can the WHAT  +$S_1$ spectral learning generate good predictions after only
+{\em Can  WHAT  +$S_1$ spectral learning generate good predictions after only
 executing a small number of configurations?}
 
 \fig{sampling_accuracy} shows the mean errors of the predictors learned
-after taking $X$\% of the configurations, then asking some WHAT and some sampling method
+after taking $X$\% of the configurations, then asking  WHAT and some sampling method
 to (a)~find what configurations to execute; then (b)~asking CART to build a predictor
-using that execution information. The horizontal axis of those plots show what $X$\%
+using that execution information. The horizontal axis of those plots shows what $X$\%
 of the configurations are studied and the vertical axis shows the mean relative error (from \eq{err}).
 In that figure:
 \bi
@@ -743,30 +731,27 @@ The \textcolor{blue}{{\bf blue}} lines on \fig{sampling_accuracy} show a {\em ba
 where data from the runtimes of 100\% of  configurations from 0 to $X$ were used by CART
 to build a runtime predictor.
 \item
-The other lines show the results using the sub-sampling methods defined in \tion{sample}.
-Note that these sub-sampling methods only used  runtime data from
+The other lines show the results using the sampling methods defined in \tion{sample}.
+Note that these sampling methods only used  runtime data from
 some subset of 100\% of the runtimes seen in configurations
 from 0 to X\%.
 \ei
 
-{\bf XXX VIVEK: (1) are the WHERE random results at X=0.4 the same values as those on \fig{my-label}; \textcolor{red}{Yes}
-(2) \st{pls change x axis to 20,40,60,80};(3) i still don't get the difference between where exemplar
-and baseline given that baseline samples all}\textcolor{red}{Examplar uses one the best solution in a cluster as a sample, so the number of samples = number of clusters. But baseline uses all the members of all the clusters}
 
-In  \fig{sampling_accuracy}, {\em lower} y-aixis values are {\em better} since this shows lower
-prediction errors. Note that:
+Note that, in  \fig{sampling_accuracy}, {\em lower} y-axis values are {\em better} since this shows lower
+prediction errors. We found that:
 \begin{itemize}
 
-\item Some product lines exhibit large changes in their behavior, below $X=40$\% (see the BDBC and BDBJ
+\item Some product lines exhibit large variances in their fault rate, below $X=40$\% (see the BDBC and BDBJ
 results).
-\item Above $X=40$\%, there is little change in other overall change of the sampling methods.
+\item Above $X=40$\%, there is little effect on other overall change of the sampling methods.
 \item
 Nearly always, the {\em exempler} sampling method $S_3$ shows  highest overall error 
 so it cannot be recommended.
-\item Always, the  \textcolor{blue}{{\bf blue baseline}} results  had lowest errors-- which is to be
-expected since predictors built in the baseline have access to all data.
+\item Always, the  \textcolor{blue}{{\bf blue baseline}} results  had lowest errors- which is to be
+expected since predictors built on the baseline have access to all data.
 \item
-Usually, the error of the $S_1,S_2$ methods, are within $5$\% of the {\em baseline} results.
+Usually, the error of  $S_1$ and $S_2$, are within $5$\% of the {\em baseline} results.
 Hence, we can recommend these two minimal sampling methods.
 \end{itemize}
 \fig{Evaluations} comments on one which  of    $S_1$ or $S_2$ we should recommend.
@@ -801,7 +786,7 @@ within 5\% of the error seen if predictors built from information about all runt
 
 \begin{figure}[!t]
 \includegraphics[width=0.9\linewidth]{Figures/evaluation_graph.eps}
-\caption{ Comparing evaluations of different approaches. }\label{fig:Evaluations}
+\caption{ Comparing evaluations of different sampling policies. We see that the number of configurations evaluated for $S_2 East West$ is twice as much as $S1-Random$, since it selects 2 points from each cluster where as  $S1-Random$ only selects one }\label{fig:Evaluations}
 \end{figure}
 
 
