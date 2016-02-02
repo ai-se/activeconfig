@@ -193,61 +193,62 @@ Search-based Software Engineering, Sampling.
 Feature or variability models are high-level descriptions of the commonalities and variabilities across related software systems. They can be used to derive a set of features (i.e., a configuration) to customize the software behavior. That is, each feature combination gives rise to a particular variant of the system, which has a particular performance measure.
 
 Feature models have received much attention in the literature.
-For ex. the 1990 Kang feature models article (that describes one notation for product lines) has over 4600 citations~\cite{kang1990feature} and is the basis for 
-much recent work~\cite{lopez15,harman14,sayyad13a,sayyad13b}.
-Feature/Variability models can be used to make general conclusions about trade-offs between different features, which can be very useful for customizing the software ~\cite{sayyad13a,sayyad13b}. 
-But it is harder to use
-such product lines to more specific 
-predictions about, say, the expected software performance scores of planned products. 
-For example, prior work on predicting performance scores from feature models had  to compile and execute
-hundreds to thousands of specific products~\cite{guo2013variability}. 
-Other studies that tried to make do with   far fewer execution samples resulted
+For example in 1990, Kang et al. published their article on feature models, which describes one notation for product lines. It has over 4600 citations~\cite{kang1990feature} and is still the basis for 
+recent work~\cite{lopez15,harman14,sayyad13a,sayyad13b}.
+Feature models can also be used to make general conclusions about the quality trade-off between different features, which can be very useful for customizing a configurable software system~\cite{sayyad13a,sayyad13b}. 
+But it is harder to make more specific 
+predictions about, say, the expected software performance scores of system variants. 
+For example, prior work on predicting performance scores from feature models had to compile and execute
+hundreds to thousands of specific variants~\cite{guo2013variability}. 
+Other studies that tried to make far fewer execution samples resulted
 in predictors that were wildly inaccurate in their performance score predictions.
-Siegmund et al. in 2012 built predictors for a product line description of the Apache web server~\cite{siegmund2012predicting}. Their resulting predictor had moderately low mean errors   but the predictions
- were  so  unstable\footnote{The predictions of   \cite{siegmund2012predicting} had $\mu=19\%$ errors with
- $\sigma = 19.5\%$.}
-  that half they time, they could be up to 50\% incorrect\footnote{
- The range  $\mu \pm 1.5*\sigma$  includes the
- 25th to 75th percentile range of a normal distribution   
-For the \cite{siegmund2012predicting} errors, that range is  0 to 49\%.}. Guo et al.~\cite{guo2013variability} also proposed an incremental method to build a predictor model, which uses incremental random samples with steps equal to number of features of the software system. It suffered from the same problem, as the previous work, of unstable predictions\footnote{The predictions of \cite{guo2013variability} had  $\my=22\%$ errors with $\sigma=46\%$}.
+A more balanced approach by Siegmund et al. in 2012 built predictors for a configurable software system~\cite{siegmund2012predicting}. Their resulting predictor had low mean errors but the predictions
+ were  unstable in that way that they have large deviations for prediction accuracy for different configurations (e.g., the standard deviations for the Apache Web server was up to $\sigma = 22.7\,\%$). 
+%My(Norbert) comment on this: you can't just take the worst heuristic here when the paper was about improving over this worst case...
+ %\footnote{The predictions of \cite{siegmund2012predicting} had $\mu=19\%$ errors with $\sigma = 19.5\%$.}
+  %that half they time, they could be up to 50\% incorrect\footnote{
+ %The range  $\mu \pm 1.5*\sigma$  includes the
+ %25th to 75th percentile range of a normal distribution   
+%For the \cite{siegmund2012predicting} errors, that range is  0 to 49\%.}. Where do you have this data from? Does not match with the paper.
+Guo et al.~\cite{guo2013variability} also proposed an incremental method to build a predictor model, which uses incremental random samples with steps equal to number of features of the software system. It suffered from the same problem, as the previous work, of unstable predictions (e.g., predictions had a mean error of up to 22\,\% with a standard deviation of up 46\,\%.
 
 
-This paper presents \what, a {\em spectral learner}     that finds very
-accurate and  stable predictions of products generated from  product lines.
+This paper presents \what, a {\em spectral learner}     that finds 
+accurate and  stable predictions of system variants generated from configurable software systems.
 \what explores the spectrum (eigenvalues) of the distance matrix
 between  features or configurations to perform dimensionality reduction. The reduced
 space is then queried to find a small number of representative examples, which are used to
 build a predictive model for performance scores (using a decision tree learner~\cite{breiman1984}). The predictive models developed by using \what, along with the sampling techniques, are compared with models developed by Siegmund et al.~\cite{siegmund2012predicting} and Guo et al.~\cite{guo2013variability}. 
-For the feature models tested here (Berkely database, the Apache web server, SQLite, the LLVM compiler, the x264 video encoder),
-the  predictions are far more accurate with much lower variance than those of Siegmund et al. and Guo et. al \footnote{The prediction of in this paper have $\mu=6\%$ error with $\sigma=2\%$.}.
+For the feature models tested here (Berkeley DB, Apache Web server, SQLite, LLVM, x264 video encoder),
+the  predictions are more accurate and have a substantially lower variance than those of Siegmund et al. and Guo et. al \footnote{The prediction of in this paper have $\mu=6\%$ error with $\sigma=2\%$.}.
 
 
-Significantly, our predictions were found using   very few samples of total feature/configuration space
+Importantly, our predictions were found using few samples of total feature/configuration space
 (number of samples ranges between 16 to 64 executions).
-This is very significant and most surprising,  since some of the product lines explored here have up
-to millions of possible variations. This result is very useful to the community, since data collection in case 
+This is significant and most surprising,  since some of the systems explored here have up
+to millions of possible variations. This result is useful to the community, because data collection in case 
 of large feature models can be very expensive.
 
 This is a result with a large industrial utility.
-In their recent paper ``Hey, You Have Given Me Too Many Knobs!: Understanding and Dealing with Over-Designed Configuration in System Software'', Xu et al.~\cite{xu2015hey} document the  difficulties developers face
-with understanding  the configuration options of their systems.
+In their recent paper, Xu et al. document the  difficulties developers face
+with understanding  the configuration options (i.e., features) of their systems~\cite{xu2015hey}.
 Delivered systems have large numbers of configuration options, and the number of  configuration options tends to grow linearly
 with time. Consequently, developers  struggle to understand both the current options as well as all the new options.
 As a result, developers tend to ignore over $\frac{5}{6}$ths of the configuration options. 
-This poor understanding of the space of configuration options has an economic cost:  for one system (Hadoop clusters),  Xu et al. report that ``configuration
+This poor understanding of the configuration space has an economic cost:  for one system (Hadoop clusters),  Xu et al. report that ``configuration
 issues are the dominant source of support cost''~\cite{xu2015hey}. 
 Based on the Xu et al. study, it is clear that developers need better tools for understanding the 
-consequences of all the configuration options (for ex. such as \what).
+consequences of all the configuration options (e.g., such as \what).
 
 
 The contributions of this paper are:
 \bi
-\item A new effective sampling strategy for predicting performance metrics of software systems from feature/variability models. The sampling strategy uses an approximate to the first principal component of feature space to recursively cluster and only use only a few points as a representative of each cluster;
-\item We implement the approach and demonstrate its practicality and generality by conducting experiments on six real world configurable software systems (see ~\ref{fig:systems}). The results show that our approach is far more accurate (lower mean error) and much more stable(lower standard deviation);
+\item A new effective sampling strategy for predicting performance metrics of configurable software systems from feature/variability models. The sampling strategy uses an approximate to the first principal component of the feature space to recursively cluster it and uses only a few points as a representative of each cluster;
+\item We implement the approach and demonstrate its practicality and generality by conducting experiments on six real-world configurable software systems (see ~\ref{fig:systems}). The results show that our approach is more accurate (lower mean error) and more stable (lower standard deviation) than related approaches;
 \item We conduct a comparative analysis with the state-of-the-art techniques and demonstrate how our approach outperform prior techniques. A key finding is the utility of principal component of configuration space to  find informative samples from an otherwise large configuration space.
 \ei
 
-The rest of the paper is organized as follows. Section 2 defines the terms used in the paper. Section 3 describes the background of the problem we are trying to tackle along with the datasets used in the experiments. Section 4 further explores the research question and finds association among them. Section 5 describes the experiment setup etc. Section 6 discusses the results and section 7 discusses the related works. The paper concludes after mentioning the threats to validity.
+The rest of the paper is organized as follows. Section 2 defines the terms used in the paper. Section 3 describes the background of the problem we are trying to tackle along with the datasets used in the experiments. Section 4 further explores the research question and finds association among them. Section 5 describes the experiment setup etc. Section 6 discusses the results and section 7 the related work. The paper concludes after mentioning the threats to validity.
 
 
 \begin{figure}[!b]\small
