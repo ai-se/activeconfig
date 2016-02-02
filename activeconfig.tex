@@ -248,10 +248,10 @@ The contributions of this paper are:
 \item We conduct a comparative analysis with the state-of-the-art techniques and demonstrate how our approach outperform prior techniques. A key finding is the utility of principal component of configuration space to  find informative samples from an otherwise large configuration space.
 \ei
 
-The rest of the paper is organized as follows. Section 2 defines the terms used in the paper. Section 3 describes the background of the problem we are trying to tackle along with the datasets used in the experiments. Section 4 further explores the research question and finds association among them. Section 5 describes the experiment setup etc. Section 6 discusses the results and section 7 the related work. The paper concludes after mentioning the threats to validity.
+The rest of the paper is organized as follows. Section 2 defines the terms used in the paper. Section 3 describes the background of the problem we are trying to tackle along with the data sets used in the experiments. Section 4 further explores the research question and finds association among them. Section 5 describes the experiment setup etc. Section 6 discusses the results and section 7 the related work. The paper concludes after mentioning the threats to validity.
 
 
-\begin{figure}[!b]\small
+\begin{figure}[!hb]\small
 \begin{tabular}{|p{.95\linewidth}|}\hline
 \textbf{Berkeley DB CE} is an embedded database system written in C. It is one of the most deployed databases in the world due to its low binary footprint and its configuration abilities. We used the benchmark provided by the vendor to measure response time.
 
@@ -271,8 +271,8 @@ The rest of the paper is organized as follows. Section 2 defines the terms used 
 
 \section{Definitions}
 
-In this section, we formalize the problem of predicting performance scores of software systems. All the software systems (configurable) has a set of $X$ boolean configurations or features also referred to as independent  variables. If a feature is selected in a configuration corresponds to $True$,  $False$ otherwise. All the features of a system is represented as a vector F= <$f_1$,$f_2$, ..., $f_N$>, where $N$ is the number of features of the software systems. Each of the vector has a corresponding performance score associated to it. The software system used to validate our method are described in Figure ~\ref{fig:systems}.
-Note, ``predicting performance scores'', we 
+In this section, we formalize the problem of predicting performance scores of configurable software systems. These systems have a set $X$ of Boolean configurations  also referred to as features or independent variables. If a feature is selected in a configuration, it corresponds to $True$ and $False$ otherwise. We represent the features as a vector F= <$f_1$,$f_2$, ..., $f_N$>, where $N$ is the number of features of the software systems. Each valid instance of the vector (i.e., a configuration) has a corresponding performance score associated to it. The software system used to validate our method are described in Figure ~\ref{fig:systems}.
+Note with ``predicting performance scores'', we 
 mean predicting performance measures of the system while executing the test suite provided by the manufacturers. Given below are details about the various performance measure associated to  each system:
 \begin{description}
 \item[Apache]:  \textbf{Request rates} at which the web server stops responding. 
@@ -290,14 +290,14 @@ of this paper would be most relevant.
  
  
 
-\begin{figure}[!b]
+\begin{figure}[!tb]
 \includegraphics[width=0.95\linewidth]{Figures/BDBC.eps}
 \caption{ Berkeley database feature model   (``C'' version). }\label{fig:bdbc}
 \end{figure}
     
 
 
-\begin{figure}[!b]
+\begin{figure}[!tb]
 \scriptsize
 \begin{tabular}{llllll}
   \hline
@@ -319,19 +319,14 @@ see \fig{systems}.}
 
 \section{Background}  
 
-\subsection{Product Lines as Feature Models}
-We represent the software systems using Kang's feature model (FM) notation. 
-A feature model defines all valid feature combinations of a customizable system. 
+\subsection{Feature Models}
+We represent a configurable software systems using Kang's feature model (FM) notation, which defines all valid feature combinations. 
+As shown in~\ref{fig:bdbc}, a feature model can be presented as a tree-like structure that defines relationships among features.   Features are represented as a set of Boolean decision variables. 
 
-As shown in the Figure~\ref{fig:bdbc} a feature model can be presented as a tree like structure that defines relationships among features.   Features are represented as a set of boolean decision variables. 
-
-A feature, when selected, corresponds to True, and False otherwise. All the features of a system is represented a {\em configuration} vector  $C_i= <f_1, f_2, ...,f_N>$, 
-where N is the number of features of the product line.  
-    
-Feature models can be far more elaborate than \fig{bdbc}. 
-A feature model of the LINUX kernel~\cite{sayyad13b} contains thousands of features and hundreds of thousands of  {\em cross-tree constraints}; i.e. choices in one branch that rule out choices in other branches. 
-Without those constraints, it takes linear time to generate possible products via a simple
-top-down descent of the model. With those constraints, product generation becomes NP-hard and can
+Feature models can be far more elaborate than shown in \fig{bdbc}. 
+A feature model of the LINUX kernel~\cite{sayyad13b} contains thousands of features and hundreds of thousands of  {\em cross-tree constraints}--- choices in one branch that rule out choices in other branches. 
+Without those constraints, it takes linear time to generate possible variants via a simple
+top-down descent of the model. With those constraints, variant generation becomes NP-hard and can
  defeat state-of-the-art theorem provers~\cite{pohl11} (particularly for larger feature models).
  
  
@@ -339,10 +334,10 @@ top-down descent of the model. With those constraints, product generation become
 In practice, not all feature models are as complex as in one of LINUX.
 \fig{subjectsystems} details the feature models used in this study. While
 they seem to be small (just a few dozen features), the last column in that table lists hundreds
-to millions of configurations they can generate.
+to millions of configurations they give rise to.
 
 
-\subsection{Predicting performance scores}\label{sect:addit}
+\subsection{Predicting Performance Scores}\label{sect:addit}
 How can we predict the performance scores of products generated from such high-level descriptions
 as \fig{bdbc}? The literature offers two approaches: a {\em maximal sampling} and a {\em minimal sampling} method.
 
@@ -353,7 +348,7 @@ For example, the performance score data used in this paper required  26 days of 
  real world scenarios, the cost of acquiring optimal configuration is overly expensive and time consuming \cite{weiss2008maximizing}.
  
  When collecting performance scores on all configurations is impractical,  {\em minimal sampling } 
- is required to intelligently select and execute   just enough configurations samples to build
+ is required to intelligently select and execute   just enough configurations (i.e., samples) to build
  predictive models.
  Zhang et al.~\cite{zhang2015performance} approximate the
  systems as a Fourier series, after which they can derive an expression showing how many configurations must be studied
@@ -362,13 +357,10 @@ For example, the performance score data used in this paper required  26 days of 
 
 Another set of approaches are the four "additive" {\em minimal sampling} methods for Siegmund et al.~\cite{siegmund2012predicting}.
 Their first method, called feature-wise (FW) is their basic method and 
-Three of these methods are    elaborations of their basic method, called feature-wise (FW)
-selection.
-
-To explain FW, we note that from a product line, it is theoretically possible to enumerate all (or many) of the legal configurations\footnote{Though in practice, this can be very difficult. For ex. in models like Linux Kernel such an enumeration is practically impossible ~\cite{sayyad13b}}. 
+three of these methods are    elaborations of their basic method.
+To explain FW, we note that from a configurable software system, it is theoretically possible to enumerate all (or many) of the legal configurations\footnote{Though in practice, this can be very difficult. For example, in models like the Linux Kernel such an enumeration is practically impossible ~\cite{sayyad13b}}. 
 Each such
-configuration is a vector of $n$ booleans where $n_i$ indicates if this configuration uses feature $n_i$ (and
-an example of ``feature'', see the leaf nodes of \fig{bdbc}).
+configuration is a vector of $n$ booleans where $n_i$ indicates if this configuration uses feature $f_i$.
 Using this information it  is possible to isolate examples of how much each feature individually contributes to the total runtime:
 \be
 \item Find a pair of  configurations $C_1,C_2$  where $C_2$ uses exactly the same features as $C_1$, plus just one  extra feature $f$.
@@ -387,25 +379,22 @@ Siegmund et al. also offered three extensions to the basic method. All these ext
 not just the smallest $C_1,C_2$  pairs but also any configurations with {\em interactions}. 
 All the following minimal sampling policies compile and   execute legal configurations selected via one of three heuristics:
 \bi
-\item[{\em PW (pair-wise):}] Given the space of all configurations, if two configurations contain the same pairs of setting to features, 
-ignore one of the them. 
-\item[{\em HO (higher-order):}] Select extra configurations that 
-mention three features $a,b,c$ where   $(a,b)$ and $(b,c)$ and $(a,c)$ are known pair-wise features.
-\item[{\em HS (hot-spot features):}] Select extra configurations that contains features that are used very
-frequently along with features that are rarely used. 
+\item[{\em PW (pair-wise):}] For each pair of features, try to find a configuration that contains the pair and has a minimal number of features selected. 
+\item[{\em HO (higher-order):}] Select extra configurations, in which three features $a,b,c$ are selected if two of the following know pair-wise interactions exist $(a,b)$ and $(b,c)$ and $(a,c)$.
+\item[{\em HS (hot-spot features):}] Select extra configurations that contain features that are
+frequently interacting with other features. 
 \ei
 
-The advantage of these additive methods are that, unlike  Zhang et al. these additive methods require only dozens to hundreds of samples. That said, as shown by the experiments later in this
-paper, they produce estimates with large mean error and larger variance than the \what method proposed by
-this paper.
+The advantage of these additive methods are that, unlike  Zhang et al., these additive methods require only dozens to hundreds of samples. That said, as shown by the experiments later in this
+paper, they produce estimates with partially large mean error and partially larger variance than the \what method proposed by this paper.
  
 
 \subsection{Spectral Learning}\label{sect:spect}
 
 The minimal sampling method explored in this paper is based on a spectral learning algorithm
-that  explore the spectrum (eigenvalues) of the distance matrix between  configurations.
-In theory, such spectral learners are a better way to handle noisy, redundant and tightly inter-connected variables, for the following reasons.
-When data sets have many irrelevancies   or closely associated data parameters $d$, then
+that  explores the spectrum (eigenvalues) of the distance matrix between  configurations.
+In theory, such spectral learners are a better way to handle noisy, redundant, and tightly inter-connected variables, for the following reasons.
+When data sets have many irrelevancies or closely associated data parameters $d$, then
 only a few $e \ll d$ eigenvectors are required to characterize that data.
 In that reduced space:
 \bi
@@ -414,7 +403,7 @@ Multiple inter-connected variables $i,j,k \subseteq d$ can be represented
 by a single eigenvector.
 \item
 Noisy variables from $d$ are
-ignored since they  do not contribute to the signal in the data.
+ignored, because they  do not contribute to the signal in the data.
 \item
 Variables  become (approximately) parallel lines
 in $e$ space. For  redundancies \mbox{$i,j \in d$}, we
@@ -423,45 +412,33 @@ since effects that change over $j$ also
 change in the same way over $i$.
 \ei
 That is, in theory, samples of configurations drawn via an eigenspace sampling method
-would not be confused by noisy, redundant or tightly inter-connected variables. Accordingly,
+would not be confused by noisy, redundant, or tightly inter-connected variables. Accordingly,
 we expect predictions built from that sample to have  lower mean errors and lower variances on that error.
 
 Spectral methods have been used before for a variety of data mining applications~\cite{kamvar2003spectral}.
-Algorithms like PDDP~\cite{boley98} use spectral methods such as principle component analysis (PCA) to
-recursively divide data into smaller regions.  Software analytics researchers such as Theisen et al.~\cite{Theisen15}  use spectral methods (again, PCA) as a pre-processor prior to data mining  to reduce noise in software-related data sets.
-However, to the best of our knowledge, spectral methods have not been used before in software engineering as a basis 
-of a minimal sampling policy.
+Algorithms, such as PDDP~\cite{boley98} use spectral methods, such as principle component analysis (PCA) to
+recursively divide data into smaller regions.  Software analytics researchers use spectral methods (again, PCA) as a pre-processor prior to data mining  to reduce noise in software-related data sets~\cite{Theisen15}.
+However, to the best of our knowledge, spectral methods have not been used before in software engineering as a basis of a minimal sampling policy.
 
 
 
 \what is somewhat different from other spectral
-learners explored in, say, image processing applications~\cite{shi00}.
+learners explored in, for instance, image processing applications~\cite{shi00}.
 The image processing papers do not address
-our key contribution presented in this paper  (defining
- a minimal sampling policy to predict performance scores).
-Also,
-standard spectral method requires some $O(N^2)$ matrix multiplication to compute, say, the components
+defining a minimal sampling policy to predict performance scores.
+Also, standard spectral method requires some $O(N^2)$ matrix multiplication to compute the components
 of PCA~\cite{ilin10}. Worse, in the case of hierarchical division methods such as PDDP,
 that polynomial time inference must be repeated at every level of the hierarchy.
 Competitive results can be achieved
-using an $O(2N)$ analysis that we have developed previously~\cite{me12d}, which is  based on  a heuristic proposed by
-Faloutsos and Lin~\cite{Faloutsos1995}
-(which
-Platt has
-  shown computes a Nystr\"om
-  approximation to the first component of
-  PCA~\cite{platt05}).
+using an $O(2N)$ analysis that we have developed previously~\cite{me12d}, which is  based on  a heuristic proposed by Faloutsos and Lin~\cite{Faloutsos1995} (which Platt has shown computes a Nystr\"om approximation to the first component of PCA~\cite{platt05}).
   
-  This approach inputs
-$n$
+This (our???) approach inputs $n$
 examples $n_1,n_2,..$. The FASTMAP heuristic
 picks any
 point $n_i$ at random and  finds
  the point  {\em West}~$\in n$ that is
-furthest away
-from $n_i$.
-FASTMAP then
-finds the point {\em East}~$\in n$
+furthest away from $n_i$.
+FASTMAP then finds the point {\em East}~$\in n$
 that is furthest from {\em West}.
 We say that the line between {\em West} and {\em East} has  length  
 $c=\mathit{dist}(\mathit{West},\mathit{East})$.
@@ -514,7 +491,7 @@ When the above clustering method terminates, our  sampling policy (which we will
 \begin{quote}
 $S_1$: Random sampling: Compile and execute one  configurations,  picked at random, from each leaf cluster.
 \end{quote}
-We use this sampling policy since, later in this paper, we show $S_1$:Random sampling performs better than:
+We use this sampling policy, because (as we will show later) $S_1$:Random sampling performs better than:
 \bi
 \item $S_2$: East-West sampling: compile and execute the {\em East} and {\em West} poles of the leaf clusters;
 \item $S_3$: Exemplar sampling: compile and execute all items in all leaves and return the one
@@ -522,22 +499,21 @@ with lowest performance score.
 \ei
 Note that $S_3$ is {\em not} a {\em minimal} sampling policy (since it executes all configurations). 
 We use it here as one  baseline
-against which we can compare the other, more minimal, sampling policies (note that, in the results
+against which we can compare the other, more minimal, sampling policies. In the results
 that follow, we also compare our 
-sampling methods against another baseline--
-using information gathered after executing
-all configurations).
+sampling methods against another baseline using information gathered after executing
+all configurations.
 
 \subsection{Regression Tree Learning}
-After collecting the data using one of the sampling policies, we then use the CART regression tree learner \cite{breiman1984} to build a predictor for performance scoress. Regression tree learners seek the attribute range split that most increases
+After collecting the data using one of the sampling policies, we then use the CART regression tree learner \cite{breiman1984} to build a predictor for performance scores. Regression tree learners seek the attribute range split that most increases
 our ability to make accurate predictions.
-CART explores splits that divide $n$ samples  into   with $n_1$ and $n_2$ samples, where each sample  has a  standard deviation on the target variable of $\sigma_1$ and  $\sigma_2$.
-CART finds the ``best'' split; i.e. the one that minimizes $\frac{n_1}{n}\sigma_1 + \frac{n_2}{n}\sigma_2$.
-Using this best split, CART divides the data, then recurses into each split.
+CART explores splits that divide $n$ samples  into  $n_1$ and $n_2$ samples, where each sample  has a  standard deviation on the target variable of $\sigma_1$ and  $\sigma_2$.
+CART finds the ``best'' split as the one that minimizes $\frac{n_1}{n}\sigma_1 + \frac{n_2}{n}\sigma_2$.
+Using this best split, CART divides the data recursively.
  
 
-The validity of the predictors built by CART  is then tested on testing data. There is no intersection between the training data (spectral learning processing) and the testing data (see below for details). For each  test item, we find out how long it {\em actually} takes to run and compare that
-to the {\em prediction} from CART. The resulting prediction error is then computed using:
+The validity of the predictors built by CART  is then tested on testing data. There is no intersection between the training data (spectral learning processing) and the testing data (see below for details). 
+For each  test item, we find out how long it {\em actually} takes to run the corresponding variant and compare the actual measured performance to the {\em prediction} from CART. The resulting prediction error is then computed using:
 \begin{equation}\label{eq:err}
 \mathit{error}=\frac{\mathit{abs}(\mathit{predicted} - \mathit{actual})}{\mathit{actual}}*100
 \end{equation}
@@ -546,8 +522,8 @@ to the {\em prediction} from CART. The resulting prediction error is then comput
 In summary, \what  combines:
 (1) the FASTMAP method of Faloutsos and Lin~\cite{Faloutsos1995};
 (2)~a spectral learning algorithm initially   inspired by    Boley's PDDP system~\cite{boley98}, which we modify
-by replacing  PCA with FASTMAP (prior work have called this
-method ``WHERE'' ~\cite{me12d});
+by replacing  PCA with FASTMAP (called
+``WHERE'' in prior work ~\cite{me12d});
 (3)~the $S_1$:Random sample method that explores the leaf clusters found by this recursive division;
 and (4)~the CART regression tree learner that converts the data from the samples collected by $S_1$:Random
 into a runtime prediction model~\cite{breiman1984}.
@@ -558,20 +534,21 @@ WHERE& = &PDDP - PCA + FASTMAP\\
 \what& =  & WHERE + $S_1$:Random + CART
 \end{tabular}
 \end{center}
-This combination of methods has not been previously explored in the
-software engineering literature but is promising because it explores the underlying dimension of the space without getting confused by noisy, redundant and highly associated variables (see section 3.3).
+This unique combination of methods has not been previously explored in the
+software-engineering literature but is promising because it explores the underlying dimension of the space without getting confused by noisy, redundant, and highly associated variables (see section 3.3).
 
+%Could be removed if space is needed
+Since our model explores the spectral space, it might be true that only a small
+number of samples are required to explore the whole space.
+However, a model built from a very small sample of the available data might
+be very inaccurate and unstable. That is, it may exhibit very large mean errors and standard deviations on the error.
 
-Since our model explores the spectral space, it might be true that only small
-number of samples are required to explore it all.
-But, a model built from a very small sample of the available data might
-be very inaccurate and unstable; i.e. it may exhibit very large mean errors and standard deviations on the error.
-
-Also, if we learn models from very small regions of the training data,
+%Could be removed if space is needed
+Also, if we learn models from small regions of the training data,
 then it is  possible that that learner will miss {\em trends} in the data
 between the sample points. Such trends are useful when building {\em optimizers};
 i.e. devices that input one configuration and propose an alternate
-configuration that has (say) faster performance scores. Such optimizers might
+configuration that has, for instance, faster performance scores. Such optimizers might
 need to evaluate hundreds to millions of alternate configurations. 
 To speed up that process, optimizers can use a {\em surrogate model}\footnote{Also known as response surface methods, meta models, or emulators.}
 that  mimics the outputs of a system of interest, while being computationally cheap(er) to evaluate~\cite{loshchilov13}. For example, when optimizing
@@ -582,32 +559,31 @@ reasoning critically depends on how well the surrogate can guide optimization.
 
 
 Therefore, to assess our sampling policies, we must compare:
-\bi
-\item Performance scores (performance scores) generated from our minimal sampling policy;
-\item The variance of the performance scores (to check for the stability
-of those performance predictions);
-\item The optimization support offered by the performance predictor i.e. can the model work in tandem with other off-the-shelf optimizers to generate useful solutions
+\begin{compactitem}
+\item Performance scores generated from our minimal sampling policy;
+\item The variance of the error rates when comparing predicted performance score with actual ones;
+%the next point should always be true. otherwise, what would be the reason to do that?!
+\item The optimization support offered by the performance predictor (i.e., can the model work in tandem with other off-the-shelf optimizers to generate useful solutions).
 \ei
 The above concerns leads to four research questions:
 \bi
-\item {\bf RQ1:} {\em Can  \what  + $S_1$:Random spectral learning generate good predictions after only
-executing a small number of configurations?}
-\ei
+\item {\bf RQ1:} {\em Can  \what  + $S_1$:Random spectral learning generate good predictions after
+executing only a small number of configurations?}
+\end{compactitem}
 Here, by ``good'' we mean that the predictions found via sampling with \what + $S_1$:Random are as good, or better,
-as those generated from far more samples.
+as those generated from more samples.
 \bi
 \item {\bf RQ2:} {\em
-Does less data used in building the models lead to large variability in the predicted values?}
+Does less data used in building the models lead to large variance in the predicted values?}
 \item {\bf RQ3:} {\em
 Can ``good'' surrogate models (to be used in optimizers)
 be built from minimal samples?}
 \ei
-Note that {\bf RQ2, RQ3} are of particular concern with our approach
-since we are sampling so little from the total space of possible
-configurations.
+Note that {\bf RQ2, RQ3} are of particular concern with our approach,
+since our goal is to sample as little as possible from the configuration space.
 \bi
 \item {\bf RQ4:} {\em Compared to the state-of-the-art in minimal sampling for
-learning performance score predictors from product lines, how good is \what with $S_1$:Random?}
+learning performance-score predictors from configurable software systems, how good is \what with $S_1$:Random?}
 \ei
 To answer this last question, we will compare \what with $S_1$:Random
           against the FW, PW, HO, HS heuristics of Siegmund et al. (described above in \tion{addit}).
@@ -847,7 +823,7 @@ results of \fig{Evaluations}).
 
 \begin{figure}[!t]
 \includegraphics[width=0.9\linewidth]{Figures/optimizer_result.eps}
-\caption{Solutions found by GALE (shown as points) laid against the ground truth (all known configuration performance scores) with the exception of SQLite, as this dataset does not contain the exhaustive set of configurations and the corresponding performance scores.}\label{fig:performance_graph}
+\caption{Solutions found by GALE (shown as points) laid against the ground truth (all known configuration performance scores) with the exception of SQLite, as this data set does not contain the exhaustive set of configurations and the corresponding performance scores.}\label{fig:performance_graph}
 \end{figure}
 
 
