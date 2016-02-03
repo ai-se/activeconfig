@@ -24,7 +24,7 @@
 \usepackage{graphics}
 \usepackage{colortbl} 
 \usepackage{multirow}
-\usepackage{times}
+\usepackage{mathptmx} \usepackage[scaled=.90]{helvet} \usepackage{courier}
 \usepackage{balance}
 \usepackage{picture}
 % \usepackage{multirow}
@@ -127,6 +127,18 @@
 % \DeclareMathSizes{7}{7}{7}{7} 
 % \setlength{\columnsep}{7mm}
 
+
+% \usepackage[svgnames]{xcolor}
+% \usepackage[framed]{ntheorem}
+% \usepackage{framed}
+% \usepackage{tikz}
+% \usetikzlibrary{shadows}
+% %\newtheorem{Lesson}{Lesson}
+% \theoremclass{Lesson}
+% \theoremstyle{break}
+
+
+ 
 \begin{document}
 % \conferenceinfo{FSE}{'15 Bergamo, Italy}
 \title{Faster Discovery  of Faster Programs \\from Software Product Lines} 
@@ -736,7 +748,7 @@ Hence, we can recommend these two minimal sampling methods.
 This figure displays data taken from the $X=40$\,\% point of \fig{sampling_accuracy} and displays
 how many performance scores of configurations are needed by our sub-sampling methods (while
 reflecting on the configurations seen in the range $0\le X \le 40$. Note that:
-\begin{compactitem
+\begin{compactitem}
 \item
 The {\em Exemplar} sampling policy needs up to thousands of performance-score points, 
 so it cannot be recommended as minimal sampling policy;
@@ -864,7 +876,7 @@ We compare \what with the three state of the art predictors proposed in the lite
 %  \ei
 
 \begin{figure}[!t]
-\includegraphics[width=0.9\linewidth]{Figures/compare_graph.eps}
+\includegraphics[width=0.9\linewidth]{Figures/SamplingAccuracy.eps}
 \caption{Comparison between various approaches proposed in the literature ~\cite{siegmund2012predicting}, \cite{guo2013variability}, \cite{sarkar2015cost}. The figure compares \what with other techniques w.r.t. the mean error, standard deviation, and the percentage configurations used for training the model.}\label{fig:Comparison}
 \end{figure}
 
