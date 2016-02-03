@@ -858,43 +858,48 @@ runs. Mean values are denoted $\mu$ and IQR denotes the 75th-25th percentile.}
 {\em Compared to the start of the art in minimal sampling for
 learning runtime predictors from product lines, how good is \what with $S_1$?}\\
 
-\input{tex/vs2102}
+\begin{figure}[!t]
+\includegraphics[width=0.9\linewidth]{Figures/compare_graph.eps}
+\caption{Standard deviations seen at various points of  \fig{sampling_accuracy}.}\label{fig:Variance}
+\end{figure}
 
-\input{tex/guo_2N}
+% \input{tex/vs2102}
 
-\input{tex/guo_pw}
+% \input{tex/guo_2N}
 
-\input{tex/sarkar}
+% \input{tex/guo_pw}
 
-\fig{vs2012} compares the errors found by  \what+ $S_1$:Random with those found by the minimal sampling
-methods from Siegmund et al. Note that:
-\bi
-\item
-Simple feature-wise (FW) sampling uses fewer samples that 
-other methods, but its mean error and/or standard deviation can be largest. Hence, a simple addition
-of the known performance scores for individual features is less reliable that the other methods.
-\item
-As to the other minimal sampling methods  (PW,HO,HS)  \what+$S_1$:Random always had a   lower mean
-error rate and a much lower standard deviation on the error.  
-\item In terms of number of samples required to make those predictions, \what+$S_1$:Random needed
-much less detail that PW or HO or HS
-\ei
+% \input{tex/sarkar}
+
+% \fig{vs2012} compares the errors found by  \what+ $S_1$:Random with those found by the minimal sampling
+% methods from Siegmund et al. Note that:
+% \bi
+% \item
+% Simple feature-wise (FW) sampling uses fewer samples that 
+% other methods, but its mean error and/or standard deviation can be largest. Hence, a simple addition
+% of the known performance scores for individual features is less reliable that the other methods.
+% \item
+% As to the other minimal sampling methods  (PW,HO,HS)  \what+$S_1$:Random always had a   lower mean
+% error rate and a much lower standard deviation on the error.  
+% \item In terms of number of samples required to make those predictions, \what+$S_1$:Random needed
+% much less detail that PW or HO or HS
+% \ei
 
 
-Guo et al. proposed progressively random sampling methodology which samples in steps of the number of features in the software system. The termination criteria of this technique is based on the heuristic called as $PW$ same as the one described in  Siegmund et al.
+% Guo et al. proposed progressively random sampling methodology which samples in steps of the number of features in the software system. The termination criteria of this technique is based on the heuristic called as $PW$ same as the one described in  Siegmund et al.
 
-\fig{guo_2n} compares the errors found by  \what+ $S_1$:Random with those found by the minimal sampling
-methods when it used $2*N$ samples. The number of configurations evaluated is very close to the  number of configurations evaluated by our method.
+% \fig{guo_2n} compares the errors found by  \what+ $S_1$:Random with those found by the minimal sampling
+% methods when it used $2*N$ samples. The number of configurations evaluated is very close to the  number of configurations evaluated by our method.
 
-\fig{guo_pw} compares the errors found by  \what+ $S_1$:Random with those found by the progressive sampling method  after allowing it to run till completion.
+% \fig{guo_pw} compares the errors found by  \what+ $S_1$:Random with those found by the progressive sampling method  after allowing it to run till completion.
 
-Note that: 
-\bi
-\item
-Comparing the numbers in \fig{guo_2n}, our method is better than Guo et al. sampling method in terms of higher accuracy and lower standard deviation (more stability). When comparing numbers in the \fig{guo_pw} our method is very close to the mean fault rate (except for BDBJ) but significantly better in terms of stability and number of measurements especially in case SQLite.
-\item
-The results are a clear indication that random sampling in itself is not a good policy where as exploiting the underlying dimension (uses spectral clustering) can generate more accurate and stable predictors
-\ei
+% Note that: 
+% \bi
+% \item
+% Comparing the numbers in \fig{guo_2n}, our method is better than Guo et al. sampling method in terms of higher accuracy and lower standard deviation (more stability). When comparing numbers in the \fig{guo_pw} our method is very close to the mean fault rate (except for BDBJ) but significantly better in terms of stability and number of measurements especially in case SQLite.
+% \item
+% The results are a clear indication that random sampling in itself is not a good policy where as exploiting the underlying dimension (uses spectral clustering) can generate more accurate and stable predictors
+% \ei
 
 
 \begin{myshadowbox}
