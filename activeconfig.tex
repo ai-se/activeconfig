@@ -160,14 +160,14 @@
 Prior work on predicting performance scores for software systems generated from
 configurable software systems suffered from either (a)~needing far too many samples
 of system variants or (b)~large variances in their predictions.
-Both these problems can be avoided using the \what spectral learner. \what like prior work utilizes the relationship between the selected features of a system variant to predict the performance score of the variant.  
+Both these problems can be avoided using the \what spectral learner. \what, like prior work, utilizes the relationship between the selected features of a system variant to predict the performance score of the variant.  
 \what   proposes a novel method, which uses the spectrum (eigenvalues) of the distance matrix
 between configurations of a configurable software system to perform dimensionality reduction. Within that
 reduced configuration space, many closely associated configurations can be studied
 by executing just a few samples. For example, for the programs studied
-here, a few dozen samples yield accurate and stable predictors--- less than 10\,\% prediction error with a standard deviation of less than 3\,\%.  
+here, a few dozen samples yield accurate and stable predictors - less than 10\% prediction error with a standard deviation of less than 3\%.  
 Also, when compared to a prior state-of-the-art approach, our method (a)~required  
-25\,\% to 50\,\% less samples to achieve the same error rates
+25\% to 50\% less samples to achieve the same error rates
 and (b)~its predictions are four to sixteen times more accurate. 
 %unclear: (i.e., much mean errors and standard deviations on the errors, refer to Figure 9-11)
 
@@ -180,7 +180,7 @@ approach the optimal performance scores of all possible configurations of a conf
 \vspace{1mm}
 \noindent
 {\bf Categories/Subject Descriptors:} 
-D.2 [Software Engineering] ;
+D.2 [Software Engineering];
 I.2.6 [Artificial Intelligence]: Induction
 
  
@@ -202,52 +202,54 @@ Search-based Software Engineering, Sampling.
 %Or is it possible to use these models to predict specific properties 
 %of programs generated from them? 
 
-Feature or variability models are high-level descriptions of the commonalities and variabilities across related software systems. They can be used to derive a set of features (i.e., a configuration) to customize the software behavior. That is, each feature combination gives rise to a particular variant of the system, which has a particular performance measure.
+Feature or variability models are high-level descriptions of the commonalities and variabilities across related software systems. 
+They can be used to derive a set of features (i.e., a configuration) to customize the software behavior. 
+That is, each feature combination gives rise to a particular variant of the system which has a particular performance measure.
 
-Feature models have received much attention in the literature.
-For example in 1990, Kang et al. published their article on feature models, which describes one notation for product lines. It has over 4600 citations~\cite{kang1990feature} and is still the basis for 
-recent work~\cite{lopez15,harman14,sayyad13a,sayyad13b}.
+Feature models have received much attention in literature.
+For example, in 1990 Kang et al. published their article on feature models which describe one notation for product lines. 
+It has over 4600 citations~\cite{kang1990feature} and is still the basis for recent work~\cite{lopez15,harman14,sayyad13a,sayyad13b}.
 Feature models can also be used to make general conclusions about the quality trade-off between different features, which can be very useful for customizing a configurable software system~\cite{sayyad13a,sayyad13b}. 
-But it is harder to make more specific 
-predictions about, say, the expected software performance scores of system variants. 
-For example, prior work on predicting performance scores from feature models had to compile and execute
-hundreds to thousands of specific variants~\cite{guo2013variability}. 
-Other studies that tried to make far fewer execution samples resulted
-in predictors that were wildly inaccurate in their performance score predictions.
-A more balanced approach by Siegmund et al. in 2012 built predictors for a configurable software system~\cite{siegmund2012predicting}. Their resulting predictor had low mean errors but the predictions
- were  unstable in that way that they have large deviations for prediction accuracy for different configurations (e.g., the standard deviations for the Apache Web server was up to $\sigma = 22.7\,\%$). 
+But, it is harder to make more specific predictions about, say, the expected software performance scores of system variants. 
+Prior work on predicting performance scores from feature models had to compile and execute hundreds to thousands of specific variants~\cite{guo2013variability}. 
+Other studies that tried to make far fewer execution samples resulted in predictors that were wildly inaccurate in their performance score predictions.
+A more balanced approach by Siegmund et al. in 2012 built predictors for  configurable software systems~\cite{siegmund2012predicting} with had low mean errors however the predictions
+ were  unstable with large deviations for prediction accuracy for different configurations (e.g., the standard deviations for the Apache Web server was up to $\sigma = 22.7\,\%$). 
+ 
 %My(Norbert) comment on this: you can't just take the worst heuristic here when the paper was about improving over this worst case...
  %\footnote{The predictions of \cite{siegmund2012predicting} had $\mu=19\%$ errors with $\sigma = 19.5\%$.}
   %that half they time, they could be up to 50\% incorrect\footnote{
  %The range  $\mu \pm 1.5*\sigma$  includes the
  %25th to 75th percentile range of a normal distribution   
-%For the \cite{siegmund2012predicting} errors, that range is  0 to 49\%.}. Where do you have this data from? Does not match with the paper.
-Guo et al.~\cite{guo2013variability} also proposed an incremental method to build a predictor model, which uses incremental random samples with steps equal to number of features of the software system. It suffered from the same problem, as the previous work, of unstable predictions (e.g., predictions had a mean error of up to 22\,\% with a standard deviation of up 46\,\%.
+%For the \cite{siegmund2012predicting} errors, that range is  0 to 49\%.}. 
+% >> Where do you have this data from? Does not match with the paper.
+% Vivek: You take the fault rate and standard deviation of the method which uses **almost** same  number of measurements. 
+Guo et al.~\cite{guo2013variability} also proposed an incremental method to build a predictor model, which uses incremental random samples with steps equal to number of features of the software system. It suffered from the same problem, as the previous work, of unstable predictions (e.g., predictions had a mean error of up to 22\,\% with a standard deviation of up 46\%). Sarkar et al. ~\cite{sarkar2015cost} proposed a way (using few measurements) to quickly compute  the number of evaluation needed to find a stable predictor. The predictor performed better than \what however large number of measurements made it unfeasible for practical use ( 13\% of the total configuration compared to 3\% used by \what).
 
 
 This paper presents \what, a {\em spectral learner}     that finds 
 accurate and  stable predictions of system variants generated from configurable software systems.
 \what explores the spectrum (eigenvalues) of the distance matrix
 between  features or configurations to perform dimensionality reduction. The reduced
-space is then queried to find a small number of representative examples, which are used to
+space is then queried to find a small number of representative examples, which is used to
 build a predictive model for performance scores (using a decision tree learner~\cite{breiman1984}). The predictive models developed by using \what, along with the sampling techniques, are compared with models developed by Siegmund et al.~\cite{siegmund2012predicting} and Guo et al.~\cite{guo2013variability}. 
-For the feature models tested here (Berkeley DB, Apache Web server, SQLite, LLVM, x264 video encoder),
-the  predictions are more accurate and have a substantially lower variance than those of Siegmund et al. and Guo et. al \footnote{The prediction of in this paper have $\mu=6\%$ error with $\sigma=2\%$.}.
+For the feature models tested here (Berkeley DB, Apache Web server, SQLite, LLVM and x264 video encoder),
+the  predictions are more accurate and have a substantially lower variance than those of Siegmund et al. and Guo et. al \footnote{The prediction in this paper have $\mu=6\%$ error and $\sigma=2\%$.}.
 
 
 Importantly, our predictions were found using few samples of total feature/configuration space
 (number of samples ranges between 16 to 64 executions).
-This is significant and most surprising,  since some of the systems explored here have up
-to millions of possible variations. This result is useful to the community, because data collection in case 
+This is significant and most surprising  since some of the systems explored here have up
+to millions of possible variations. This result is useful to the community because data collection in case 
 of large feature models can be very expensive.
 
 This is a result with a large industrial utility.
-In their recent paper, Xu et al. document the  difficulties developers face
+In their recent paper, Xu et al. documented the  difficulties developers face
 with understanding  the configuration options (i.e., features) of their systems~\cite{xu2015hey}.
 Delivered systems have large numbers of configuration options, and the number of  configuration options tends to grow linearly
 with time. Consequently, developers  struggle to understand both the current options as well as all the new options.
 As a result, developers tend to ignore over $\frac{5}{6}$ths of the configuration options. 
-This poor understanding of the configuration space has an economic cost:  for one system (Hadoop clusters),  Xu et al. report that ``configuration
+This poor understanding of the configuration space has an economic cost:  for one system (Hadoop clusters),  Xu et al. reported that ``configuration
 issues are the dominant source of support cost''~\cite{xu2015hey}. 
 Based on the Xu et al. study, it is clear that developers need better tools for understanding the 
 consequences of all the configuration options (e.g., such as \what).
@@ -256,11 +258,11 @@ consequences of all the configuration options (e.g., such as \what).
 The contributions of this paper are:
 \bi
 \item A new effective sampling strategy for predicting performance metrics of configurable software systems from feature/variability models. The sampling strategy uses an approximate to the first principal component of the feature space to recursively cluster it and uses only a few points as a representative of each cluster;
-\item We implement the approach and demonstrate its practicality and generality by conducting experiments on six real-world configurable software systems (see ~\ref{fig:systems}). The results show that our approach is more accurate (lower mean error) and more stable (lower standard deviation) than related approaches;
+\item We implement the approach and demonstrate its practicality and generality by conducting experiments on six real-world configurable software systems (see figure ~\ref{fig:systems}). The results show that our approach is more accurate (lower mean error) and more stable (lower standard deviation) than related approaches;
 \item We conduct a comparative analysis with the state-of-the-art techniques and demonstrate how our approach outperform prior techniques. A key finding is the utility of principal component of configuration space to  find informative samples from an otherwise large configuration space.
 \ei
 
-The rest of the paper is organized as follows. Section 2 defines the terms used in the paper. Section 3 describes the background of the problem we are trying to tackle along with the data sets used in the experiments. Section 4 further explores the research question and finds association among them. Section 5 describes the experiment setup etc. Section 6 discusses the results and section 7 the related work. The paper concludes after mentioning the threats to validity.
+The rest of the paper is organized as follows. Section 2 defines the terms used in the paper. Section 3 describes the background of the problem we are trying to tackle along with the data sets used in the experiments. Section 4 further explores the research question and finds association among them. Section 5 describes the experiment setup etc. Section 6 discusses the results and Section 7 the related work. This paper concludes after mentioning the threats to validity.
 
 
 \begin{figure}[!hb]\small
@@ -275,7 +277,7 @@ The rest of the paper is organized as follows. Section 2 defines the terms used 
 
 \textbf{LLVM} is a compiler infrastructure written in C++. It provides configuration options to tailor the compilation process. As benchmark, we measured the time to compile LLVM's test suite.
 
-\textbf{x264} is a video encoder in C that provides configuration options to adjust output quality of encoded video files. As a benchmark, we encoded the Sintel trailer (735\,\%MB) from avi to the xH.264 codec and measured encoding time.\\\hline
+\textbf{x264} is a video encoder in C that provides configuration options to adjust output quality of encoded video files. As a benchmark, we encoded the Sintel trailer (735\%MB) from avi to the xH.264 codec and measured encoding time.\\\hline
 \end{tabular}
 \caption{Systems studied in this paper.}\label{fig:systems}
 \end{figure}
@@ -283,14 +285,14 @@ The rest of the paper is organized as follows. Section 2 defines the terms used 
 
 \section{Definitions}
 
-In this section, we formalize the problem of predicting performance scores of configurable software systems. These systems have a set $X$ of Boolean configurations  also referred to as features or independent variables. If a feature is selected in a configuration, it corresponds to $True$ and $False$ otherwise. We represent the features as a vector F= <$f_1$,$f_2$, ..., $f_N$>, where $N$ is the number of features of the software systems. Each valid instance of the vector (i.e., a configuration) has a corresponding performance score associated to it. The software system used to validate our method are described in Figure ~\ref{fig:systems}.
-Note with ``predicting performance scores'', we 
+In this section, we formalize the problem of predicting performance scores of configurable software systems. These systems have a set $X$ of Boolean configurations  also referred to as features or independent variables. If a feature is selected in a configuration, it corresponds to $True$ and $False$ otherwise. We represent the features as a vector F=  $<f_1$,$f_2$, ..., $f_N>$, where $N$ is the number of features of the software systems. Each valid instance of the vector (i.e., a configuration) has a corresponding performance score associated to it. The software systems used to validate our method are described in Figure \ref{fig:systems}.
+Note, with ``predicting performance scores'', we 
 mean predicting performance measures of the system while executing the test suite provided by the manufacturers. Given below are details about the various performance measure associated to  each system:
 \begin{description}
-\item[Apache]:  \textbf{Request rates} at which the web server stops responding. 
-\item[BDBC, BDBJ, SQLite]: The \textbf{time} required to execute the vendor specific benchmark. 
-\item[LLVM]: The \textbf{time} LLVM needs to compile its standard test suite. 
-\item[x264]: \textbf{Time}   to encode the video trailer Sintel (735 MB). 
+\item[Apache:]  \textbf{Request rates} at which the web server stops responding. 
+\item[BDBC, BDBJ, SQLite:] The \textbf{time} required to execute the vendor specific benchmark. 
+\item[LLVM:] The \textbf{time} LLVM needs to compile its standard test suite. 
+\item[x264:] \textbf{Time}   to encode the video trailer Sintel (735 MB). 
 \end{description}
 
 These definitions tie our results to particular test suites.
@@ -300,10 +302,8 @@ can be quickly built using very few additional samples-- in which case, the meth
 of this paper would be most relevant.
 
  
- 
-
 \begin{figure}[!tb]
-\includegraphics[width=0.95\linewidth]{Figures/BDBC.eps}
+\frame{\includegraphics[width=0.95\linewidth]{Figures/BDBC.eps}}
 \caption{ Berkeley database feature model   (``C'' version). }\label{fig:bdbc}
 \end{figure}
     
@@ -333,34 +333,34 @@ see \fig{systems}.}
 
 \subsection{Feature Models}
 We represent a configurable software systems using Kang's feature model (FM) notation, which defines all valid feature combinations. 
-As shown in~\ref{fig:bdbc}, a feature model can be presented as a tree-like structure that defines relationships among features.   Features are represented as a set of Boolean decision variables. 
+As shown in figure~\ref{fig:bdbc}, a feature model can be presented as a tree-like structure that defines relationships among features.   Features are represented as a set of Boolean variables. 
 
-Feature models can be far more elaborate than shown in \fig{bdbc}. 
-A feature model of the LINUX kernel~\cite{sayyad13b} contains thousands of features and hundreds of thousands of  {\em cross-tree constraints}--- choices in one branch that rule out choices in other branches. 
+However, Feature models can be far more elaborate than shown in \fig{bdbc}. 
+A feature model of the LINUX kernel~\cite{sayyad13b} contains thousands of features and hundreds of thousands of  {\em cross-tree constraints} --- choices in one branch that rule out choices in other branches. 
 Without those constraints, it takes linear time to generate possible variants via a simple
 top-down descent of the model. With those constraints, variant generation becomes NP-hard and can
- defeat state-of-the-art theorem provers~\cite{pohl11} (particularly for larger feature models).
+ defeat state-of-the-art theorem provers~\cite{pohl11} in particular, for larger feature models.
  
  
  
 In practice, not all feature models are as complex as in one of LINUX.
 \fig{subjectsystems} details the feature models used in this study. While
-they seem to be small (just a few dozen features), the last column in that table lists hundreds
-to millions of configurations they give rise to.
+they seem to be small with only few dozen features, the last column in that table lists hundreds
+to millions of configurations they give generate.
 
 
 \subsection{Predicting Performance Scores}\label{sect:addit}
 How can we predict the performance scores of products generated from such high-level descriptions
-as \fig{bdbc}? The literature offers two approaches: a {\em maximal sampling} and a {\em minimal sampling} method.
+as \fig{bdbc}? The literature offers two approaches: a {\em maximal sampling} and a {\em minimal sampling} methods.
 
-In the {\em maximal sampling} method, we compile all  possible configuration and record the associated performance scores. Maximal sampling  can be impractically slow.
+In the {\em maximal sampling} method, we compile all  possible configurations and record the associated performance scores. Maximal sampling  can be impractically slow.
 For example, the performance score data used in this paper required  26 days of CPU time to collect (and much longer, if we also count the time required
  for compiling the code prior to execution). 
  Other researchers have commented that,  in 
  real world scenarios, the cost of acquiring optimal configuration is overly expensive and time consuming \cite{weiss2008maximizing}.
  
- When collecting performance scores on all configurations is impractical,  {\em minimal sampling } 
- is required to intelligently select and execute   just enough configurations (i.e., samples) to build
+ If collecting performance scores on all configurations is impractical,  {\em minimal sampling } 
+ is used to intelligently select and execute   just enough configurations (i.e., samples) to build
  predictive models.
  Zhang et al.~\cite{zhang2015performance} approximate the
  systems as a Fourier series, after which they can derive an expression showing how many configurations must be studied
@@ -368,22 +368,22 @@ For example, the performance score data used in this paper required  26 days of 
  configurations.  
 
 Another set of approaches are the four "additive" {\em minimal sampling} methods for Siegmund et al.~\cite{siegmund2012predicting}.
-Their first method, called feature-wise (FW) is their basic method and 
+Their first method, called feature-wise ({\em FW}), is their basic method and 
 three of these methods are    elaborations of their basic method.
-To explain FW, we note that from a configurable software system, it is theoretically possible to enumerate all (or many) of the legal configurations\footnote{Though in practice, this can be very difficult. For example, in models like the Linux Kernel such an enumeration is practically impossible ~\cite{sayyad13b}}. 
+To explain FW, we note that from a configurable software system, it is theoretically possible to enumerate many or all of the legal configurations\footnote{Though, in practice, this can be very difficult. For example, in models like the Linux Kernel such an enumeration is practically impossible ~\cite{sayyad13b}.}. 
 Each such
 configuration is a vector of $n$ booleans where $n_i$ indicates if this configuration uses feature $f_i$.
 Using this information it  is possible to isolate examples of how much each feature individually contributes to the total runtime:
 \be
 \item Find a pair of  configurations $C_1,C_2$  where $C_2$ uses exactly the same features as $C_1$, plus just one  extra feature $f$.
 \item Set the runtime $\Pi(f)$ for feature $f$ to be the difference in the performance scores between $C_2$ and $C_1$.
-\item The runtime  for a new configuration  $C_i=\{f_1,f_2,f_3,,,\}$, that has not been sampled before,  is the sum of the runtime of its features; i.e.
+\item The runtime  for a new configuration  $C_i=\{f_1,f_2,f_3, ...\}$, that has not been sampled before,  is the sum of the runtime of its features; i.e.
 \begin{equation}
   \Pi(C_i) = \sum_{f_j \in C_i}\Pi(f_j)  
 \end{equation}
 \ee
 
-Further to the first point, when many pairs $C_1,C_2$ satisfy the criteria of point~1, Siegmund et al. used the 
+Further to the first point, when many pairs such as ${C_1,C_2}$ satisfy the criteria of point~1, Siegmund et al. used the 
 pair that mentions the {\em smallest} number of features. Their basic {\em FW} minimal sampling method 
 just compiles and executes just these smallest $C_1,C_2$ configurations. 
 
@@ -397,8 +397,8 @@ All the following minimal sampling policies compile and   execute legal configur
 frequently interacting with other features. 
 \ei
 
-The advantage of these additive methods are that, unlike  Zhang et al., these additive methods require only dozens to hundreds of samples. Also, unlike our approach, these sampling heuristics do not require to enumerate all configurations, which is important for highly configurable software systems. 
-That said, as shown by the experiments later in this paper, they produce estimates with partially large mean error and partially larger variance than the \what method proposed by this paper.
+The advantage of these additive methods are that, unlike  the results in Zhang et al., these additive methods require only dozens to hundreds of samples. Also, unlike our approach, these sampling heuristics do not require to enumerate all configurations which is important for highly configurable software systems. 
+That said, as shown by the experiments later in this paper, the additive methods produce estimates with partially large mean error and partially larger variance than the \what method proposed in this paper.
  
 
 \subsection{Spectral Learning}\label{sect:spect}
@@ -424,7 +424,7 @@ since effects that change over $j$ also
 change in the same way over $i$.
 \ei
 That is, in theory, samples of configurations drawn via an eigenspace sampling method
-would not be confused by noisy, redundant, or tightly inter-connected variables. Accordingly,
+would not get confused by noisy, redundant, or tightly inter-connected variables. Accordingly,
 we expect predictions built from that sample to have  lower mean errors and lower variances on that error.
 
 Spectral methods have been used before for a variety of data mining applications~\cite{kamvar2003spectral}.
@@ -444,7 +444,7 @@ that polynomial time inference must be repeated at every level of the hierarchy.
 Competitive results can be achieved
 using an $O(2N)$ analysis that we have developed previously~\cite{me12d}, which is  based on  a heuristic proposed by Faloutsos and Lin~\cite{Faloutsos1995} (which Platt has shown computes a Nystr\"om approximation to the first component of PCA~\cite{platt05}).
   
-This (our???) approach inputs $n$
+Our approach inputs $n$
 examples $n_1,n_2,..$. The FASTMAP heuristic
 picks any
 point $n_i$ at random and  finds
@@ -453,8 +453,8 @@ furthest away from $n_i$.
 FASTMAP then finds the point {\em East}~$\in n$
 that is furthest from {\em West}.
 We say that the line between {\em West} and {\em East} has  length  
-$c=\mathit{dist}(\mathit{West},\mathit{East})$.
-Using this  approach, \what uses FASTMAP recursively to divide all the configurations as follows.
+$c=\mathit{dist}(\mathit{West},\mathit{East})$ (look at equation 2).
+\what uses FASTMAP recursively to divide all the configurations as follows.
 We iterate over $n_i \in n$
 to find
 $a=\mathit{dist}(n_i,\mathit{West})$,
@@ -468,7 +468,7 @@ $n$ initial
 examples stops when a sub-region
 contains less that  $M$ examples (e.g. 
 $M=\sqrt{|n|}$).
-We explore this approach for three reasons
+We explore this approach for three reasons:
 \bi
 \item
 {\em It is very fast}:
@@ -517,10 +517,10 @@ sampling methods against another baseline using information gathered after execu
 all configurations.
 
 \subsection{Regression Tree Learning}
-After collecting the data using one of the sampling policies, we then use the CART regression tree learner \cite{breiman1984} to build a predictor for performance scores. Regression tree learners seek the attribute range split that most increases
+After collecting the data using one of the sampling policies, we then use  CART regression tree learner \cite{breiman1984} to build a predictor for performance scores. Regression tree learners seek the attribute range split that most increases
 our ability to make accurate predictions.
-CART explores splits that divide $n$ samples  into  $n_1$ and $n_2$ samples, where each sample  has a  standard deviation on the target variable of $\sigma_1$ and  $\sigma_2$.
-CART finds the ``best'' split as the one that minimizes $\frac{n_1}{n}\sigma_1 + \frac{n_2}{n}\sigma_2$.
+CART explores splits which divide $n$ samples  into  $n_1$ and $n_2$ samples, where each sample  has a  standard deviation on the target variable of $\sigma_1$ and  $\sigma_2$.
+CART finds the ``best'' split is defined as the split which minimizes $\frac{n_1}{n}\sigma_1 + \frac{n_2}{n}\sigma_2$.
 Using this best split, CART divides the data recursively.
  
 
@@ -553,7 +553,7 @@ software-engineering literature but is promising because it explores the underly
 Since our model explores the spectral space, it might be true that only a small
 number of samples are required to explore the whole space.
 However, a model built from a very small sample of the available data might
-be very inaccurate and unstable. That is, it may exhibit very large mean errors and standard deviations on the error.
+be very inaccurate and unstable i.e. it may exhibit very large mean errors and standard deviations on the error.
 
 %Could be removed if space is needed
 Also, if we learn models from small regions of the training data,
@@ -570,15 +570,15 @@ configurations).  Note that such surrogate-based
 reasoning critically depends on how well the surrogate can guide optimization.
 
 
-Therefore, to assess our sampling policies, we must compare:
+Therefore, to assess our sampling policies, we must consider:
 \begin{compactitem}
 \item Performance scores generated from our minimal sampling policy;
 \item The variance of the error rates when comparing predicted performance score with actual ones;
 %the next point should always be true. otherwise, what would be the reason to do that?!
 \item The optimization support offered by the performance predictor (i.e., can the model work in tandem with other off-the-shelf optimizers to generate useful solutions).
-\ei
+\end{compactitem}
 The above concerns leads to four research questions:
-\bi
+\begin{compactitem}
 \item {\bf RQ1:} {\em Can  \what  + $S_1$:Random spectral learning generate good predictions after
 executing only a small number of configurations?}
 \end{compactitem}
@@ -598,7 +598,7 @@ since our goal is to sample as little as possible from the configuration space.
 learning performance-score predictors from configurable software systems, how good is \what with $S_1$:Random?}
 \ei
 To answer this last question, we will compare \what with $S_1$:Random
-          against the FW, PW, HO, HS heuristics of Siegmund et al. (described above in \tion{addit}).
+          against approaches presented in ~\cite{siegmund2012predicting}, \cite{guo2013variability}, \cite{sarkar2015cost}.
  
 \section{Experiments}
 
@@ -636,12 +636,12 @@ To this table, we added a column showing the performance score obtained from the
 
 Next, 20 times, we repeated the following procedure (the figure of 20 repeats was
 selected using the central limit theorem). Note that the following rig ensures that
-we never test any prediction model on the data used to learn that model.
+we \textbf{never} test any prediction model on the data used to learn that model.
 \bi
 \item For each system in \{BDBC, BDBJ, Apache, SQLite, LLVM, x264\},
 \bi
 \item Randomize the order of the rows in their table of data;
-\item For $X$ in \{10, 20, 30... , 90\};
+\item For $X$ in \{10, 20, 30, ... , 90\};
 \bi
 \item Let {\em Train} be the first $X$\,\% of the data 
 \item Let {\em Test} be the rest of the data;
@@ -655,7 +655,7 @@ measure of \eq{err}.
 \ei
 {\bf RQ2} requires testing the standard deviation of the predictions. To support that test, we:
 \bi
-\item Determine the $X$-th point in the above experiments where all predictions stop improving;
+\item Determine the $X$-th point in the above experiments where all predictions stop improving (elbow point);
 \item Measure the standard deviation of the error at that point, across our 20 repeats.
 \ei
 As shown in figure \ref{fig:sampling_accuracy}, all our results plateaued after studying $X=40$\,\% of the valid configurations
@@ -762,7 +762,7 @@ Combining \fig{sampling_accuracy} and \fig{Evaluations} results, we conclude tha
 
 \begin{myshadowbox}
 $S_1$:Random is our preferred spectral sampling method and
-the answer to {\bf RQ1} is ``yes'', because applying \mbox{\what + $S_1$:Random}, we can (a)~generate runtime predictors
+the answer to {\bf RQ1} is ``yes'', because applying \what + $S_1$: Random, we can (a)~generate runtime predictors
 using just a few dozens examples of performance scores; and (b)~those predictions have error rates
 within 5\,\% of the error rates seen if predictors built from information about all performance scores.
 \end{myshadowbox}
@@ -812,7 +812,7 @@ be built from minimal samples?}
 The answers to {\bf RQ1} and {\bf RQ2} recommend using \what+$S_1$:Random to build runtime predictors from a small sample of the data. {\bf RQ3}
 asks if that predictor can be used by an optimizer to infer what {\em other} configurations correspond to system variants with fast performance scores?
 To answer this question,  we ran  a random set of 100 
-configurations, 20 times, then relate that baseline to three optimizers (GALE~\cite{krall2014gale}, DE~\cite{storn1997differential}, NSGA-II~\cite{deb00afast} using their
+configurations, 20 times, then relate that baseline to three optimizers (GALE~\cite{krall2014gale}, DE~\cite{storn1997differential}, NSGA-II~\cite{deb00afast}) using their
 default parameters.
  
 When these three optimizers mutated existing configurations to suggest new ones,
@@ -866,9 +866,9 @@ runs. Mean values are denoted $\mu$ and IQR denotes the 75th-25th percentile.}
 learning runtime predictors from product lines, how good is \what with $S_1$?}\\
 
 We compare \what with the three state of the art predictors proposed in the literature~\cite{siegmund2012predicting}, \cite{guo2013variability}, \cite{sarkar2015cost}. Siegmund et al. proposed a method called feature-wise sampling (FW) and 
- another three elaborations (PW, HO, HS) of their basic method. We use PW since relies on relatively few data to build fairly accurate predictor. Guo et al. proposed progressive random sampling methodology, which samples in steps of the number of features in the software system. The termination criteria of this technique is based on the heuristic called as $PW$ same as the one described in  Siegmund et al.. Sarkar et al. generates a small set of configurations, with help of a heuristic called feature-frequency,  to estimate the accuracy-measure curve. The estimation is done by comparing the points to a set of predefined basis functions. This estimated curve is then used to decide the optimal number of samples to achieve a threshold error rate.  
+ another three elaborations (PW, HO, HS) of their basic method. We use PW since relies on relatively few data to build fairly accurate predictor. Guo et al. proposed progressive random sampling methodology, which samples in steps of the number of features in the software system. The termination criteria of this technique is based on the heuristic called as $PW$ similar to the one described in  Siegmund et al.. Sarkar et al. generates a small set of configurations, with help of a heuristic called feature-frequency,  to estimate the accuracy-measure curve. The estimation is done by comparing the points to a set of predefined basis functions. This estimated curve is then used to decide the optimal number of samples to achieve a threshold error rate.  
  
- In figure \ref{fig:Comparison}, we see that PW sampling of Siegmund et al. has the largest mean error rate in case of X264, where as Guo (2N) has the largest standard deviation in BDBC.  What is to be noticed is \what can find a small number of solutions (under 10\,\%) that can then be used to build accurate predictors with little variance (except in couple of cases).
+ In figure \ref{fig:Comparison}, we see that PW sampling of Siegmund et al. has the largest mean error rate in case of X264, where as Guo (2N) has the largest standard deviation in BDBC.  What is to be noticed here is \what can find a small number of solutions (under 10\,\%) that can then be used to build accurate predictors with very little variance (except in couple of cases). Figure \ref{fig:measurements} is presented to assert the fact that using \what, we are able to build accurate predictors by making few measurements.
  %Note that:
 %  \bi
 %     \item
@@ -876,9 +876,12 @@ We compare \what with the three state of the art predictors proposed in the lite
 %  \ei
 
 \begin{figure}[!t]
-\includegraphics[width=0.9\linewidth]{Figures/SamplingAccuracy.eps}
+\includegraphics[width=0.9\linewidth]{Figures/vivek-2.png}
 \caption{Comparison between various approaches proposed in the literature ~\cite{siegmund2012predicting}, \cite{guo2013variability}, \cite{sarkar2015cost}. The figure compares \what with other techniques w.r.t. the mean error, standard deviation, and the percentage configurations used for training the model.}\label{fig:Comparison}
 \end{figure}
+
+
+\input{tex/measurement}
 
 % \input{tex/vs2102}
 
@@ -921,13 +924,13 @@ We compare \what with the three state of the art predictors proposed in the lite
 
 \begin{myshadowbox}
 Hence, we answer {\bf RQ4} with ``yes'',
-since our minimal sampling method yields predictions that are similar to more accurate that prior
+since our minimal sampling method yields predictions that are similar or more accurate that prior
 work and rely on fewer samples.
 \end{myshadowbox}
 
 
  \section{Related Work}
- \subsection{``Spectral Clustering'' in the  Machine Learning Literature}\label{sect:related}
+\label{sect:related}
  
 In 2000, Shi and Maik~\cite{shi00} claimed the term ``spectral clustering'' as a reference to their normalized cuts
 image
@@ -1020,8 +1023,8 @@ Also, we are aware that measurement bias can cause false interpretations~\cite{}
 
 \section{Conclusions}
 
-We have proposed to use a fast spectral clusterer (\what) along with three new sampling techniques. On 6 real-world configurable software systems borrowed from the literature. The recommended method \textit{$S_1$:Random} achieves similar to lower error rates while being stable, when compared our results to the state of the art methods. 
-Except from the Berkeley DB system, our method performs more accurate than methods proposed by Siegmund et al.  ~\cite{siegmund2012predicting} and Guo et al. ~\cite{guo2013variability}. We achieve a similar accuracy and stability as the approach by Sarkar et al~\cite{}, while requiring a smaller number of configurations to be measured. We also show that the sampling method \textit{$S_1$:Random} can be used to make cheap (but stable) surrogates to the problems, which can be then used by various off the shelf optimizers to find the desired configuration. 
+We have proposed to use a fast spectral clusterer (\what) along with three new sampling techniques which were tested on 6 real-world configurable software systems borrowed from the literature. The recommended method \textit{$S_1$:Random} achieves similar to lower fault rates while being stable, when compared our results to the state of the art methods. 
+Except from the Berkeley DB system, our method performs more accurate than methods proposed by Siegmund et al.  ~\cite{siegmund2012predicting} and Guo et al. ~\cite{guo2013variability}. We achieve a similar accuracy and stability as the approach by Sarkar et al~\cite{sarkar2015cost}, while requiring far smaller number of configurations to be measured. We also show that the sampling method \textit{$S_1$:Random} can be used to make cheap (but stable) surrogates to the problems, which can be then used by various off the shelf optimizers to find the desired configuration. 
 With the properties of  a fast clusterer along with minimal sampling technique, a simple surrogate builder, \what, should find increasing attention and application in the near future.
 
 
