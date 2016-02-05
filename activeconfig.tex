@@ -350,11 +350,10 @@ to millions of configurations they give generate.
 
 
 \subsection{Predicting Performance Scores}\label{sect:addit}
-How can we predict the performance scores of products generated from such high-level descriptions
-as \fig{bdbc}? The literature offers two approaches: a {\em maximal sampling} and a {\em minimal sampling} methods.
+The literature offers two approaches: a {\em maximal sampling} and a {\em minimal sampling} methods, to predict the performance scores of products generated from feature or variability models. 
 
 In the {\em maximal sampling} method, we compile all  possible configurations and record the associated performance scores. Maximal sampling  can be impractically slow.
-For example, the performance score data used in this paper required  26 days of CPU time to collect (and much longer, if we also count the time required
+For ex., the performance data used in this paper required  26 days of CPU time to collect (and much longer, if we also count the time required
  for compiling the code prior to execution). 
  Other researchers have commented that,  in 
  real world scenarios, the cost of acquiring optimal configuration is overly expensive and time consuming \cite{weiss2008maximizing}.
@@ -397,8 +396,15 @@ All the following minimal sampling policies compile and   execute legal configur
 frequently interacting with other features. 
 \ei
 
-The advantage of these additive methods are that, unlike  the results in Zhang et al., these additive methods require only dozens to hundreds of samples. Also, unlike our approach, these sampling heuristics do not require to enumerate all configurations which is important for highly configurable software systems. 
-That said, as shown by the experiments later in this paper, the additive methods produce estimates with partially large mean error and partially larger variance than the \what method proposed in this paper.
+
+
+Guo et al.~\cite{guo2013variability} proposed progressively random sampling methodology which samples in steps of the number of features in the software system. The sampled configuration was used to train a regression tree and which is then used to predict the performance scores of the system. The termination criteria of this technique is based on the heuristic called as $PW$ same as the one proposed by Siegmund et al. 
+
+Sarkar et al. ~\cite{sarkar2015cost} proposed a cost model, which was be used to predict the effort (or cost) required to generate a accurate model. The user can use this score to decide whether to go ahead and build the model. The method proposed by Sarkar et al. randomly samples configuration and uses a heuristic called feature-frequency as a termination criteria. These samples are then used to train a regression tree and the accuracy of model is measured by using a test set (size of train set is equal to size of the test set). One of the four basis function is selected based on how correlated they are to  accuracy measures. This basis function is used to approximate the accuracy-measure curve. The elbow point of the curve is then used as the optimal sample size. Once the optimal size is known, Sarkar et al. uses the model proposed by Guo et al. to build the model.  
+
+
+The advantage of these methods are that, unlike  the results in Zhang et al., these  methods require only dozens to hundreds of samples. Also, unlike our approach, these sampling heuristics do not require to enumerate all configurations which is important for highly configurable software systems. 
+That said, as shown by the experiments later in this paper, the  methods produce estimates with partially large mean error and partially larger variance than the \what method proposed in this paper. Note: in some cases Sarkar et al. build models with lower mean fault rates however, the large number of measurements are required to build such models. 
  
 
 \subsection{Spectral Learning}\label{sect:spect}
@@ -803,6 +809,8 @@ Hence, we answer {\bf RQ2} with ``no'': selecting a small number of samples does
 \end{myshadowbox}
 
 
+
+
 \subsection{RQ3}
 
  {\em
@@ -821,6 +829,9 @@ and the survivors were ``evaluated'' by asking the CART surrogate model.
 %(the  CART regression tree learned from \what+$S_1$:Random, built using the methods of {\bf RQ1}).
 These evaluations either rejected the mutant or used it in generation $i+1$, as the basis for a search for more, possibly
 better  mutants.
+
+
+
 
 \fig{performance_graph} shows the configurations found by GALE projected onto the ``ground truth'' of the performance scores of nearly
 all configurations. Again note that, while we use that ``ground truth'' for the validation of these results, our optimizers 
@@ -843,7 +854,7 @@ The answer to {\bf RQ3} is ``yes''--- for optimizing performance scores, we can 
 \end{myshadowbox}
 
 
-\begin{figure}
+\begin{figure}[h]
 \resizebox{3.3 in}{!}{
 
 \begin{tabular}{|l@{~}|l@{~}|l@{~}|l@{~}|l@{~}|l@{~}|l@{~}|l@{~}|l@{~}|l@{~}|l@{~}|l@{~}|l|}
@@ -859,8 +870,15 @@ runs. Mean values are denoted $\mu$ and IQR denotes the 75th-25th percentile.}
 \label{fig:external_validity}
 \end{figure}
 
+
+
  
 \subsection{RQ4}
+
+\begin{figure*}[htbp]
+\includegraphics[width=\linewidth]{Figures/compare_graph_h.eps}
+\caption{Comparison between various approaches proposed in the literature ~\cite{siegmund2012predicting}, \cite{guo2013variability}, \cite{sarkar2015cost}. The figure compares \what with other techniques w.r.t. the mean error, standard deviation, and the percentage configurations used for training the model.}\label{fig:Comparison}
+\end{figure*}
  
 {\em Compared to the start of the art in minimal sampling for
 learning runtime predictors from product lines, how good is \what with $S_1$?}\\
@@ -875,10 +893,7 @@ We compare \what with the three state of the art predictors proposed in the lite
     
 %  \ei
 
-\begin{figure*}[!]
-\includegraphics[width=\linewidth]{Figures/compare_graph_h.eps}
-\caption{Comparison between various approaches proposed in the literature ~\cite{siegmund2012predicting}, \cite{guo2013variability}, \cite{sarkar2015cost}. The figure compares \what with other techniques w.r.t. the mean error, standard deviation, and the percentage configurations used for training the model.}\label{fig:Comparison}
-\end{figure*}
+
 
 
 \input{tex/measurement}
