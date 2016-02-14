@@ -243,104 +243,21 @@ that might be noisy or redundant. For further details on why we make this recomm
 %The rest of the paper is organized as follows. Section 2 defines the terms used in the paper. Section 3 describes the background of the problem we are trying to tackle along with the data sets used in the experiments. Section 4 further explores the research question and finds association among them. Section 5 describes the experiment setup etc. Section 6 discusses the results and Section 7 the related work. This paper concludes after mentioning the threats to validity.
 
 
-\begin{figure}[!t]\small
-\begin{tabular}{|p{.95\linewidth}|}\hline
-\textbf{Berkeley DB CE} is an embedded database system written in C. It is one of the most deployed databases in the world due to its low binary footprint and its configuration abilities. We used the benchmark provided by the vendor to measure response time.
+\section{Background \& Related Work}  
 
-\textbf{Berkeley DB JE} is a complete re-development in Java with full SQL support. Similarly, we used a benchmark provided by the vendor measuring response time.
+\subsection{Predicting Performance}\label{sect:addit}
 
-\textbf{Apache} is a prominent open-source Web server that comes with various configuration options. To measure performance, we used the tools autobench and httperf to generate load on the Web server. We increased the load until the server could not handle any further requests and marked the maximum load as the performance value.
+A configurable software system has a set $X$ of Boolean configuration options, also referred to as features or independent variables. If a feature is selected in a configuration, it corresponds to $True$ and $False$ otherwise. We represent the features as a vector F=  $<f_1$,$f_2$, ..., $f_N>$, where $N$ is the number of features of the system. Each valid instance of the vector (i.e., a configuration) has a corresponding performance score associated to it. 
 
-\textbf{SQLite} is an embedded database system deployed over several millions of devices. It supports a vast number of configuration options in terms of compiler flags. As benchmark, we used the benchmark provided by the vendor and measured the response time.
-
-\textbf{LLVM} is a compiler infrastructure written in C++. It provides configuration options to tailor the compilation process. As benchmark, we measured the time to compile LLVM's test suite.
-
-\textbf{x264} is a video encoder in C that provides configuration options to adjust output quality of encoded video files. As a benchmark, we encoded the Sintel trailer (735\%MB) from avi to the xH.264 codec and measured encoding time.\\\hline
-\end{tabular}
-\caption{Systems studied in this paper.}\label{fig:systems}
-\end{figure}
-
-
-\section{Definitions}
-
-In this section, we formalize the problem of predicting performance scores of configurable software systems. These systems have a set $X$ of Boolean configurations  also referred to as features or independent variables. If a feature is selected in a configuration, it corresponds to $True$ and $False$ otherwise. We represent the features as a vector F=  $<f_1$,$f_2$, ..., $f_N>$, where $N$ is the number of features of the software systems. Each valid instance of the vector (i.e., a configuration) has a corresponding performance score associated to it. The software systems used to validate our method are described in Figure \ref{fig:systems}.
-Note, with ``predicting performance scores'', we 
-mean predicting performance measures of the system while executing the test suite provided by the manufacturers. Given below are details about the various performance measure associated to  each system:
-\begin{description}
-\item[Apache:]  \textbf{Request rates} at which the web server stops responding. 
-\item[BDBC, BDBJ, SQLite:] The \textbf{time} required to execute the vendor specific benchmark. 
-\item[LLVM:] The \textbf{time} LLVM needs to compile its standard test suite. 
-\item[x264:] \textbf{Time}   to encode the video trailer Sintel (735 MB). 
-\end{description}
-
-These definitions tie our results to particular test suites.
-If that test suite was to change, then a  new
-performance scores study would need  to be conducted. Ideally, such new predictors
-can be quickly built using very few additional samples-- in which case, the methods
-of this paper would be most relevant.
-
- 
-
-
-
-\section{Background}  
-
-\subsection{Feature Models}
-We represent a configurable software systems using Kang's feature model (FM) notation, which defines all valid feature combinations. 
-As shown in Figure~\ref{fig:bdbc}, a feature model can be presented as a tree-like structure that defines relationships among features.   Features are represented as a set of Boolean variables. 
-
-However, Feature models can be far more elaborate than shown in \fig{bdbc}. 
-A feature model of the LINUX kernel~\cite{sayyad13b} contains thousands of features and hundreds of thousands of  {\em cross-tree constraints} --- choices in one branch that rule out choices in other branches. 
-Without those constraints, it takes linear time to generate possible variants via a simple
-top-down descent of the model. With those constraints, variant generation becomes NP-hard and can
- defeat state-of-the-art theorem provers~\cite{pohl11} in particular, for larger feature models.
- 
- 
- 
-In practice, not all feature models are as complex as in one of LINUX.
-\fig{subjectsystems} details the feature models used in this study. While
-they seem to be small with only few dozen features, the last column in that table lists hundreds
-to millions of configurations they give generate.
-
-
-
-\begin{figure}[!tb]
-\frame{\includegraphics[width=0.95\linewidth]{Figures/BDBC.eps}}
-\caption{ Berkeley database feature model   (``C'' version). }\label{fig:bdbc}
-\end{figure}
-    
-
-
-
-\begin{figure}[!h]
-\scriptsize
-\begin{tabular}{llllll}
-  \hline
-Project & Domain & Lang. & LOC & Features & Config\\\hline
-Berkeley DB(BDBC)   & Database & C & 219,811 & 18 & 2560\\
-Berkeley DB(BDBJ)   & Database & Java & 42,596 & 32  & 400\\
-Apache & Web Server & C & 230,277 & 9 & 192\\
-SQLite & Database & C & 312,625 & 39 & 3,932,160\\
-LLVM & Compiler & C++ & 47,549 & 11 & 1024\\
-x264 & Video Enc. & C& 45,743 & 16 & 1152\\\hline
-\end{tabular}
-\caption{Details on the feature models of \fig{systems}.}
-\label{fig:subjectsystems}
-\end{figure}
-
-
-\subsection{Predicting Performance Scores}\label{sect:addit}
-The literature offers two approaches: a {\em maximal sampling} and a {\em minimal sampling} methods, to predict the performance scores of products generated from feature or variability models. 
-
-In the {\em maximal sampling} method, we compile all  possible configurations and record the associated performance scores. Maximal sampling  can be impractically slow.
-For example, the performance data used in this paper required  26 days of CPU time to collect (and much longer, if we also count the time required
- for compiling the code prior to execution). 
+The literature offers two approaches to performance prediction of software configurations: a {\em maximal sampling} and a {\em minimal sampling} approach: 
+With {\em maximal sampling}, we compile all  possible configurations and record the associated performance scores. 
+Maximal sampling  can be impractically slow. For example, the performance data used in this paper required  26 days of CPU time to collect (and much longer, if we also count the time required for compiling the code prior to execution). 
  Other researchers have commented that,  in 
  real world scenarios, the cost of acquiring optimal configuration is overly expensive and time consuming \cite{weiss2008maximizing}.
  
- If collecting performance scores on all configurations is impractical,  {\em minimal sampling } 
- is used to intelligently select and execute   just enough configurations (i.e., samples) to build
- predictive models.
+ If collecting performance scores on all configurations is impractical,  {\em minimal sampling} 
+ is used to intelligently select and execute just enough configurations (i.e., samples) to build a
+ predictive model.
  For example, Zhang et al.~\cite{zhang2015performance} approximate the
  systems as a Fourier series, after which they can derive an expression showing how many configurations must be studied
  to build predictive models with error $\epsilon$. While a theoretically satisfying result, that approach still needs thousands to hundreds of thousands of executions of sample
@@ -348,25 +265,25 @@ For example, the performance data used in this paper required  26 days of CPU ti
 
 Another set of approaches are the four "additive" {\em minimal sampling} methods for Siegmund et al.~\cite{siegmund2012predicting}.
 Their first method, called feature-wise ({\em FW}), is their basic method and 
-three of these methods are    elaborations of their basic method.
-To explain FW, we note that from a configurable software system, it is theoretically possible to enumerate many or all of the legal configurations\footnote{Though, in practice, this can be very difficult. For example, in models like the Linux Kernel such an enumeration is practically impossible ~\cite{sayyad13b}.}. 
+three of these methods are  elaborations of their basic method.
+To explain FW, we note that, from a configurable software system, it is theoretically possible to enumerate many or all of the legal configurations\footnote{Though, in practice, this can be very difficult. For example, in models like the Linux Kernel such an enumeration is practically impossible ~\cite{sayyad13b}.}. 
 Each such
-configuration is a vector of $n$ booleans where $n_i$ indicates if this configuration uses feature $f_i$.
-Using this information it  is possible to isolate examples of how much each feature individually contributes to the total runtime:
+configuration is a vector of $n$ Booleans where $n_i$ indicates if this configuration uses feature $f_i$.
+Using this information it  is possible to isolate examples of how much each feature individually contributes to the total run time:
 \be
 \item Find a pair of  configurations $C_1,C_2$  where $C_2$ uses exactly the same features as $C_1$, plus just one  extra feature $f$.
-\item Set the runtime $\Pi(f)$ for feature $f$ to be the difference in the performance scores between $C_2$ and $C_1$.
-\item The runtime  for a new configuration  $C_i=\{f_1,f_2,f_3, ...\}$, that has not been sampled before,  is the sum of the runtime of its features; i.e.
+\item Set the run time $\Pi(f)$ for feature $f$ to be the difference in the performance scores between $C_2$ and $C_1$.
+\item The run time  for a new configuration  $C_i=\{f_1,f_2,f_3, ...\}$, that has not been sampled before,  is the sum of the run time of its features, i.e.,
 \begin{equation}
   \Pi(C_i) = \sum_{f_j \in C_i}\Pi(f_j)  
 \end{equation}
 \ee
 
-Further to the first point, when many pairs such as ${C_1,C_2}$ satisfy the criteria of point~1, Siegmund et al. used the 
+Further to the first point, when many pairs such as ${C_1,C_2}$ satisfying the criteria of point~1, Siegmund et al.\ used the 
 pair that mentions the {\em smallest} number of features. Their basic {\em FW} minimal sampling method 
 just compiles and executes just these smallest $C_1,C_2$ configurations. 
 
-Siegmund et al. also offered three extensions to the basic method. All these extensions are based on sampling
+Siegmund et al.\ also offered three extensions to the basic method. All these extensions are based on sampling
 not just the smallest $C_1,C_2$  pairs but also any configurations with {\em interactions}. 
 All the following minimal sampling policies compile and   execute legal configurations selected via one of three heuristics:
 \bi
@@ -378,14 +295,14 @@ frequently interacting with other features.
 
 
 
-Guo et al.~\cite{guo2013variability} proposed progressively random sampling methodology which samples in steps of the number of features in the software system. The sampled configuration was used to train a regression tree and which is then used to predict the performance scores of the system. The termination criteria of this technique is based on the heuristic called as $PW$ same as the one proposed by Siegmund et al. 
+Guo et al.~\cite{guo2013variability} proposed a progressive random sampling methodology, which samples in steps of the number of features of the software system in question. The sampled configurations were used to train a regression tree and which is then used to predict the performance scores of other system configurations. The termination criterion of this technique is based on a heuristic, similar to the {\em PW} heurstics of Siegmund et al. 
 
-Sarkar et al. ~\cite{sarkar2015cost} proposed a cost model, which was be used to predict the effort (or cost) required to generate a accurate model. The user can use this score to decide whether to go ahead and build the model. The method proposed by Sarkar et al. randomly samples configuration and uses a heuristic called feature-frequency as a termination criteria. These samples are then used to train a regression tree and the accuracy of model is measured by using a test set (size of train set is equal to size of the test set). One of the four basis function is selected based on how correlated they are to  accuracy measures. This basis function is used to approximate the accuracy-measure curve. The elbow point of the curve is then used as the optimal sample size. Once the optimal size is known, Sarkar et al. uses the model proposed by Guo et al. to build the model.  
+Sarkar et al.~\cite{sarkar2015cost} proposed a cost model for predicting the effort (or cost) required to generate an accurate predictive model. The user can use this score to decide whether to go ahead and build the model. The method proposed by Sarkar et al.\ randomly samples configurations and uses a heuristic based on feature frequencies as a termination criterion. These samples are then used to train a regression tree, and the accuracy of the model is measured by using a test set (size of train set is equal to size of the test set). One of the four projective functions is selected based on how correlated they are to  accuracy measures. This projective function is used to approximate the accuracy-measure curve. The elbow point of the curve is then used as the optimal sample size. Once the optimal size is known, Sarkar et al.\ uses the model proposed by Guo et al.\ to build the model.  
 
 
-The advantage of these methods are that, unlike  the results in Zhang et al., these  methods require only dozens to hundreds of samples. Also, unlike our approach, these sampling heuristics do not require to enumerate all configurations which is important for highly configurable software systems. 
-That said, as shown by the experiments later in this paper, the  methods produce estimates with  larger mean error and partially larger variance than   \what. While sometimes the  Sarkar et al. methods results in  models with (slightly)
-lower mean fault rates, that method still required a very  large number of samples (up to hundreds) while \what only every needed to evaluate a  few dozen.
+The advantage of these methods are that, unlike  the results of Zhang et al., these  methods require only dozens to hundreds of samples. Also, unlike our approach, these sampling heuristics do not require to enumerate all configurations which is important for highly configurable software systems. 
+That said, as shown by our experiments, these approaches produce estimates with  larger mean error sand partially larger variances than our approach. While sometimes the Sarkar's approach results in  models with (slightly)
+lower mean fault rates, it still requires a considerably largeer number of samples (up to hundreds), while \what only requires to evaluate a  few dozen.
  
 
 \subsection{Spectral Learning}\label{sect:spect}
@@ -613,17 +530,56 @@ All the materials required to reproduce this work are available at \url{https://
 
 \subsection{Case Study Materials}
 
-This study explores feature models, along with the performance score measurements obtained from real time measurements, of the configurable software systems listed in \fig{subjectsystems}.
+The configurable systems used in our experiments are described in Figure \ref{fig:systems}.
+Note, with ``predicting performance scores'', we 
+mean predicting performance measures of the system while executing the test suite provided by the manufacturers, as described per subject system.
 Also, to compare our results from minimal sub-sampling to those obtained 
 from a larger sample, we use data sets showing the performance scores associated with
 compiling and executing {\em nearly all} configurations\footnote{http://openscience.us/repo/performance-predict/cpm.html}.
-
-We say {\em nearly all} configurations, for the following reasoning. For 
+\todo[inline]{Sorry, I do not understand the above sentence.}
+We say {\em nearly all} configurations, for the following reasoning: For 
 $\frac{5}{6}$ths of our case studies, the number of possible configurations
 was not large (192 to 2560). However, the SQLite product line has 3,932,160 
 possible configurations-- which is an impractically large number of configurations to explore. Hence, for SQLite, we use the 4500 samples that could
-be collected in one day of CPU time (and, in the results shown below,
-we will pay particular attention to the variance of the SQLite results).
+be collected in one day of CPU time (and we will pay particular attention to the variance of the SQLite results).
+
+
+
+\begin{figure}[!t]\small
+\framebox[\columnwidth][c]{
+\begin{tabular}{lrrr}
+\multicolumn{4}{p{.95\linewidth}}{
+\textbf{Berkeley DB CE} is an embedded database system written in C. It is one of the most deployed databases in the world, due to its low binary footprint and its configuration abilities. We used the benchmark provided by the vendor to measure response time.}\\
+%
+\multicolumn{4}{p{.95\linewidth}}{
+\textbf{Berkeley DB JE} is a complete re-development in Java with full SQL support. Similarly, we used a benchmark provided by the vendor measuring response time.}\\
+%
+\multicolumn{4}{p{.95\linewidth}}{
+\textbf{Apache} is a prominent open-source Web server that comes with various configuration options. To measure performance, we used the tools autobench and httperf to generate load on the Web server. We increased the load until the server could not handle any further requests and marked the maximum load as the performance value.}\\
+%
+\multicolumn{4}{p{.95\linewidth}}{
+\textbf{SQLite} is an embedded database system deployed over several millions of devices. It supports a vast number of configuration options in terms of compiler flags. As benchmark, we used the benchmark provided by the vendor and measured the response time.}\\
+%
+\multicolumn{4}{p{.95\linewidth}}{
+\textbf{LLVM} is a compiler infrastructure written in C++. It provides configuration options to tailor the compilation process. As benchmark, we measured the time to compile LLVM's test suite.}\\
+%
+\multicolumn{4}{p{.95\linewidth}}{
+\textbf{x264} is a video encoder in C that provides configuration options to adjust output quality of encoded video files. As a benchmark, we encoded the Sintel trailer (735\%MB) from avi to the xH.264 codec and measured encoding time.}\\[4ex]
+\hline
+System & LOC & Features & Configurations\\\hline
+Berkeley DB CE   & 219,811 & 18 & 2,560\\
+Berkeley DB JE   & 42,596 & 32  & 400\\
+Apache & 230,277 & 9 & 192\\
+SQLite & 312,625 & 39 & 3,932,160\\
+LLVM & 47,549 & 11 & 1,024\\
+x264 & 45,743 & 16 & 1,152\\\hline
+\end{tabular}
+}
+\caption{Subject systems used in the experiments.}\label{fig:systems}
+\end{figure}
+
+
+
 
 \subsection{Experimental Rig}
 
