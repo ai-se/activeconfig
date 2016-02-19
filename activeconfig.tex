@@ -852,18 +852,18 @@ runs. Mean values are denoted $\mu$ and IQR denotes the 75th--25th percentile.
 
 \begin{figure*}[htbp]
 \includegraphics[width=\linewidth]{Figures/compare_graph_h.eps}
-\caption{Comparison between various approaches proposed in the literature ~\cite{siegmund2012predicting}, \cite{guo2013variability}, \cite{sarkar2015cost}. The figure compares \what with other techniques w.r.t.\ the mean error, standard deviation, and the percentage of configurations used for training the model.}\label{fig:Comparison}
+\caption{Comparison between various approaches proposed in the literature ~\cite{siegmund2012predicting}, \cite{guo2013variability}, \cite{sarkar2015cost}. The figure compares \what with other techniques w.r.t.\ the mean error, standard deviation, and the percentage of configurations used for training the model. \todo[inline]{change fault rate to error rate. note the sampling heuristic used for siegmund (I guess FW?!)}\label{fig:Comparison}
 \end{figure*}
  
  \begin{center}
-{\em Compared to the state-of-the-art in minimal samplingfor learning performance predictors from configurable soft-ware systems, how good is \what?}
+{\em Compared to the state-of-the-art in minimal sampling for learning performance predictors from configurable software systems, how good is \what?}
 \end{center}
 
-We compare \what with the three state of the art predictors proposed in the literature~\cite{siegmund2012predicting}, \cite{guo2013variability}, \cite{sarkar2015cost}, as discussed in Section~\ref{sect:addit}.
+We compare \what with the three state of the art predictors proposed in the literature~\cite{siegmund2012predicting}, \cite{guo2013variability}, \cite{sarkar2015cost}, as discussed in Section~\ref{sect:addit}. One note, all approaches use regression trees as predictors, with the exception of Siegmund's algorithm who use a regression function derived with linear programming.
  
  The \textcolor{blue}{\bf blue} bars of Figure \ref{fig:Comparison} show the
  mean error rate, the standard deviation of the error rate, and the mean percentage
- of total configurations used in 30 repeats of the different different approaches.
+ of total configurations used in 30 repeats of the different approaches.
  Note that the y-axis of that figure is a logarithmic scale so, within each plot:
  \begin{compactitem}
  \item Differences near the bottom  are very small differences;
@@ -871,55 +871,58 @@ We compare \what with the three state of the art predictors proposed in the lite
  \end{compactitem}
  
 As seen in the left and middle plots of
-Figure 
-\ref{fig:Comparison}, 
-the approach of Siegmund et al.\ often has the highest
+Figure~\ref{fig:Comparison}, 
+the FW approach of Siegmund et al.\ (i.e., the sampling approach using the fewest number of configurations) often has the highest
 error rate and the highest
 standard deviation on that error rate. Hence,
-we cannot recommend this method. Not only
-does it make mistakes most often, but due to
-the size of standard deviation of this method, the  size of those
-mistakes is hardest to predict. 
+we cannot recommend this method or one should use the other sampling heuristics (e.g., HO, HS) to make more accurate predictions, but at the cost of more measurements. Moreover, the size of the standard deviation of this method causes further difficulties in estimating which configurations are those exhibiting a large prediction error. 
 
 As to the approach of Guo et al.\ (with PW), this   does not standout on any of
 our measurements. Its error results are within 1\,\% of \what;
  its standard deviation are usually larger; it requires
  much more data than \what.
  
- In terms of number of measured samples required to build a model, 
+ In terms of the number of measured samples required to build a model, 
  the right-hand-side plot of  Figure~\ref{fig:Comparison}  shows that
- \what uses fewest samples except for two cases:
- the approach of Guo et al. (with 2N) working on BDBC and LLVM.  In both these cases, the mean error and variation on the error
+ \what requires the fewest samples except for two cases:
+ the approach of Guo et al. (with 2N) working on BDBC and LLVM.  In both these cases, the mean error and standard deviation on the error
  estimate is   larger than \what  (see the \textcolor{red}{{\bf RED}} bars in the left and middle plots   of Figure~\ref{fig:Comparison}). Furthermore, in the case of BDBC, the error values
  are  $\mu=14\,\%, \sigma=13\,\%$, which are much larger
 than \what's error scores of $\mu=6\,\%, \sigma=5\,\%$. 
 
-Nor can we recommend the approach of Sarkar et al.\ since,
-as shown on the right-hand-side of Figure~\ref{fig:Comparison}, 
-this approach requires the most data.
-While it is true that its error rate 
-is sometimes less than the one of \what (see the left-hand-side of
-Figure~\ref{fig:Comparison}), that difference is often small (1\,\%
-to 2\,\%). The exception here is BDBC, where Sarker's approach has the lowest
-error of any approach. This exception is discussed further in the
-next paragraph.
+
+Although the approach of Sarkar et al.\ produces an error rate that is sometimes less than the one of \what (see the left-hand-side of
+Figure~\ref{fig:Comparison}), it requires the most number of measurements. Moreover, \what's accuracy is close to Sarkar's approach (1\,\%
+to 2\,\% difference). Hence, we cannot recommend this approach, too.
+
+%Nor can we recommend the approach of Sarkar et al.\ since,
+%as shown on the right-hand-side of Figure~\ref{fig:Comparison}, 
+%this approach requires the most data.
+%While it is true that its error rate 
+%is sometimes less than the one of \what (see the left-hand-side of
+%Figure~\ref{fig:Comparison}), that difference is often small (1\,\%
+%to 2\,\%). 
+
+%The exception here is BDBC, where Sarker's approach has the lowest
+%error of any approach. This exception is discussed further in the
+%next paragraph.
  
 
-The right-hand-side of Figure \ref{fig:Comparison}   shows
-the {\em percent} of configurations samples. Figure \ref{fig:measurements} shows the same values,
+The right-hand-side of Figure~\ref{fig:Comparison}   shows
+the {\em percent} of required measurements. Figure~\ref{fig:measurements} shows the same values,
 expressed as absolute values. Looking across that figure,
-we see that many approached often require many more samples than
+we see that many approaches often require many more samples than
 \what.  Using those fewest number of samples, \what has
 within 1 to 2\,\% of the lowest standard deviation rates 
 and within 1 to 2\,\% of lowest error rates.
 The exception is Sarkar's approach, which has 5\,\% lower mean error
-rates (in BDBC, see the left-hand-side plot of Figure \ref{fig:Comparison} ).  However, 
+rates (in BDBC, see the left-hand-side plot of Figure~\ref{fig:Comparison}).  However, 
 as shown in right-hand-side of Figure~\ref{fig:measurements}, Sarkar's approach needs nearly three times
-as many measurements than \what (191 vs 64 samples). Given
+more measurements than \what (191 vs 64 samples). Given
 the overall reduction of the error is   small (5\,\% difference
 between Sarkar and \what in mean error), the overall
 cost of tripling the data collection cost is
-not justified by the very small additional benefit. 
+often not feasible in a practical context and might not justify the small additional benefit in accuracy. 
 
 
  %Note that:
@@ -974,8 +977,8 @@ not justified by the very small additional benefit.
 
 \begin{myshadowbox}
 Hence, we answer {\bf RQ4} with ``yes'',
-since \what yields predictions that are similar or more accurate that prior
-work and rely on fewer samples.
+since \what yields predictions that are similar to or more accurate than prior
+work, while requiring fewer samples.
 \end{myshadowbox}
 
 
@@ -1034,7 +1037,7 @@ reported in this study are so small that it is reasonable to ask they are due to
 quirk, rather than due to using a clever sample strategy:
 \begin{compactitem}
 \item
-Our low $\mu$ values are consistent with prior work (e.g.~\cite{sarkar2015cost} report their CART predictions;
+Our low $\mu$ values are consistent with prior work (e.g.~\cite{sarkar2015cost});
 \item
 As to our low $\sigma$ values, we note that when the  error values are so close to 0\,\%, the standard
 deviation of the error is ``squeezed'' between zero and those errors. Hence, we would expect that
@@ -1047,7 +1050,7 @@ Also, we are aware that measurement bias can cause false interpretations~\cite{m
 
 
 
-{\em External validity}  We aimed at increasing the external validity by choosing programs from different domains with different configuration mechanisms and implemented with different programming languages. Furthermore, the programs used are deployed and used in the real world. Nevertheless, assuming the evaluations to be automatically transferable  to all configurable programs is not fair. To further strengthen the external validity, we run the model (generated by \textit{\what + $S_1$:Random} against other optimizers, such as NSGA-II and differential evolution algorithms\cite{storn1997differential}. This is to validate the fact that the model does not work only for GALE style of perturbation. In Table \ref{fig:external_validity}, we see that the models developed is valid for all searchers, as all searchers are able to find the near optimal solutions.
+{\em External validity}  We aimed at increasing the external validity by choosing software systems from different domains with different configuration mechanisms and implemented with different programming languages. Furthermore, the systems used are deployed and used in the real world. Nevertheless, assuming the evaluations to be automatically transferable  to all configurable software systems is not fair. To further strengthen the external validity, we run the model (generated by \textit{\what + $S_1$:Random} against other optimizers, such as NSGA-II and differential evolutionary algorithms\cite{storn1997differential}. That is, we validate whether the learned models are not only applicable for GALE style of perturbation. In Table \ref{fig:external_validity}, we see that the models developed are valid for all optimizers, as all optimizers are able to find the near optimal solutions.
 
 
 
@@ -1070,15 +1073,13 @@ Also, we are aware that measurement bias can cause false interpretations~\cite{m
 
 \section{Conclusions}
 
-\todo[inline]{Do we need a few words on the big picture?}
+Configurable software systems today are widely used in practice, but expose challenges regarding to find performance-optimal configurations for certain use cases. We have proposed a fast spectral learner, called \what,  along with three new sampling techniques. The key idea of \what is to explore the configuration space with eigenvalues of the features used in a configuration to determine exactly those configurations for measurement that reveal key performance characteristics. 
 
-\todo[inline]{Also we need a few words on what our actual approach is.}
+We evaluated our proposed distance function along with the sampling techniques with 6 real-world configurable software systems borrowed from the literature. The recommended method \textit{$S_1$:Random} achieves similar to lower error rates, while being stable, when compared our results to the state-of-the-art methods. 
+Except for Berkeley DB, our method performs more accurate than the state-of-the-art approaches by Siegmund et al.~\cite{siegmund2012predicting} and Guo et al.~\cite{guo2013variability}. We achieve a similar prediction accuracy and stability as the approach by Sarkar et al~\cite{sarkar2015cost}, while requiring a far smaller number of configurations to be measured. We also show that the sampling method \textit{$S_1$:Random} can be used to build cheap (but stable) surrogate prediction models, which can be used by various off-the-shelf optimizers to find a performance-optimal configuration. 
 
-We have proposed a fast spectral learner, called \what,  along with three new sampling techniques, which we evaluated on 6 real-world configurable software systems borrowed from the literature. The recommended method \textit{$S_1$:Random} achieves similar to lower fault rates, while being stable, when compared our results to the state of the art methods. 
-Except for Berkeley DB, our method performs more accurate than the state-of-the-art approaches by Siegmund et al.~\cite{siegmund2012predicting} and Guo et al.~\cite{guo2013variability}. We achieve a similar prediction accuracy and stability as the approach by Sarkar et al~\cite{sarkar2015cost}, while requiring far smaller number of configurations to be measured. We also show that the sampling method \textit{$S_1$:Random} can be used to make cheap (but stable) surrogates to the problem, which can be then used by various off-the-shelf optimizers to find the desired configuration. 
-
-Our specific focus here was sampling data
-to reason about configurable systems. More generally,
+Our specific focus here was on sampling data
+to reason about configurable software systems. More generally,
 this paper has demonstrated the benefit of using
 spectral learning for SE applications.  As argued in \tion{sample},
 we recommend spectral learning  for software analytics when there are
