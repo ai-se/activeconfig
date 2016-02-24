@@ -1,4 +1,4 @@
-\documentclass{sig-alternative}
+\documentclass{newsig}
 % \documentclass[conference]{IEEEtran}
 \usepackage{color}
 \usepackage{listings}
@@ -137,6 +137,22 @@
 % \theoremstyle{break}
 
 
+\setcopyright{acmcopyright}
+%\setcopyright{acmlicensed}
+%\setcopyright{rightsretained}
+%\setcopyright{usgov}
+%\setcopyright{usgovmixed}
+%\setcopyright{cagov}
+%\setcopyright{cagovmixed}
+% DOI
+\doi{XX.XXX/XXX+X}
+% ISBN
+\isbn{YYY-YYYY-YY-YYY/YY/YYY}
+%Conference
+\conferenceinfo{Submitted to FSE '16}{ Seattle, WA, USA. 2016}
+\acmPrice{\$ZZ.00}
+
+
  
 \begin{document}
 % \conferenceinfo{FSE}{'15 Bergamo, Italy}
@@ -145,7 +161,7 @@
 \author{
         \alignauthor Vivek Nair, Tim Menzies, Xipeng Shen 
         \affaddr{NC State University, USA}\\
-        \email{{vivekaxl,tim.menzies, xipengshen@gmail.com}}
+        \email{{vivekaxl, tim.menzies, xipengshen@gmail.com}}
     \and  
         \alignauthor Norbert Siegmund, Sven Apel \\
         \affaddr{University of Passau, Germany}\\
@@ -155,7 +171,7 @@
 \thispagestyle{plain}
 \pagestyle{plain}
 \begin{abstract}
-Despite the huge spread and economical importance of configurable software systems, there is only unsatisfactory support in utilizing the full potential of these systems with respect to finding a performance-optimal configuration.
+Despite the huge spread and economical importance of configurable software systems, there is  unsatisfactory support in utilizing the full potential of these systems with respect to finding a performance-optimal configuration.
 Prior work on predicting the performance of software configurations suffered from either (a)~requiring far too many sample configurations or (b)~large variances in their predictions.
 Both these problems can be avoided using the \what spectral learner.  
 {\what}'s innovation is  
@@ -247,8 +263,9 @@ that might be noisy or redundant. For further details on why we make this recomm
 \section{Background \& Related Work}  
 \label{sect:addit}
 
-A configurable software system has a set $X$ of Boolean configuration options,\footnote{In this paper, we concentrate on Boolean options, as they make up the majority of all options; see Siegmund et al., for how to incorporate numeric options~\cite{SGA+15}.} also referred to as features or independent variables in our setting. 
-If a feature is selected in a configuration, it corresponds to $\mathit{True}$ and $\mathit{False}$ otherwise. We represent the features as a vector F=  $<f_1$,$f_2$, ..., $f_n>$, where $n$ is the number of features of the system. Each valid instance of the vector (i.e., a configuration) has a corresponding performance score associated to it. 
+A configurable software system has a set $X$ of Boolean configuration options,\footnote{In this paper, we concentrate on Boolean options, as they make up the majority of all options; see Siegmund et al., for how to incorporate numeric options~\cite{SGA+15}.} also referred to as features or independent variables in our setting. We denote the number of features in the system as $n$. All the features of a system can be represents a boolean/binary space (${Z}_{2}^{n}$)--- $F$, where $n$ is the number of features of the system. Every software system has a set of valid configurations ($V$) which is represented as a vector $\vec{C} \in \mathbb{Z}_{2}^{n}$, where $\mathbb{Z}_{2}^{n}$
+% http://math.stackexchange.com/questions/892094/notation-for-show-that-a-variable-is-binary
+is Boolean $n$-space i.e. each feature of a configurations is assigned $\mathit{True}$ and $\mathit{False}$ otherwise, based on whether the feature was selected or not.  Each valid instance of the vector (i.e., a configuration) has a corresponding performance score associated to it. 
 
 The literature offers two approaches to performance prediction of software configurations: a {\em maximal sampling} and a {\em minimal sampling} approach: 
 With {\em maximal sampling}, we compile all  possible configurations and record the associated performance scores. 
@@ -267,24 +284,22 @@ Maximal sampling  can be impractically slow. For example, the performance data u
 Another set of approaches are the four "additive" {\em minimal sampling} methods of Siegmund et al.~\cite{siegmund2012predicting}.
 Their first method, called feature-wise sampling ({\em FW}), is their basic method.
 To explain FW, we note that, from a configurable software system, it is theoretically possible to enumerate many or all of the legal configurations\footnote{Though, in practice, this can be very difficult. For example, in models like the Linux Kernel such an enumeration is practically impossible ~\cite{sayyad13b}.}. 
-Each such
-configuration is a vector of $n$ Booleans, where $n_i$ indicates if this configuration uses feature $f_i$.
-Using this information, it  is possible to isolate examples of how much each feature individually contributes to the total run time:
+Since each configuration ($\vec{C}$) is a vector of $n$ Booleans, it  is possible to use this information to isolate examples of how much each feature individually contributes to the total run time:
 \begin{compactenum}
-\item Find a pair of  configurations $C_1$ and $C_2$, where $C_2$ uses exactly the same features as $C_1$, plus just one  extra feature $f_i$.
-\item Set the run time $\Pi(f_i)$ for feature $f_i$ to be the difference in the performance scores between $C_2$ and $C_1$.
-\item The run time  for a new configuration  $C_i=<f_1,f_2,f_3, ...>$, that has not been sampled before is the sum of the run time of its features, as determined before:
+\item Find a pair of  configurations $\vec{C}_1$ and $\vec{C}_2$, where $\vec{C}_2$ uses exactly the same features as $\vec{C}_1$, plus just one  extra feature $f_i$.
+\item Set the run time $\Pi(f_i)$ for feature $f_i$ to be the difference in the performance scores between $\vec{C}_2$ and $\vec{C}_1$.
+\item The run time  for a new configuration  $\vec{C}_i$ such that $1\leq i\leq \left\vert{V}\right\vert$, that has not been sampled before is the sum of the run time of its features, as determined before:
 \begin{equation}
   \Pi(C_i) = \sum_{f_j \in C_i}\Pi(f_j)  
 \end{equation}
 \end{compactenum}
 
-Further to the first point, when many pairs such as ${C_1,C_2}$ satisfying the criteria of point~1, Siegmund et al.\ used the 
+Further to the first point, when many pairs such as ${\vec{C}_1,\vec{C}_2}$ satisfying the criteria of point~1, Siegmund et al.\ used the 
 pair that covers the {\em smallest} number of features. Their basic {\em FW} minimal sampling method 
 compiles and executes only these smallest $C_1$ and $C_2$ configurations. 
 
 Siegmund et al.\ also offers three extensions to the basic method. All these extensions are based on sampling
-not just the smallest $C_1,C_2$  pairs, but also any configurations with {\em interactions} between features. 
+not just the smallest $\vec{C}_1,\vec{C}_2$  pairs, but also any configurations with {\em interactions} between features. 
 All the following minimal sampling policies compile and   execute legal configurations selected via one of three heuristics:
 \vskip 1ex
 \begin{compactitem}
@@ -349,53 +364,39 @@ the polynomial-time inference must be repeated at every level of the hierarchy.
 Competitive results can be achieved
 using an $O(2N)$ analysis that we have developed previously~\cite{me12d}, which is  based on  a heuristic proposed by Faloutsos and Lin~\cite{Faloutsos1995} (which Platt has shown computes a Nystr\"om approximation to the first component of PCA~\cite{platt05}).
 
-\todo[inline]{This paragraph requires a bit more clarification and a relation to the notation introduced in section 2. What is n? What are examples?}  
-Our approach inputs $n$
-examples $n_1,n_2,...$, then:
+% \todo[inline]{This paragraph requires a bit more clarification and a relation to the notation introduced in section 2. What is n? What are examples?}  
+Our approach inputs $N$ ($1\leq \left\vert{N}\right\vert\leq \left\vert{V}\right\vert$)
+valid configurations ($\vec{C}$), $N_1,N_2,...$, then:
 \begin{compactenum}
 \item
 Picks any
-point $n_i$ at random;
+point $N_i$ ($1\leq i \leq\left\vert{N}\right\vert$) at random;
 \item
 Finds
- the point  {\em West}~$\in n$ that is
-furthest away from $n_i$;
-\item Finds the point {\em East}~$\in n$
+ the point  {\em West}~$\in N$ that is
+furthest away from $N_i$;
+\item Finds the point {\em East}~$\in N$
 that is furthest from {\em West}.
 \end{compactenum}
+The line joining {\em East}
+and {\em West} is our approximation for the first principal component.
 Using the distance calculation shown in Equation~\ref{eq:dist}, 
-we define $c$ to be the distance between {\em East}
-and {\em West}.
-\todo[inline]{What is $c$?}
-\what uses this distance to divide all the configurations as follows:
+we define $\delta$ to be the distance between {\em East}
+and {\em West}. 
+% \todo[inline]{What is $c$? Changed to $\delta$}
+\what uses this distance ($\delta$) to divide all the configurations as follows:
 
-\[
-\forall  n_i \in n \left\{\begin{array}{rcl}
-a&=&\mathit{dist}(n_i,\mathit{West})\\
-b&=&\mathit{dist}(n_i,\mathit{East})\\
-x_i&=&\frac{a^2 + c^2 - b^2}{2c}
-\end{array}
-\]
-The value $x_i$ is the projection of $n_i$
-on the line  running  from {\em East} to {\em West}.  We divide
-the examples based on the median value of the projection($x_i$),
-then recurse on each half. The recursion on
-$n$ initial
-examples stops when a sub-region
-contains less than  $M$ examples (e.g., 
-$M=\sqrt{|n|}$).
-We explore this approach for three reasons:
-\begin{compactitem}
-\item
-{\em It is very fast}:
-This process requires only $2*|n|$ distance comparisons
-per level of recursion, which is far less than the $O(|n|^2)$
-required by PCA~\cite{Du2008}
-or other  algorithms such as K-Means~\cite{hamerly2010making}.
-\item
-{\em It is not domain-specific}:
-This approach is general unlike traditional PCA. It does not make any assumption that all the variables are numeric. As shown in Equation~\ref{eq:dist}, we can approximate distances for both numeric and non-numeric data.
-\todo[inline]{What is non-numeric? Categorical? Nominal/ordinal or completely different types?}
+% \[
+% \forall  n_i \in n \left\{\begin{array}{rcl}
+% a&=&\mathit{dist}(n_i,\mathit{West})\\
+% b&=&\mathit{dist}(n_i,\mathit{East})\\
+% x_i&=&\frac{a^2 + c^2 - b^2}{2c}
+% \end{array}
+% \]
+The value $x_i$ is the projection of $N_i$
+on the line  running  from {\em East} to {\em West}\footnote{Projection of $N_i$ can be calculated in the following way: $a$ = dist({\em East}, $N_i$), $b$ = dist({\em West}, $N_i$) $x_i = \sqrt{\frac{a^2 - b^2 + \delta^2}{2\delta}}$.}.  We divide
+the examples based on the median value of the projection($x_i$). Now, we have two clusters of data divided based on the projection values (of $N_i$) on the line joining {\em East} and {\em West}. This process is applied recursively on these clusters till a predefined stopping condition. In our study, the  recursive splitting of the $N_i$'s stops when a sub-region
+contains less than  $\sqrt{|N|}$ examples.
 \begin{equation}
     dist(x, y) = 
     \begin{cases}
@@ -408,6 +409,18 @@ This approach is general unlike traditional PCA. It does not make any assumption
     \end{cases}
     \label{eq:dist}
 \end{equation}
+We explore this approach for three reasons:
+\begin{compactitem}
+\item
+{\em It is very fast}:
+This process requires only $2*|n|$ distance comparisons
+per level of recursion, which is far less than the $O(|n|^2)$
+required by PCA~\cite{Du2008}
+or other  algorithms such as K-Means~\cite{hamerly2010making}.
+\item
+{\em It is not domain-specific}:
+This approach is general unlike traditional PCA. It does not make any assumption that all the variables are numeric. As shown in Equation~\ref{eq:dist}\footnote{In our study {\em dist} function accepts configurations ($\vec{C}$) and return the distance between them. If $x_i$ and $y_i$ $\in \mathbb{R}^n$ then the distance function would be same as standard Euclidean distance.}, we can approximate distances for both numeric and non-numeric data for ex. boolean, categorical data etc.
+% \todo[inline]{What is non-numeric? Categorical? Nominal/ordinal or completely different types?}
 
 \item
 {\em It reduces the dimensionality problem}:
@@ -433,10 +446,10 @@ sampling methods against another baseline using information gathered after execu
 all configurations.
 
 \subsection{Regression-Tree Learning}
-After collecting the data using one of the sampling policies ($S_1$, $S_2$, or $S_3$), we then use a CART regression-tree learner \cite{breiman1984} to build a predictor for performance scores. Regression-tree learners seek the attribute-range split that most increases
+After collecting the data using one of the sampling policies ($S_1$, $S_2$, or $S_3$) described in section \ref{sect:sample}, we then use a CART regression-tree learner \cite{breiman1984} to build a predictor for performance scores. Regression-tree learners seek the attribute-range split that most increases
 our ability to make accurate predictions.
-CART explores splits that divide $n$ samples  into two sets  $n_1$ and $n_2$, where each set  has a  standard deviation on the target variable of $\sigma_1$ and  $\sigma_2$.
-CART finds the ``best'' split defined as the split that minimizes $\frac{n_1}{n}\sigma_1 + \frac{n_2}{n}\sigma_2$.
+CART explores splits that divide $N$ samples  into two sets  $A$ and $B$, where each set  has a  standard deviation on the target variable of $\sigma_1$ and  $\sigma_2$.
+CART finds the ``best'' split defined as the split that minimizes $\frac{A}{N}\sigma_1 + \frac{B}{N}\sigma_2$.
 Using this best split, CART divides the data recursively.
  
 
@@ -444,25 +457,28 @@ In summary, \what  combines:
 \begin{compactenum}
 \item
 The FASTMAP method of Faloutsos and Lin~\cite{Faloutsos1995};
+
 \item A spectral learning algorithm initially   inspired by    Boley's PDDP system~\cite{boley98}, which we modify
 by replacing  PCA with FASTMAP (called
 ``WHERE'' in prior work ~\cite{me12d});
+
 \item
-The $S_1$:Random sample policy that explores the leaf clusters found by this recursive division;
+The sampling policy that explores the leaf clusters found by this recursive division;
+
 \item 
-The CART regression-tree learner that converts the data from the samples collected by $S_1$:Random
+The CART regression-tree learner that converts the data from the samples collected by sampling policy 
 into a runtime prediction model~\cite{breiman1984}.
 \end{compactenum}
 That is,
 \begin{center}
 \begin{tabular}{rcl}
 WHERE& = &PDDP $-$ PCA $+$ FASTMAP\\ 
-\what& =  & WHERE $+$ $S_1$:Random $+$ CART
+\what& =  & WHERE $+$ Sampling-Policy $+$ CART
 \end{tabular}
 \end{center}
 This unique combination of methods has not been previously explored in the
 software-engineering literature.
-\todo[inline]{In the remaining text we dont need to mention S1:Random, as it is part of \what, be the above definition.}
+\todo[inline]{In the remaining text we dont need to mention S1:Random, as it is part of \what, be the above definition. Since we compare different sampling techniques in first research question, I think it is necessary to mention the sampling policy along with \what}
 
 \section{Experiments}
 
@@ -502,7 +518,7 @@ Therefore, to assess feasibility of our sampling policies, we must consider:
 \end{compactitem}
 The above considerations lead to four research questions:
 \bi
-\item {\bf RQ1:} {\em Can  \what generate good predictions after
+\item {\bf RQ1:} {\em Can  \what along with sampling policies generate good predictions after
 executing only a small number of configurations?}
 \ei
 Here, by ``good'' we mean that the predictions made by models that were trained using sampling with \what are as accurate, or more accurate,
@@ -609,7 +625,7 @@ measure of \eq{err}.
 
 
 
-\todo[inline]{Check the correct placement of this paragraph}
+% \todo[inline]{Check the correct placement of this paragraph}
 The validity of the predictors built by the regression tree is verified on testing data. 
 For each  test item, we find out how long it {\em actually} takes to run the corresponding variant and compare the actual measured performance to the {\em prediction} from CART. The resulting prediction error is then computed using:
 \begin{equation}\label{eq:err}
@@ -667,7 +683,7 @@ variable in  our analysis.
 \includegraphics[width=0.9\linewidth]{Figures/SamplingAccuracy.eps}
 \caption{Errors of the predictions made by \what with four different
 sampling policies. Note that, on the y-axis,  {\em lower} errors are {\em better}.
-\todo[inline]{Please add $S_1$, $S_2$, ... to the legend.}
+\todo[inline]{Please add $S_1$, $S_2$, ... to the legend.: It is already there at the bottom of the figure. I think I am missing something! }
 }
 \label{fig:sampling_accuracy}
 \end{figure}
@@ -811,10 +827,7 @@ results of \fig{Evaluations}).
 
 \begin{figure}[!t]
 \includegraphics[width=0.9\linewidth]{Figures/optimizer_result.eps}
-\caption{Solutions found by GALE and NSGA-II and DE (shown as points) laid against the ground truth (all known configuration performance scores). In the top plot, three results can clearly be distinguished. 
-\todo[inline]{Sorry, I dont see a clear distinction. Give better guidance and remove "clearly".}
-However, in the remaining plots, the results were very similar. Hence, in those plots, all those results
-fall nearly to the same point.}\label{fig:performance_graph}
+\caption{Solutions found by GALE and NSGA-II and DE (shown as points) laid against the ground truth (all known configuration performance scores). In case of Apache and BDBJ, we can see that the different optimizers find different solutions but in the remaining plots, the results are the same. It can be observed that all the optimizers can find the configuration with  lower performance scores.}\label{fig:performance_graph}
 \end{figure}
 
 
@@ -830,17 +843,22 @@ The answer to {\bf RQ3} is ``yes''--- for optimizing performance scores, we can 
 \begin{table}[h]
 \resizebox{3.3 in}{!}{
 
-\begin{tabular}{|l@{~}|l@{~}|l@{~}|l@{~}|l@{~}|l@{~}|l@{~}|l@{~}|l@{~}|l@{~}|l@{~}|l@{~}|l|}
+\begin{tabular}{|l|l|l|l|l|l|l|}
 \hline
-\multirow{2}{*}{Searcher} & \multicolumn{2}{l|}{Apache} & \multicolumn{2}{l|}{\begin{tabular}[c]{@{}l@{}}BDBC\end{tabular}} & \multicolumn{2}{l|}{\begin{tabular}[c]{@{}l@{}}BDBJ\end{tabular}} & \multicolumn{2}{l|}{LLVM} & \multicolumn{2}{l|}{SQLite} & \multicolumn{2}{l|}{X264} \\ \cline{2-13} 
-                          & $\mu$         & IQR        & $\mu$                                 & IQR                                  & $\mu$                                   & IQR                                   & $\mu$       & IQR        & $\mu$      & IQR        & $\mu$       & IQR        \\ \hline
-GALE                      & 870            & 0          & 0.363                                 & 0.004                                & 3139                                     & 70                                    & 202       & 3.98       & 13.1     & 0.2411     & 248      & 3.3       \\ \hline
-DE                        & 840            & 0          & 0.359                                 & 0.002                                & 3139                                     & 70                                    & 200       & 0          & 13.1      & 0          & 244       & 0.003      \\ \hline
-NSGA2                     & 840            & 0          & 0.354                                 & 0.005                                & 3139                                     & 70                                    & 200       & 0          & 13.1      & 0.406      & 244       & 0.05       \\ \hline
-\end{tabular}}
-\caption{The minimum performance scores as found by the learners GALE, NSGA-II, and DE, for  20 repeated
-runs. Mean values are denoted $\mu$ and IQR denotes the 75th--25th percentile.
-\todo[inline]{$\mu$ is reserved for the mean of the entire population, not for the mean of the part of the data we look at.}
+\multirow{3}{*}{\textbf{Dataset}} & \multicolumn{6}{c|}{\textbf{Searcher}}                                                                       \\ \cline{2-7} 
+                                  & \multicolumn{2}{c|}{\textbf{GALE}} & \multicolumn{2}{c|}{\textbf{DE}} & \multicolumn{2}{c|}{\textbf{NSGAII}} \\ \cline{2-7} 
+                                  & \textbf{Mean}    & \textbf{IQR}    & \textbf{Mean}   & \textbf{IQR}   & \textbf{Mean}     & \textbf{IQR}     \\ \hline
+\textbf{Apache}                   & 870              & 0               & 840             & 0              & 840               & 0                \\ \hline
+\textbf{BDBC}                     & 0.363            & 0.004           & 0.359           & 0.002          & 0.354             & 0.005            \\ \hline
+\textbf{BDBJ}                     & 3139             & 70              & 3139            & 70             & 3139              & 70               \\ \hline
+\textbf{LLVM}                     & 202              & 3.98            & 200             & 0              & 200               & 0                \\ \hline
+\textbf{SQLite}                   & 13.1             & 0.241           & 13.1            & 0              & 13.1              & 0.406            \\ \hline
+\textbf{X264}                     & 248              & 3.3             & 244             & 0.003          & 244               & 0.05             \\ \hline
+\end{tabular}
+}
+\caption{The table shows how the minimum performance scores as found by the learners GALE, NSGA-II, and DE, vary over 20 repeated
+runs. Mean values are denoted $\mu$ and IQR denotes the 75th--25th percentile. Low IQR suggests that the surrogate model build by \what is stable and can be utilized by off the shelf optimizers to find performance-optimal configurations.
+% \todo[inline]{$\mu$ is reserved for the mean of the entire population, not for the mean of the part of the data we look at.}
 }
 \label{fig:external_validity}
 \end{table}
@@ -852,14 +870,15 @@ runs. Mean values are denoted $\mu$ and IQR denotes the 75th--25th percentile.
 
 \begin{figure*}[htbp]
 \includegraphics[width=\linewidth]{Figures/compare_graph_h.eps}
-\caption{Comparison between various approaches proposed in the literature ~\cite{siegmund2012predicting}, \cite{guo2013variability}, \cite{sarkar2015cost}. The figure compares \what with other techniques w.r.t.\ the mean error, standard deviation, and the percentage of configurations used for training the model. \todo[inline]{change fault rate to error rate. note the sampling heuristic used for siegmund (I guess FW?!)}\label{fig:Comparison}
+\caption{Comparison between various approaches proposed in the literature ~\cite{siegmund2012predicting}, \cite{guo2013variability}, \cite{sarkar2015cost}. The figure compares \what with other techniques w.r.t.\ the mean error, standard deviation, and the percentage of configurations used for training the model.} \label{fig:Comparison}
 \end{figure*}
- 
+% \todo[inline]{change fault rate to error rate. note the sampling heuristic used for siegmund (I guess FW?!)}
+
  \begin{center}
 {\em Compared to the state-of-the-art in minimal sampling for learning performance predictors from configurable software systems, how good is \what?}
 \end{center}
 
-We compare \what with the three state of the art predictors proposed in the literature~\cite{siegmund2012predicting}, \cite{guo2013variability}, \cite{sarkar2015cost}, as discussed in Section~\ref{sect:addit}. One note, all approaches use regression trees as predictors, with the exception of Siegmund's algorithm who use a regression function derived with linear programming.
+We compare \what with the three state of the art predictors proposed in the literature~\cite{siegmund2012predicting}, \cite{guo2013variability}, \cite{sarkar2015cost}, as discussed in Section~\ref{sect:addit}. One note, all approaches use regression trees as predictors, with the exception of Siegmund's algorithm which uses a regression function derived using linear programming.
  
  The \textcolor{blue}{\bf blue} bars of Figure \ref{fig:Comparison} show the
  mean error rate, the standard deviation of the error rate, and the mean percentage
@@ -1050,7 +1069,7 @@ Also, we are aware that measurement bias can cause false interpretations~\cite{m
 
 
 
-{\em External validity}  We aimed at increasing the external validity by choosing software systems from different domains with different configuration mechanisms and implemented with different programming languages. Furthermore, the systems used are deployed and used in the real world. Nevertheless, assuming the evaluations to be automatically transferable  to all configurable software systems is not fair. To further strengthen the external validity, we run the model (generated by \textit{\what + $S_1$:Random} against other optimizers, such as NSGA-II and differential evolutionary algorithms\cite{storn1997differential}. That is, we validate whether the learned models are not only applicable for GALE style of perturbation. In Table \ref{fig:external_validity}, we see that the models developed are valid for all optimizers, as all optimizers are able to find the near optimal solutions.
+{\em External validity}  We aimed at increasing the external validity by choosing software systems from different domains with different configuration mechanisms and implemented with different programming languages. Furthermore, the systems used are deployed and used in the real world. Nevertheless, assuming the evaluations to be automatically transferable  to all configurable software systems is not fair. To further strengthen the external validity, we run the model (generated by \textit{\what + $S_1$:Random}) against other optimizers, such as NSGA-II and differential evolution~\cite{storn1997differential}. That is, we validate whether the learned models are not only applicable for GALE style of perturbation. In Table~\ref{fig:external_validity}, we see that the models developed are valid for all optimizers, as all optimizers are able to find the near optimal solutions.
 
 
 
