@@ -1,3 +1,4 @@
+
 \documentclass{newsig}
 % \documentclass[conference]{IEEEtran}
 \usepackage{color}
@@ -180,7 +181,7 @@ between the configurations of a configurable software system, to perform dimensi
 reduced configuration space, many closely associated configurations can be studied
 by executing only a few sample configurations. For the subject systems studied
 here, a few dozen samples yield accurate and stable predictors---less than 10\,\% prediction error, with a standard deviation of less than 2\,\%.  
-When compared to the state of the art, our approach (a)~requires 
+When compared to the state-of-the-art, our approach (a)~requires 
 2 to 10 times fewer samples to achieve similar prediction accuracies
 and (b)~its predictions are  more stable (i.e., have lower standard
 deviation). 
@@ -217,13 +218,15 @@ Sampling.
 %of programs generated from them? 
 
 Most software systems today are configurable. Despite the undeniable benefits
-of configurability, large configuration spaces challenge developers, maintainers, and users. In the face of hundreds of configuration options, it is not easy to keep track of the effects of individual configuration options and their mutual interactions. So, predicting the performance of individual system configurations or determining the optimal configuration is often more guess work than engineering. In their recent paper, Xu et al.\ documented the  difficulties developers face
+of configurability, large configuration spaces challenge developers, maintainers, and users. In the face of hundreds of configuration options, it is difficult to keep track of the effects of individual configuration options and their mutual interactions. So, predicting the performance of individual system configurations or determining the optimal configuration is often more guess work than engineering. In their recent paper, Xu et al.\ documented the  difficulties developers face
 with understanding  the configuration spaces of their systems~\cite{xu2015hey}. As a result, developers tend to ignore over $5/6$ths of the configuration options, which leaves considerable optimization potential untapped and induces major economic cost~\cite{xu2015hey}.
 
-Addressing the challenge of performance prediction and optimization in the face of large configuration spaces, researchers have developed a number of approaches that rely on sampling and machine learning~\cite{siegmund2012predicting,guo2013variability,sarkar2015cost}. While gaining some ground, state-of-the-art approaches face two problems: 
-(a)~they require far too many sample configurations for learning or (b)~they are prone to large variances in their predictions. For example, prior work on predicting performance scores using regression trees had to compile and execute hundreds to thousands of specific system configurations~\cite{guo2013variability}. 
-Other studies that tried to make far fewer execution samples resulted in predictors that were considerably inaccurate in their performance predictions.\todo[inline]{Which do you mean?}
-A more balanced approach by Siegmund et al.\ is able to learn predictors for  configurable systems~\cite{siegmund2012predicting} with low mean errors, but with large variances of prediction accuracy  (e.g.\ in half of the results, the performance predictions for the Apache Web server were up to 50\,\% wrong). 
+Addressing the challenge of performance prediction and optimization in the face of large configuration spaces, researchers have developed a number of approaches that rely on sampling and machine learning~\cite{siegmund2012predicting,guo2013variability,sarkar2015cost}.
+Researchers have developed number of approaches to tackle the problem of  large configuration spaces to meet the challenges of performance prediction and optimization.   
+While gaining some ground, state-of-the-art approaches face two problems: 
+(a)~they require far too many sample configurations for learning or (b)~they are prone to large variances in their predictions. For example, prior work on predicting performance scores using regression-trees had to compile and execute hundreds to thousands of specific system configurations~\cite{guo2013variability}. 
+% Other studies that tried to make far fewer execution samples resulted in predictors that were considerably inaccurate in their performance predictions.\todo[inline]{Which do you mean?}
+A more balanced approach by Siegmund et al.\ has an ability to learn predictors for  configurable systems~\cite{siegmund2012predicting} with low mean errors, but with large variances of prediction accuracy  (e.g.\ in half of the results, the performance predictions for the Apache Web server were up to 50\,\% wrong). 
 %My(Norbert) comment on this: you can't just take the worst heuristic here when the paper was about improving over this worst case...
  %\footnote{The predictions of \cite{siegmund2012predicting} had $\mu=19\%$ errors with $\sigma = 19.5\%$.}
   %that half they time, they could be up to 50\% incorrect\footnote{
@@ -237,12 +240,12 @@ suffered from  unstable predictions (e.g., predictions had a mean error of up to
 
 The problems of large sample sets and large variances in prediction can be avoided using the \what spectral learner, which is our main contribution.  
 {\what}'s innovation is  the use of the spectrum (eigenvalues) of the distance matrix
-between the configurations of a configurable system, to perform dimensionality reduction. Within that
+between the configurations of a configurable system to perform dimensionality reduction. Within that
 reduced configuration space, many closely associated configurations can be studied
 by measuring only a few samples.
 In a number of experiments, we compared \what against the state-of-the-art approaches of Siegmund et al.~\cite{siegmund2012predicting}, Guo et al.~\cite{guo2013variability}, and Sarkar et al. \cite{sarkar2015cost} by means of 5 real-world configurable systems: Berkeley DB,  the Apache Web server, SQLite, the LLVM compiler, and the x264 video encoder.
 We found that \what performs as well or better than prior approaches,
-while  requiring far few samples (just a few dozen).
+while  requiring far fewer samples (just a few dozen).
 This is significant and most surprising, since some of the systems explored here have up to millions of possible configurations. 
 
 Overall, we make the following contributions:
@@ -259,13 +262,18 @@ that might be noisy or redundant. For further details on why we make this recomm
 
 %The rest of the paper is organized as follows. Section 2 defines the terms used in the paper. Section 3 describes the background of the problem we are trying to tackle along with the data sets used in the experiments. Section 4 further explores the research question and finds association among them. Section 5 describes the experiment setup etc. Section 6 discusses the results and Section 7 the related work. This paper concludes after mentioning the threats to validity.
 
-
+\newpage
 \section{Background \& Related Work}  
 \label{sect:addit}
 
-A configurable software system has a set $X$ of Boolean configuration options,\footnote{In this paper, we concentrate on Boolean options, as they make up the majority of all options; see Siegmund et al., for how to incorporate numeric options~\cite{SGA+15}.} also referred to as features or independent variables in our setting. We denote the number of features in the system as $n$. All the features of a system can be represents a boolean/binary space (${Z}_{2}^{n}$)--- $F$, where $n$ is the number of features of the system. Every software system has a set of valid configurations ($V$) which is represented as a vector $\vec{C} \in \mathbb{Z}_{2}^{n}$, where $\mathbb{Z}_{2}^{n}$
-% http://math.stackexchange.com/questions/892094/notation-for-show-that-a-variable-is-binary
-is Boolean $n$-space i.e. each feature of a configurations is assigned $\mathit{True}$ and $\mathit{False}$ otherwise, based on whether the feature was selected or not.  Each valid instance of the vector (i.e., a configuration) has a corresponding performance score associated to it. 
+A configurable software system has a set $X$ of Boolean configuration options,\footnote{In this paper, we concentrate on Boolean options, as they make up the majority of all options; see Siegmund et al., for how to incorporate numeric options~\cite{SGA+15}.} also referred to as features or independent variables in our setting.
+
+We denote the number of features in the system (S) as n and all the features on S  can be represented by a boolean/binary space $\mathbb{Z}_{2}^{n}$, which is denoted by F. All the valid configuration of system S belong to a set V, which is represented by vectorrs $\vec{C_i}$ ($1\leq i\leq \left\vert{V}\right\vert$) belongs to Z. Each element of the configuration represent a feature which can either be \em{True} or \em{False} based on whether the feature was selected or not. 
+
+% We denote the number of features in the system as $n$. All the features of a system can be represents a boolean/binary space (${Z}_{2}^{n}$)--- $F$, where $n$ is the number of features of the system. Every software system has a set of valid configurations ($V$) which is represented as a vector $\vec{C} \in \mathbb{Z}_{2}^{n}$, where $\mathbb{Z}_{2}^{n}$
+% % http://math.stackexchange.com/questions/892094/notation-for-show-that-a-variable-is-binary
+% is Boolean $n$-space i.e. each feature of a configurations is assigned $\mathit{True}$ and $\mathit{False}$ otherwise, based on whether the feature was selected or not.  
+Each valid instance of the vector (i.e., a configuration) has a corresponding performance score associated to it. 
 
 The literature offers two approaches to performance prediction of software configurations: a {\em maximal sampling} and a {\em minimal sampling} approach: 
 With {\em maximal sampling}, we compile all  possible configurations and record the associated performance scores. 
@@ -283,28 +291,28 @@ Maximal sampling  can be impractically slow. For example, the performance data u
 
 Another set of approaches are the four "additive" {\em minimal sampling} methods of Siegmund et al.~\cite{siegmund2012predicting}.
 Their first method, called feature-wise sampling ({\em FW}), is their basic method.
-To explain FW, we note that, from a configurable software system, it is theoretically possible to enumerate many or all of the legal configurations\footnote{Though, in practice, this can be very difficult. For example, in models like the Linux Kernel such an enumeration is practically impossible ~\cite{sayyad13b}.}. 
-Since each configuration ($\vec{C}$) is a vector of $n$ Booleans, it  is possible to use this information to isolate examples of how much each feature individually contributes to the total run time:
+To explain {\em FW}, we note that, from a configurable software system, it is theoretically possible to enumerate many or all of the legal configurations\footnote{Though, in practice, this can be very difficult. For example, in models like the Linux Kernel such an enumeration is practically impossible ~\cite{sayyad13b}.}. 
+Since each configuration ($\vec{C_i}$) is a vector of $n$ Booleans, it  is possible to use this information to isolate examples of how much each feature individually contributes to the total run time. The algorithm follows:
 \begin{compactenum}
-\item Find a pair of  configurations $\vec{C}_1$ and $\vec{C}_2$, where $\vec{C}_2$ uses exactly the same features as $\vec{C}_1$, plus just one  extra feature $f_i$.
-\item Set the run time $\Pi(f_i)$ for feature $f_i$ to be the difference in the performance scores between $\vec{C}_2$ and $\vec{C}_1$.
+\item Find a pair of  configurations $\vec{C_i}$ and $\vec{C}_2$, where $\vec{C}_2$ uses exactly the same features as $\vec{C_i}$, plus just one  extra feature $f_i$.
+\item Set the run time $\Pi(f_i)$ for feature $f_i$ to be the difference in the performance scores between $\vec{C_2}$ and $\vec{C_i}$.
 \item The run time  for a new configuration  $\vec{C}_i$ such that $1\leq i\leq \left\vert{V}\right\vert$, that has not been sampled before is the sum of the run time of its features, as determined before:
 \begin{equation}
   \Pi(C_i) = \sum_{f_j \in C_i}\Pi(f_j)  
 \end{equation}
 \end{compactenum}
 
-Further to the first point, when many pairs such as ${\vec{C}_1,\vec{C}_2}$ satisfying the criteria of point~1, Siegmund et al.\ used the 
+Further to the first point, when many pairs such as ${\vec{C_1},\vec{C}_2}$ satisfying the criteria of point~1, Siegmund et al.\ used the 
 pair that covers the {\em smallest} number of features. Their basic {\em FW} minimal sampling method 
 compiles and executes only these smallest $C_1$ and $C_2$ configurations. 
 
-Siegmund et al.\ also offers three extensions to the basic method. All these extensions are based on sampling
-not just the smallest $\vec{C}_1,\vec{C}_2$  pairs, but also any configurations with {\em interactions} between features. 
+Siegmund et al.\ also offers three extensions to the basic method, which are based on sampling
+not just the smallest $\vec{C_i}$,$\vec{C_2}$  pairs, but also any configurations with {\em interactions} between features. 
 All the following minimal sampling policies compile and   execute legal configurations selected via one of three heuristics:
 \vskip 1ex
 \begin{compactitem}
 \item[{\em PW (pair-wise):}] For each pair of features, try to find a configuration that contains the pair and has a minimal number of features selected. 
-\item[{\em HO (higher-order):}] Select extra configurations, in which three features $f_1,f_2,f_3$ are selected if two of the following know pair-wise interactions exist $(f_1,f_2)$ and $(f_2,f_3)$ and $(f_1,f_3)$.
+\item[{\em HO (higher-order):}] Select extra configurations, in which three features, $f_1,f_2,f_3$, are selected if two of the following know pair-wise interactions exist: $(f_1,f_2)$ and $(f_2,f_3)$ and $(f_1,f_3)$.
 \item[{\em HS (hot-spot):}] Select extra configurations that contain features that are
 frequently interacting with other features. 
 \end{compactitem}
@@ -313,7 +321,7 @@ frequently interacting with other features.
 
 Guo et al.~\cite{guo2013variability} proposed a progressive random sampling approach, which samples in steps of the number of features of the software system in question. The sampled configurations were used to train a regression tree, which is then used to predict the performance scores of other system configurations. The termination criterion of this approach is based on a heuristic, similar to the {\em PW} heuristics of Siegmund et al. 
 
-Sarkar et al.~\cite{sarkar2015cost} proposed a cost model for predicting the effort (or cost) required to generate an accurate predictive model. The user can use this model to decide whether to go ahead and build the model. The method proposed by Sarkar et al.\ randomly samples configurations and uses a heuristic based on feature frequencies as a termination criterion. These samples are then used to train a regression tree; the accuracy of the model is measured by using a test set (size of the training set is equal to size of the test set). One of four projective functions (e.g., exponential) is selected based on how correlated they are to  accuracy measures. This projective function is used to approximate the accuracy-measure curve. The elbow point of the curve is then used as the optimal sample size. Once the optimal size is known, Sarkar et al.\ uses the approach of Guo et al.\ to build the prediction model.  
+Sarkar et al.~\cite{sarkar2015cost} proposed a cost model for predicting the effort (or cost) required to generate an accurate predictive model. The user can use this model to decide whether to go ahead and build the predictive model. This method randomly samples configurations and uses a heuristic based on feature frequencies as a termination criterion. The samples are then used to train a regression tree; the accuracy of the model is measured by using a test set (where the size of the training set is equal to size of the test set). One of four projective functions (e.g., exponential) is selected based on how correlated they are to  accuracy measures. The projective function is used to approximate the accuracy-measure curve and the elbow point of the curve is then used as the optimal sample size. Once the optimal size is known, Sarkar et al.\ uses the approach of Guo et al.\ to build the prediction model.  
 
 
 The advantage of these approaches is that, unlike  the results of Zhang et al., they require only dozens to hundreds of samples. Also, unlike our approach, they do not require to enumerate all configurations, which is important for highly configurable software systems. 
@@ -328,7 +336,7 @@ The minimal sampling method proposed in this paper is based on a spectral learni
 that  explores the spectrum (eigenvalues) of the distance matrix between  configurations.
 In theory, such spectral learners are a better way to handle noisy, redundant, and tightly inter-connected variables, for the following reasons.
 When data sets have many irrelevancies or closely associated data parameters $d$, then
-only a few $e \ll d$ eigenvectors are required to characterize that data.
+only a few eigenvectors e, $e \ll d$  are required to characterize that data.
 In that reduced space:
 \begin{compactitem}
 \item
@@ -351,7 +359,7 @@ we expect predictions built from that sample to have  lower mean errors and lowe
 Spectral methods have been used before for a variety of data mining applications~\cite{kamvar2003spectral}.
 Algorithms, such as PDDP~\cite{boley98} use spectral methods, such as principle component analysis (PCA) to
 recursively divide data into smaller regions.  Software-analytics researchers use spectral methods (again, PCA) as a pre-processor prior to data mining  to reduce noise in software-related data sets~\cite{Theisen15}.
-However, to the best of our knowledge, spectral methods have not been used before in software engineering as a basis of a minimal sampling method.
+However, to the best of our knowledge, spectral methods have not been used before in software engineering (SE) as a basis of a minimal sampling method.
 
 
 \what is somewhat different from other spectral
@@ -372,10 +380,10 @@ valid configurations ($\vec{C}$), $N_1,N_2,...$, then:
 Picks any
 point $N_i$ ($1\leq i \leq\left\vert{N}\right\vert$) at random;
 \item
-Finds
+Find
  the point  {\em West}~$\in N$ that is
 furthest away from $N_i$;
-\item Finds the point {\em East}~$\in N$
+\item Find the point {\em East}~$\in N$
 that is furthest from {\em West}.
 \end{compactenum}
 The line joining {\em East}
@@ -395,7 +403,7 @@ and {\em West}.
 % \]
 The value $x_i$ is the projection of $N_i$
 on the line  running  from {\em East} to {\em West}\footnote{Projection of $N_i$ can be calculated in the following way: $a$ = dist({\em East}, $N_i$), $b$ = dist({\em West}, $N_i$) $x_i = \sqrt{\frac{a^2 - b^2 + \delta^2}{2\delta}}$.}.  We divide
-the examples based on the median value of the projection($x_i$). Now, we have two clusters of data divided based on the projection values (of $N_i$) on the line joining {\em East} and {\em West}. This process is applied recursively on these clusters till a predefined stopping condition. In our study, the  recursive splitting of the $N_i$'s stops when a sub-region
+the examples based on the median value of the projection of $x_i$). Now, we have two clusters of data divided based on the projection values (of $N_i$) on the line joining {\em East} and {\em West}. This process is applied recursively on these clusters until predefined stopping condition. In our study, the  recursive splitting of the $N_i$'s stops when a sub-region
 contains less than  $\sqrt{|N|}$ examples.
 \begin{equation}
     dist(x, y) = 
@@ -413,8 +421,8 @@ We explore this approach for three reasons:
 \begin{compactitem}
 \item
 {\em It is very fast}:
-This process requires only $2*|n|$ distance comparisons
-per level of recursion, which is far less than the $O(|n|^2)$
+This process requires only $2|n|$ distance comparisons
+per level of recursion, which is far less than the $O(N^2)$
 required by PCA~\cite{Du2008}
 or other  algorithms such as K-Means~\cite{hamerly2010making}.
 \item
@@ -446,7 +454,7 @@ sampling methods against another baseline using information gathered after execu
 all configurations.
 
 \subsection{Regression-Tree Learning}
-After collecting the data using one of the sampling policies ($S_1$, $S_2$, or $S_3$) described in section \ref{sect:sample}, we then use a CART regression-tree learner \cite{breiman1984} to build a predictor for performance scores. Regression-tree learners seek the attribute-range split that most increases
+After collecting the data using one of the sampling policies ($S_1$, $S_2$, or $S_3$) described in Section \ref{sect:sample}, we then use a CART regression-tree learner \cite{breiman1984} to build a predictor for performance scores. Regression-tree learners seek the attribute-range split that most increases
 our ability to make accurate predictions.
 CART explores splits that divide $N$ samples  into two sets  $A$ and $B$, where each set  has a  standard deviation on the target variable of $\sigma_1$ and  $\sigma_2$.
 CART finds the ``best'' split defined as the split that minimizes $\frac{A}{N}\sigma_1 + \frac{B}{N}\sigma_2$.
@@ -478,7 +486,7 @@ WHERE& = &PDDP $-$ PCA $+$ FASTMAP\\
 \end{center}
 This unique combination of methods has not been previously explored in the
 software-engineering literature.
-\todo[inline]{In the remaining text we dont need to mention S1:Random, as it is part of \what, be the above definition. Since we compare different sampling techniques in first research question, I think it is necessary to mention the sampling policy along with \what}
+% \todo[inline]{PLEASE REMOVE-In the remaining text we dont need to mention S1:Random, as it is part of \what, be the above definition. Since we compare different sampling techniques in first research question, I think it is necessary to mention the sampling policy along with \what}
 
 \section{Experiments}
 
@@ -501,7 +509,7 @@ between the sample points. Such trends are useful when building {\em optimizers}
 (i.e., systems that input one configuration and propose an alternate
 configuration that has, for instance,  a better performance). Such optimizers might
 need to evaluate hundreds to millions of alternate configurations. 
-To speed up that process, optimizers can use a {\em surrogate model}\footnote{Also known as response surface methods, meta models, or emulators.}
+To speed up that process, optimizers can use a {\em surrogate model}\,\footnote{Also known as response surface methods, meta models, or emulators.}
 that  mimics the outputs of a system of interest, while being computationally cheap(er) to evaluate~\cite{loshchilov13}. For example, when optimizing
 performance scores, we might ask a CART  for a performance
 prediction (rather than compile and execute
@@ -525,12 +533,12 @@ Here, by ``good'' we mean that the predictions made by models that were trained 
 as those generated from models supplied with more samples.
 \bi
 \item {\bf RQ2:} {\em
-Do less data used in building the models cause larger variances in the predicted values?}
+Does less data used in building the models cause larger variances in the predicted values?}
 \item {\bf RQ3:} {\em
 Can ``good'' surrogate models (to be used in optimizers)
 be built from minimal samples?}
 \ei
-Note that {\bf RQ2, RQ3} are of particular concern with our approach,
+Note that {\bf RQ2} and {\bf RQ3} are of particular concern with our approach,
 since our goal is to sample as little as possible from the configuration space.
 \bi
 \item {\bf RQ4:} {\em Compared to the state-of-the-art in minimal sampling for
@@ -602,12 +610,12 @@ The exception is SQLite in which we measure only the
 configurations needed to detect interactions and additionally
 100 random configurations to evaluate the accuracy of
 predictions.  
-\todo[inline]{In Subject Systems we say that we use 4500 samples. In general, this discussion is redundant; I would remove it from Subject Systems.}
+% \todo[inline]{In Subject Systems we say that we use 4500 samples. In general, this discussion is redundant; I would remove it from Subject Systems.}
 To this table, we added a column showing the performance score obtained from the actual measurements for each configuration (refer to section 2).
 
 Note that the following rig ensures that
 we \textbf{never} test any prediction model on the data used to learn that model. Next, we repeated the following procedure 20 times (the figure of 20 repetitions was
-selected using the central limit theorem): 
+selected using the Central Limit Theorem): 
 For each system in \{BDBC, BDBJ, Apache, SQLite, LLVM, x264\}
 \bi
 \item Randomize the order of the rows in their table of data;
@@ -626,7 +634,7 @@ measure of \eq{err}.
 
 
 % \todo[inline]{Check the correct placement of this paragraph}
-The validity of the predictors built by the regression tree is verified on testing data. 
+The validity of the predictors built by the regression-tree is verified on testing data. 
 For each  test item, we find out how long it {\em actually} takes to run the corresponding variant and compare the actual measured performance to the {\em prediction} from CART. The resulting prediction error is then computed using:
 \begin{equation}\label{eq:err}
 \mathit{error}=\frac{\mathit{abs}(\mathit{predicted} - \mathit{actual})}{\mathit{actual}}*100
@@ -637,15 +645,14 @@ For each  test item, we find out how long it {\em actually} takes to run the cor
 \item Determine the $X$-th point in the above experiments, where all predictions stop improving (elbow point);
 \item Measure the standard deviation of the error at that point, across our 20 repeats.
 \ei
-As shown in Figure~\ref{fig:sampling_accuracy}, all our results plateaued after studying $X=40$\,\% of the valid configurations
- \footnote{Just to clarify one frequently asked question about this work, we note
+As shown in Figure~\ref{fig:sampling_accuracy}, all our results plateaued after studying $X=40$\,\% of the valid configurations\footnote{Just to clarify one frequently asked question about this work, we note
 that our rig ``studies'' 40\,\% of the data. We do not mean that our predictive models
  require accessing the performance scores from the 40\,\% of the data. Rather, by ``study'' we mean   reflect 
  on a sample of configurations to determine what minimal subset of that
 sample deserves to be compiled and executed.}.
  Hence to answer {\bf RQ2}, we will compare all 20 predictions at $X=40$\,\%.
  
-{\bf RQ3} requires using the regression tree learned in this way as a {\em surrogate model} within an optimization process. To study this research question, we:
+{\bf RQ3} requires using the regression-tree learned in this way as a {\em surrogate model} within an optimization process. To study this research question, we:
 \bi
 \item Take   $X=40\,\%$ of the configurations;
 \item Apply \what to build a CART model using some minimal sample taken from that 40\,\%;
@@ -682,9 +689,8 @@ variable in  our analysis.
 \begin{figure}[!t]
 \includegraphics[width=0.9\linewidth]{Figures/SamplingAccuracy.eps}
 \caption{Errors of the predictions made by \what with four different
-sampling policies. Note that, on the y-axis,  {\em lower} errors are {\em better}.
-\todo[inline]{Please add $S_1$, $S_2$, ... to the legend.: It is already there at the bottom of the figure. I think I am missing something! }
-}
+sampling policies. Note that, on the y-axis,  {\em lower} errors are {\em better}.}
+% \todo[inline]{Please add $S_1$, $S_2$, ... to the legend.: It is already there at the bottom of the figure. I think I am missing something! }
 \label{fig:sampling_accuracy}
 \end{figure}
 
@@ -707,13 +713,13 @@ The \textcolor{blue}{{\bf blue}} lines in \fig{sampling_accuracy} show a {\em ba
 where data from the performance scores of 100\,\% of  configurations were used by CART
 to build a runtime predictor.
 \item
-The other lines show the results using the sampling methods defined in \tion{sample}.
+The other lines show the results using the sampling methods defined in Section \ref{sample}.
 Note that these sampling methods used  runtime data only from a
 subset of 100\,\% of the performance scores seen in configurations
 from 0 to X\,\%.
 \end{compactitem}
 
-\todo[inline]{Actually, RQ1 does not say anything about varying the sampling policy; Furthermore, we have defined: \what =  WHERE $+$ $S_1$:Random $+$ CART, so \what plus S2... makes no sense.}
+% \todo[inline]{PLEASE REMOVE - Actually, RQ1 does not say anything about varying the sampling policy; Furthermore, we have defined: \what =  WHERE $+$ $S_1$:Random $+$ CART, so \what plus S2... makes no sense. Vivek: I have changed the definition of WHAT to sampling policy because we are making a claim that any random point is better. Our recent studies have shown that using using outlier is not a good representative of a cluster}
 
 The {\em lower} y-axis values  in  \fig{sampling_accuracy} are {\em better} since this shows lower
 prediction errors. Overall, we find that:
@@ -722,7 +728,7 @@ prediction errors. Overall, we find that:
 \item Some software systems exhibit large variances in their error rate, below $X=40$\,\% (e.g., BDBC and BDBJ).
 \item Above $X=40$\,\%, there is little effect on the overall change of the sampling methods.
 \item
-In most of the experiments, the {\em exempler} sampling method $S_3$ shows the highest overall error 
+In most of the experiments, the {\em exemplar} sampling method $S_3$ shows the highest overall error 
 so that it cannot be recommended.
 \item Always, the   blue baseline shows the lowest errors, which is to be
 expected since predictors built on the baseline have access to all data.
@@ -751,12 +757,12 @@ Combining the results of \fig{sampling_accuracy} and \fig{Evaluations}, we concl
 $S_1$:Random is our preferred spectral sampling method. Further,
 the answer to {\bf RQ1} is ``yes'', because applying \what, we can (a)~generate runtime predictors
 using just a few dozens examples of performance scores; and (b)~those predictions have error rates
-within 5\,\% of the error rates seen if predictors built from information about all performance scores.
+within 5\,\% of the error rates seen if predictors are built from information about all performance scores.
 \end{myshadowbox}
 
 \begin{figure}[!t]
 \includegraphics[width=0.9\linewidth]{Figures/evaluation_graph.eps}
-\caption{ Comparing evaluations of different sampling policies. We see that the number of configurations evaluated for $S_2$:EastWest is twice as much as $S_1$:Random, since it selects 2 points from each cluster where as  $S_1$:Random selects only one }\label{fig:Evaluations}
+\caption{ Comparing evaluations of different sampling policies. We see that the number of configurations evaluated for $S_2$:EastWest is twice as much as $S_1$:Random, since it selects 2 points from each cluster where as  $S_1$:Random selects only 1 point. }\label{fig:Evaluations}
 \end{figure}
 
 
@@ -779,7 +785,7 @@ a  compensating effect can be introduced by sampling from spectral space
 since that space contains fewer confusing or correlated variables than that raw configuration space.
 
 \fig{Variance} reports which one of these two competing effects are dominant. 
-The \fig{sampling_accuracy} shows that after some initial fluctuations,
+\fig{sampling_accuracy} shows that after some initial fluctuations,
 after seeing $X=40$\,\% of the configurations, the variances in prediction errors reduces to nearly zero.
 
 
@@ -806,13 +812,13 @@ be built from minimal samples?}
 The results of answering {\bf RQ1} and {\bf RQ2} suggest to use \what (with $S_1$:Random) to build runtime predictors from a small sample of the data. {\bf RQ3}
 asks if that predictor can be used by an optimizer to infer what {\em other} configurations correspond to system configurations with fast performance scores.
 To answer this question,  we ran  a random set of 100 
-configurations, 20 times, then relate that baseline to three optimizers (GALE~\cite{krall2014gale}, DE~\cite{storn1997differential}, NSGA-II~\cite{deb00afast}) using their
+configurations, 20 times, then relate that baseline to three optimizers (GALE~\cite{krall2014gale}, DE~\cite{storn1997differential} and  NSGA-II~\cite{deb00afast}) using their
 default parameters.
  
 When these three optimizers mutated existing configurations to suggest new ones,
 these mutations were checked for validity. Any mutants that violated the system's constraints (e.g., a feature excluding another feature) were rejected
 and the survivors were ``evaluated'' by asking the CART surrogate model.
-%(the  CART regression tree learned from \what+$S_1$:Random, built using the methods of {\bf RQ1}).
+%(the  CART regression-tree learned from \what+$S_1$:Random, built using the methods of {\bf RQ1}).
 These evaluations either rejected the mutant or used it in generation $i+1$, as the basis for a search for more, possibly
 better  mutants.
 
@@ -857,7 +863,7 @@ The answer to {\bf RQ3} is ``yes''--- for optimizing performance scores, we can 
 \end{tabular}
 }
 \caption{The table shows how the minimum performance scores as found by the learners GALE, NSGA-II, and DE, vary over 20 repeated
-runs. Mean values are denoted $\mu$ and IQR denotes the 75th--25th percentile. Low IQR suggests that the surrogate model build by \what is stable and can be utilized by off the shelf optimizers to find performance-optimal configurations.
+runs. Mean values are denoted $\mu$ and IQR denotes the 25th--75th percentile. Low IQR suggests that the surrogate model build by \what is stable and can be utilized by off the shelf optimizers to find performance-optimal configurations.
 % \todo[inline]{$\mu$ is reserved for the mean of the entire population, not for the mean of the part of the data we look at.}
 }
 \label{fig:external_validity}
@@ -878,7 +884,7 @@ runs. Mean values are denoted $\mu$ and IQR denotes the 75th--25th percentile. L
 {\em Compared to the state-of-the-art in minimal sampling for learning performance predictors from configurable software systems, how good is \what?}
 \end{center}
 
-We compare \what with the three state of the art predictors proposed in the literature~\cite{siegmund2012predicting}, \cite{guo2013variability}, \cite{sarkar2015cost}, as discussed in Section~\ref{sect:addit}. One note, all approaches use regression trees as predictors, with the exception of Siegmund's algorithm which uses a regression function derived using linear programming.
+We compare \what with the three state-of-the-art predictors proposed in the literature~\cite{siegmund2012predicting}, \cite{guo2013variability}, \cite{sarkar2015cost}, as discussed in Section~\ref{sect:addit}. One note, all approaches use regression-trees as predictors, with the exception of Siegmund's algorithm which uses a regression function derived using linear programming.
  
  The \textcolor{blue}{\bf blue} bars of Figure \ref{fig:Comparison} show the
  mean error rate, the standard deviation of the error rate, and the mean percentage
@@ -891,10 +897,10 @@ We compare \what with the three state of the art predictors proposed in the lite
  
 As seen in the left and middle plots of
 Figure~\ref{fig:Comparison}, 
-the FW approach of Siegmund et al.\ (i.e., the sampling approach using the fewest number of configurations) often has the highest
+the {\em FW}approach of Siegmund et al.\ (i.e., the sampling approach using the fewest number of configurations) often has the highest
 error rate and the highest
 standard deviation on that error rate. Hence,
-we cannot recommend this method or one should use the other sampling heuristics (e.g., HO, HS) to make more accurate predictions, but at the cost of more measurements. Moreover, the size of the standard deviation of this method causes further difficulties in estimating which configurations are those exhibiting a large prediction error. 
+we cannot recommend this method or  if one wishes to use this method we recommend using the other sampling heuristics (e.g., HO, HS) to make more accurate predictions, but at the cost of more measurements. Moreover, the size of the standard deviation of this method causes further difficulties in estimating which configurations are those exhibiting a large prediction error. 
 
 As to the approach of Guo et al.\ (with PW), this   does not standout on any of
 our measurements. Its error results are within 1\,\% of \what;
@@ -905,9 +911,9 @@ our measurements. Its error results are within 1\,\% of \what;
  the right-hand-side plot of  Figure~\ref{fig:Comparison}  shows that
  \what requires the fewest samples except for two cases:
  the approach of Guo et al. (with 2N) working on BDBC and LLVM.  In both these cases, the mean error and standard deviation on the error
- estimate is   larger than \what  (see the \textcolor{red}{{\bf RED}} bars in the left and middle plots   of Figure~\ref{fig:Comparison}). Furthermore, in the case of BDBC, the error values
- are  $\mu=14\,\%, \sigma=13\,\%$, which are much larger
-than \what's error scores of $\mu=6\,\%, \sigma=5\,\%$. 
+ estimate is   larger than \what  (see the \textcolor{red}{{\bf red}} bars in the left and middle plots   of Figure~\ref{fig:Comparison}). Furthermore, in the case of BDBC, the error values
+ are $\mu=14\,\%$, $\sigma=13\,\%$, which are much larger
+than \what's error scores of $\mu=6\,\%$, $\sigma=5\,\%$. 
 
 
 Although the approach of Sarkar et al.\ produces an error rate that is sometimes less than the one of \what (see the left-hand-side of
@@ -1018,7 +1024,7 @@ Our clustering based on first principal component splits the data on a   approxi
 of the data (as described in \tion{spect}). 
 Hence, this  method is a ``spectral clusterer'' in the general Kamvar-sense. 
 Note that
-for software engineering data, we have
+for SE data, we have
 not found that Kamvar's normalization matrices are needed.
 
 Regarding sampling, there are a wide range of methods know as experimental designs or designs of experiments~\cite{pukelsheim2006optimal}. They usually rely on fractional factorial designs as in the combinatorial testing community~\cite{Kuhn:2013}. 
@@ -1061,7 +1067,7 @@ Our low $\mu$ values are consistent with prior work (e.g.~\cite{sarkar2015cost})
 As to our low $\sigma$ values, we note that when the  error values are so close to 0\,\%, the standard
 deviation of the error is ``squeezed'' between zero and those errors. Hence, we would expect that
 experimental rigs
-that generate error values on the order of 5\,\% \eq{err} should have $\sigma$ values of $0\le \sigma \le 5$ (e.g. like those seen in our introduction).
+that generate error values on the order of 5\,\% and \eq{err} should have $\sigma$ values of $0\le \sigma \le 5$ (e.g. like those seen in our introduction).
 \end{compactitem}
 
 Regarding SQLite, we cannot measure all possible configurations in reasonable time. Hence, we sampled only 100 configurations to compare prediction and actual performance values. We are aware that this evaluation leaves room for outliers.
@@ -1069,7 +1075,7 @@ Also, we are aware that measurement bias can cause false interpretations~\cite{m
 
 
 
-{\em External validity}  We aimed at increasing the external validity by choosing software systems from different domains with different configuration mechanisms and implemented with different programming languages. Furthermore, the systems used are deployed and used in the real world. Nevertheless, assuming the evaluations to be automatically transferable  to all configurable software systems is not fair. To further strengthen the external validity, we run the model (generated by \textit{\what + $S_1$:Random}) against other optimizers, such as NSGA-II and differential evolution~\cite{storn1997differential}. That is, we validate whether the learned models are not only applicable for GALE style of perturbation. In Table~\ref{fig:external_validity}, we see that the models developed are valid for all optimizers, as all optimizers are able to find the near optimal solutions.
+  We aimed at increasing the {\em External validity} by choosing software systems from different domains with different configuration mechanisms and implemented with different programming languages. Furthermore, the systems used are deployed and used in the real world. Nevertheless, assuming the evaluations to be automatically transferable  to all configurable software systems is not fair. To further strengthen the external validity, we run the model (generated by \textit{\what + $S_1$:Random}) against other optimizers, such as NSGA-II and differential evolution~\cite{storn1997differential}. That is, we validate whether the learned models are not only applicable for GALE style of perturbation. In Table~\ref{fig:external_validity}, we see that the models developed are valid for all optimizers, as all optimizers are able to find the near optimal solutions.
 
 
 
@@ -1092,7 +1098,7 @@ Also, we are aware that measurement bias can cause false interpretations~\cite{m
 
 \section{Conclusions}
 
-Configurable software systems today are widely used in practice, but expose challenges regarding to find performance-optimal configurations for certain use cases. We have proposed a fast spectral learner, called \what,  along with three new sampling techniques. The key idea of \what is to explore the configuration space with eigenvalues of the features used in a configuration to determine exactly those configurations for measurement that reveal key performance characteristics. 
+Configurable software systems today are widely used in practice, but expose challenges regarding finding performance-optimal configurations for certain use cases. We have proposed a fast spectral learner, called \what,  along with three new sampling techniques. The key idea of \what is to explore the configuration space with eigenvalues of the features used in a configuration to determine exactly those configurations for measurement that reveal key performance characteristics. 
 
 We evaluated our proposed distance function along with the sampling techniques with 6 real-world configurable software systems borrowed from the literature. The recommended method \textit{$S_1$:Random} achieves similar to lower error rates, while being stable, when compared our results to the state-of-the-art methods. 
 Except for Berkeley DB, our method performs more accurate than the state-of-the-art approaches by Siegmund et al.~\cite{siegmund2012predicting} and Guo et al.~\cite{guo2013variability}. We achieve a similar prediction accuracy and stability as the approach by Sarkar et al~\cite{sarkar2015cost}, while requiring a far smaller number of configurations to be measured. We also show that the sampling method \textit{$S_1$:Random} can be used to build cheap (but stable) surrogate prediction models, which can be used by various off-the-shelf optimizers to find a performance-optimal configuration. 
