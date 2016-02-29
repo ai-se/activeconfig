@@ -18,7 +18,12 @@
 \usepackage[framemethod=tikz]{mdframed}
 \usepackage{lipsum}
 \usetikzlibrary{shadows}
-\newmdenv[tikzsetting= {fill=white!20},roundcorner=10pt, shadow=true]{myshadowbox}
+\newmdenv[
+tikzsetting= {fill=white!20},
+linewidth=2pt,
+roundcorner=5pt, 
+shadow=true
+]{myshadowbox}
 
 
 
@@ -153,7 +158,7 @@
 \conferenceinfo{Submitted to FSE '16}{ Seattle, WA, USA. 2016}
 \acmPrice{\$ZZ.00}
 
-
+\usepackage{stfloats}
  
 \begin{document}
 % \conferenceinfo{FSE}{'15 Bergamo, Italy}
@@ -255,10 +260,10 @@ Overall, we make the following contributions:
 {\em spectral
 learner} that uses an approximation to the first principal component of the configuration space to recursively cluster it, relying only on a few points as a representative of each cluster.
 \item We demonstrate the practicality and generality of our approach by conducting experiments on six real-world configurable software systems (see Figure ~\ref{fig:systems}). The results show that our approach is more accurate (lower mean error) and more stable (lower standard deviation) than state-of-the-art approaches.
-\item We report on a comparative analysis of our approach and three state-of-the-art approaches, demonstrating that our approach outperforms previous approaches in terms of sample size and prediction stability. A key finding is the utility of the principal component of a configuration space to  find informative samples from an otherwise large configuration space.
+\item We report on a comparative analysis of our approach and three state-of-the-art approaches, demonstrating that our approach outperforms previous approaches in terms of sample size and prediction stability. A key finding is the utility of the principal component of a configuration space to  find informative samples from a large configuration space.
 \end{compactitem}
-More generally, this paper illustrates the value of spectral learning for software-engineering data sets. We recommend spectral learning for any software-analytics
-tasks with many possible options described by sets of attributes
+More generally, this paper illustrates the value of spectral learning for software-engineering data sets. We recommend spectral learning for any analytics
+tasks with many options described by sets of attributes
 that might be noisy or redundant. For further details on why we make this recommendation, see \tion{sample}.
 
 %The rest of the paper is organized as follows. Section 2 defines the terms used in the paper. Section 3 describes the background of the problem we are trying to tackle along with the data sets used in the experiments. Section 4 further explores the research question and finds association among them. Section 5 describes the experiment setup etc. Section 6 discusses the results and Section 7 the related work. This paper concludes after mentioning the threats to validity.
@@ -267,9 +272,7 @@ that might be noisy or redundant. For further details on why we make this recomm
 \label{sect:addit}
 
 A configurable software system has a set $X$ of Boolean configuration options,\footnote{In this paper, we concentrate on Boolean options, as they make up the majority of all options; see Siegmund et al., for how to incorporate numeric options~\cite{SGA+15}.} also referred to as features or independent variables in our setting.
-
 We denote the number of features in the system (S) as n and all the features on S  can be represented by a boolean/binary space $\mathbb{Z}_{2}^{n}$, which is denoted by F. All the valid configuration of system S belong to a set V, which is represented by vectorrs $\vec{C_i}$ ($1\leq i\leq \left\vert{V}\right\vert$) belongs to Z. Each element of the configuration represent a feature which can either be \em{True} or \em{False} based on whether the feature was selected or not. 
-
 % We denote the number of features in the system as $n$. All the features of a system can be represents a boolean/binary space (${Z}_{2}^{n}$)--- $F$, where $n$ is the number of features of the system. Every software system has a set of valid configurations ($V$) which is represented as a vector $\vec{C} \in \mathbb{Z}_{2}^{n}$, where $\mathbb{Z}_{2}^{n}$
 % % http://math.stackexchange.com/questions/892094/notation-for-show-that-a-variable-is-binary
 % is Boolean $n$-space i.e. each feature of a configurations is assigned $\mathit{True}$ and $\mathit{False}$ otherwise, based on whether the feature was selected or not.  
@@ -303,9 +306,8 @@ Since each configuration ($\vec{C_i}$) is a vector of $n$ Booleans, it  is possi
 \end{compactenum}
 
 Further to the first point, when many pairs such as ${\vec{C_1},\vec{C}_2}$ satisfying the criteria of point~1, Siegmund et al.\ used the 
-pair that covers the {\em smallest} number of features. Their basic {\em FW} minimal sampling method 
+pair that covers the {\em smallest} number of features. Their minimal sampling method, {\em FW},
 compiles and executes only these smallest $C_1$ and $C_2$ configurations. 
-
 Siegmund et al.\ also offers three extensions to the basic method, which are based on sampling
 not just the smallest $\vec{C_i}$,$\vec{C_2}$  pairs, but also any configurations with {\em interactions} between features. 
 All the following minimal sampling policies compile and   execute legal configurations selected via one of three heuristics:
@@ -326,7 +328,7 @@ Sarkar et al.~\cite{sarkar2015cost} proposed a cost model for predicting the eff
 
 The advantage of these approaches is that, unlike  the results of Zhang et al., they require only dozens to hundreds of samples. Also, unlike our approach, they do not require to enumerate all configurations, which is important for highly configurable software systems. 
 That said, as shown by our experiments, these approaches produce estimates with  larger mean errors and partially larger variances than our approach. While sometimes the approach by Sarkar et al. results in  models with (slightly)
-lower mean error rates, it still requires a considerably larger number of samples (up to hundreds, while \what requires to evaluate a only few dozen).
+lower mean error rates, it still requires a considerably larger number of samples (up to hundreds, while \what requires only few dozen).
  
  \section{Approach}
 
@@ -544,8 +546,8 @@ since our goal is to sample as little as possible from the configuration space.
 \item {\bf RQ4:} {\em Compared to the state-of-the-art in minimal sampling for
 learning performance predictors from configurable software systems, how good is \what with $S_1$:Random?}
 \ei
-To answer this last question, we will compare \what 
-          against approaches presented by Siegmund et al.~\cite{siegmund2012predicting}, Guo et al.~\cite{guo2013variability}, and Sarkar et al.~\cite{sarkar2015cost}.
+To answer this question, we will compare \what 
+          against approaches presented by Siegmund et al.\cite{siegmund2012predicting}, Guo et al.\cite{guo2013variability}, and Sarkar et al.\cite{sarkar2015cost}.
  
 
 \subsection{Subject Systems}
@@ -745,7 +747,7 @@ reflecting on the configurations seen in the range $0\le X \le 40$). Note that:
 The {\em Exemplar} sampling policy needs up to thousands of performance-score points, 
 so it cannot be recommended as minimal sampling policy;
 \item The {\em East-West} sampling policy needs twice as much performance-score information as 
-the $S_1$:Random {\em random} policy (since $S_2$ uses {\em two} samples per leaf cluster  while
+the $S_1$:Random policy ($S_2$ uses {\em two} samples per leaf cluster  while
 $S_1$:Random uses only {\em one}).
 \item $S_1$:Random needs performance-score information on only a few dozen (or less) configurations to generate
 the predictions with the lower errors seen in \fig{sampling_accuracy}.
@@ -755,7 +757,9 @@ Combining the results of \fig{sampling_accuracy} and \fig{Evaluations}, we concl
 \begin{myshadowbox}
 $S_1$:Random is our preferred spectral sampling method. Further,
 the answer to {\bf RQ1} is ``yes'', because applying \what, we can (a)~generate runtime predictors
-using just a few dozens examples of performance scores; and (b)~those predictions have error rates
+using just a few dozens examples
+of performance scores; 
+and (b)~those predictions have error rates
 within 5\,\% of the error rates seen if predictors are built from information about all performance scores.
 \end{myshadowbox}
 
@@ -797,9 +801,6 @@ after seeing $X=40$\,\% of the configurations, the variances in prediction error
 Hence, we answer {\bf RQ2} with ``no'': selecting a small number of samples does not necessarily increase variance (at least to say, not in this domain).
 \end{myshadowbox}
 
-
-
-
 \newpage
 \subsection{RQ3}
 
@@ -827,18 +828,20 @@ better  mutants.
 
 \fig{performance_graph} shows the configurations found by three optimizers projected onto the ``ground truth'' of the performance scores of nearly
 all configurations. Again note that, while we use that ``ground truth'' for the validation of these results, our optimizers 
-used only a small percent of that ground truth data in their search for the fastest configurations (see the \what + $S_1$:Random
+used only a small part of that ground truth data in their search for the fastest configurations (see the \what + $S_1$:Random
 results of \fig{Evaluations}).
 
 
 \begin{figure}[!t]
 \includegraphics[width=3.5in]{Figures/optimizer_result.eps}
-\caption{Solutions found by GALE and NSGA-II and DE (shown as points) laid against the ground truth (all known configuration performance scores). In case of Apache and BDBJ, we can see that the different optimizers find different solutions but in the remaining plots, the results are the same. It can be observed that all the optimizers can find the configuration with  lower performance scores.}\label{fig:performance_graph}
+\caption{Solutions found by GALE, NSGA-II and DE (shown as points) laid against the ground truth (all known configuration performance scores). 
+% In case of Apache and BDBJ, we can see that the different optimizers find different solutions but in the remaining plots, the results are the same. 
+It can be observed that all the optimizers can find the configuration with  lower performance scores.}\label{fig:performance_graph}
 \end{figure}
 
 
 The important feature of \fig{performance_graph} is that all the optimized configurations fall within 1\,\% of the fastest
-configuration in the ground truth (see all the left-hand-side dots on each plot). Table~\ref{fig:external_validity} compares the performance of the three optimizers
+configuration in the ground truth (see all the left-hand-side dots on each plot). Table~\ref{fig:external_validity} compares the performance of the optimizers
 used in this study. Note that the performances are nearly identical, which leads to the following conclusions:
 
 \begin{myshadowbox}
@@ -868,16 +871,15 @@ runs. Mean values are denoted $\mu$ and IQR denotes the 25th--75th percentile. L
 }
 \label{fig:external_validity}
 \end{table}
-
-
+\begin{figure*}[!t]
+\includegraphics[width=\linewidth]{Figures/compare_graph_h.eps}
+\caption{Comparison between various approaches proposed in the literature ~\cite{siegmund2012predicting}, \cite{guo2013variability}, \cite{sarkar2015cost}. The figure compares \what with other techniques w.r.t.\ the mean error, standard deviation, and the percentage of configurations used for training the model.} \label{fig:Comparison}
+\end{figure*}
 
  
 \subsection{RQ4}
 
-\begin{figure*}[htbp]
-\includegraphics[width=\linewidth]{Figures/compare_graph_h.eps}
-\caption{Comparison between various approaches proposed in the literature ~\cite{siegmund2012predicting}, \cite{guo2013variability}, \cite{sarkar2015cost}. The figure compares \what with other techniques w.r.t.\ the mean error, standard deviation, and the percentage of configurations used for training the model.} \label{fig:Comparison}
-\end{figure*}
+
 % \todo[inline]{change fault rate to error rate. note the sampling heuristic used for siegmund (I guess FW?!)}
 
  \begin{center}
@@ -897,7 +899,7 @@ We compare \what with the three state-of-the-art predictors proposed in the lite
  
 As seen in the left and middle plots of
 Figure~\ref{fig:Comparison}, 
-the {\em FW}approach of Siegmund et al.\ (i.e., the sampling approach using the fewest number of configurations) often has the highest
+the {\em FW} approach of Siegmund et al.\ (i.e., the sampling approach using the fewest number of configurations) often has the highest
 error rate and the highest
 standard deviation on that error rate. Hence,
 we cannot recommend this method or  if one wishes to use this method we recommend using the other sampling heuristics (e.g., HO, HS) to make more accurate predictions, but at the cost of more measurements. Moreover, the size of the standard deviation of this method causes further difficulties in estimating which configurations are those exhibiting a large prediction error. 
