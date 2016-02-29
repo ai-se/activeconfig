@@ -396,8 +396,7 @@ and {\em West}.
 % \todo[inline]{What is $c$? Changed to $\delta$}
 \what uses this distance ($\delta$) to divide all the configurations as follows:
 The value $x_i$ is the projection of $N_i$
-on the line  running  from {\em East} to {\em West}\footnote{The projection of $N_i$ can be calculated in the following way: $a = \mathit{dist}(\mathit{East}, N_i), b = \mathit{dist}(\mathit{West}, N_i) x_i = \sqrt{\frac{a^2 - b^2 + \delta^2}{2\delta}}$.
-\todo[inline]{The above formula/sentence is broken, please check}
+on the line  running  from {\em East} to {\em West}\footnote{The projection of $N_i$ can be calculated in the following way:\newline $a = \mathit{dist}(\mathit{East}, N_i); b = \mathit{dist}(\mathit{West}, N_i);  x_i = \sqrt{\frac{a^2 - b^2 + \delta^2}{2\delta}}$.
 }.  We divide
 the examples based on the median value of the projection of $x_i$. Now, we have two clusters of data divided based on the projection values (of $N_i$) on the line joining {\em East} and {\em West}. This process is applied recursively on these clusters until a predefined stopping condition. In our study, the  recursive splitting of the $N_i$'s stops when a sub-region
 contains less than  $\sqrt{|N|}$ examples.
