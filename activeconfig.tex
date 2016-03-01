@@ -14,7 +14,7 @@
 \usepackage{eqparbox}
 \usepackage{todonotes}
 \definecolor{whatcolor}{HTML}{d9d9d9}
-
+\setlength{\fboxsep}{0pt}
 \usepackage[framemethod=tikz]{mdframed}
 \usepackage{lipsum}
 \usetikzlibrary{shadows}
@@ -915,7 +915,7 @@ our measurements. Its error results are within 1\,\% of \what;
  the right-hand-side plot of  Figure~\ref{fig:Comparison}  shows that
  \what requires the fewest samples except for two cases:
  the approach of Guo et al. (with 2N) working on BDBC and LLVM.  In both these cases, the mean error and standard deviation on the error
- estimate is   larger than \what  (see the \colorbox{whatcolor}{\textcolor{whatcolor}{\bf red}} bars in the left and middle plots   of Figure~\ref{fig:Comparison}). Furthermore, in the case of BDBC, the error values
+ estimate is   larger than \what  (see the \framebox{\colorbox{whatcolor}{\textcolor{whatcolor}{\bf red}}} bars in the left and middle plots   of Figure~\ref{fig:Comparison}). Furthermore, in the case of BDBC, the error values
  are $\mu=14\,\%$, $\sigma=13\,\%$, which are much larger
 than \what{}'s error scores of $\mu=6\,\%$, $\sigma=5\,\%$. 
 
