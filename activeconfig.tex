@@ -14,6 +14,9 @@
 \usepackage{eqparbox}
 \usepackage{todonotes}
 \definecolor{whatcolor}{HTML}{d9d9d9}
+\definecolor{guocolor}{HTML}{999999}
+
+
 \setlength{\fboxsep}{0pt}
 \usepackage[framemethod=tikz]{mdframed}
 \usepackage{lipsum}
@@ -24,8 +27,6 @@ linewidth=2pt,
 roundcorner=5pt, 
 shadow=true
 ]{myshadowbox}
-
-
 
 
 
@@ -64,6 +65,8 @@ shadow=true
 \definecolor{Blue}{RGB}{0,29,193}
 \newcommand{\G}{\cellcolor{green}}
 \newcommand{\Y}{\cellcolor{yellow}}
+
+
 
 \usepackage{booktabs}
 
@@ -164,6 +167,7 @@ shadow=true
 \usepackage{stfloats}
  
 \begin{document}
+
 % \conferenceinfo{FSE}{'15 Bergamo, Italy}
 \title{Faster Discovery of Faster System Configurations with Spectral Learning} 
 \numberofauthors{2}
@@ -709,7 +713,7 @@ of the configurations are studied; the vertical axis shows the mean relative err
 In that figure:
 \begin{compactitem}
 \item
-The \textcolor{blue}{{\bf blue}} lines in \fig{sampling_accuracy} show a {\em baseline} result
+The $\times$\hspace{-2pt}---\hspace{-2pt}$\times$ lines in \fig{sampling_accuracy} show a {\em baseline} result
 where data from the performance scores of 100\,\% of  configurations were used by CART
 to build a runtime predictor.
 \item
@@ -730,7 +734,7 @@ prediction errors. Overall, we find that:
 \item
 Mostly, $S_3$ shows the highest overall error, 
 so that it cannot be recommended.
-\item Always, the   blue baseline shows the lowest errors, which is to be
+\item Always, the   $\times$\hspace{-2pt}---\hspace{-2pt}$\times$ baseline shows the lowest errors, which is to be
 expected since predictors built on the baseline have access to all data.
 \item
 We see a trend that the error of  $S_1$ and $S_2$ are within $5$\,\% of the {\em baseline} results.
@@ -890,7 +894,7 @@ runs. Mean values are denoted $\mu$ and IQR denotes the 25th--75th percentile. A
 
 We compare \what with the three state-of-the-art predictors proposed in the literature~\cite{siegmund2012predicting}, \cite{guo2013variability}, \cite{sarkar2015cost}, as discussed in Section~\ref{sect:addit}. Note that all approaches use regression-trees as predictors, except Siegmund's approach, which uses a regression function derived using linear programming.
  
- The \textcolor{blue}{\bf blue} bars of Figure \ref{fig:Comparison} show the
+ The \framebox{\colorbox{whatcolor}{\textcolor{whatcolor}{\bf blue}}} bars of Figure \ref{fig:Comparison} show the
  mean error rate, the standard deviation of the error rate, and the mean percentage
  of total configurations used in 30 repeats of the different approaches.
  Note that the y-axis of that figure is a logarithmic scale so, within each plot:
@@ -915,7 +919,7 @@ our measurements. Its error results are within 1\,\% of \what;
  the right-hand-side plot of  Figure~\ref{fig:Comparison}  shows that
  \what requires the fewest samples except for two cases:
  the approach of Guo et al. (with 2N) working on BDBC and LLVM.  In both these cases, the mean error and standard deviation on the error
- estimate is   larger than \what  (see the \framebox{\colorbox{whatcolor}{\textcolor{whatcolor}{\bf red}}} bars in the left and middle plots   of Figure~\ref{fig:Comparison}). Furthermore, in the case of BDBC, the error values
+ estimate is   larger than \what  (see the \framebox{\colorbox{guocolor}{\textcolor{guocolor}{\bf red}}} bars in the left and middle plots   of Figure~\ref{fig:Comparison}). Furthermore, in the case of BDBC, the error values
  are $\mu=14\,\%$, $\sigma=13\,\%$, which are much larger
 than \what{}'s error scores of $\mu=6\,\%$, $\sigma=5\,\%$. 
 
