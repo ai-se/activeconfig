@@ -13,7 +13,7 @@
 \usepackage{rotating}
 \usepackage{eqparbox}
 \usepackage{todonotes}
-
+\definecolor{whatcolor}{HTML}{d9d9d9}
 
 \usepackage[framemethod=tikz]{mdframed}
 \usepackage{lipsum}
@@ -24,6 +24,7 @@ linewidth=2pt,
 roundcorner=5pt, 
 shadow=true
 ]{myshadowbox}
+
 
 
 
@@ -706,7 +707,7 @@ to (a)~find what configurations to measure; then (b)~asking CART to build a pred
 using these measurements. The horizontal axis of the plots shows what $X$\,\%
 of the configurations are studied; the vertical axis shows the mean relative error (from \eq{err}).
 In that figure:
-\begin{itemize}
+\begin{compactitem}
 \item
 The \textcolor{blue}{{\bf blue}} lines in \fig{sampling_accuracy} show a {\em baseline} result
 where data from the performance scores of 100\,\% of  configurations were used by CART
@@ -716,7 +717,7 @@ The other lines show the results using the sampling methods defined in Section~\
 Note that these sampling methods used  runtime data only from a
 subset of 100\,\% of the performance scores seen in configurations
 from 0 to X\,\%.
-\end{itemize}
+\end{compactitem}
 
 % \todo[inline]{PLEASE REMOVE - Actually, RQ1 does not say anything about varying the sampling policy; Furthermore, we have defined: \what =  WHERE $+$ $S_1$:Random $+$ CART, so \what plus S2... makes no sense. Vivek: I have changed the definition of WHAT to sampling policy because we are making a claim that any random point is better. Our recent studies have shown that using using outlier is not a good representative of a cluster}
 
@@ -835,7 +836,7 @@ results of \fig{Evaluations}).
 
 \begin{figure}[tbh]
 \centering
-\includegraphics[width=\columnwidth]{Figures/optimizer_result}
+\includegraphics[width=\columnwidth]{Figures/optimizer_result_g}
 \caption{Solutions found by GALE, NSGA-II and DE (shown as points) laid against the ground truth (all known configuration performance scores). 
 % In case of Apache and BDBJ, we can see that the different optimizers find different solutions but in the remaining plots, the results are the same. 
 It can be observed that all the optimizers can find the configuration with  lower performance scores.}\label{fig:performance_graph}
@@ -914,7 +915,7 @@ our measurements. Its error results are within 1\,\% of \what;
  the right-hand-side plot of  Figure~\ref{fig:Comparison}  shows that
  \what requires the fewest samples except for two cases:
  the approach of Guo et al. (with 2N) working on BDBC and LLVM.  In both these cases, the mean error and standard deviation on the error
- estimate is   larger than \what  (see the \textcolor{red}{{\bf red}} bars in the left and middle plots   of Figure~\ref{fig:Comparison}). Furthermore, in the case of BDBC, the error values
+ estimate is   larger than \what  (see the \colorbox{whatcolor}{\textcolor{whatcolor}{\bf red}} bars in the left and middle plots   of Figure~\ref{fig:Comparison}). Furthermore, in the case of BDBC, the error values
  are $\mu=14\,\%$, $\sigma=13\,\%$, which are much larger
 than \what{}'s error scores of $\mu=6\,\%$, $\sigma=5\,\%$. 
 
@@ -1009,7 +1010,7 @@ work, while requiring fewer samples.
 \end{myshadowbox}
 
 
- 
+ \newpage
 \section{Reliability and Validity}\label{sect:construct}
 
 {\em Reliability} refers to the consistency of the results obtained
