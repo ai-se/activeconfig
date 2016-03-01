@@ -706,7 +706,7 @@ to (a)~find what configurations to measure; then (b)~asking CART to build a pred
 using these measurements. The horizontal axis of the plots shows what $X$\,\%
 of the configurations are studied; the vertical axis shows the mean relative error (from \eq{err}).
 In that figure:
-\begin{compactitem}
+\begin{itemize}
 \item
 The \textcolor{blue}{{\bf blue}} lines in \fig{sampling_accuracy} show a {\em baseline} result
 where data from the performance scores of 100\,\% of  configurations were used by CART
@@ -716,7 +716,7 @@ The other lines show the results using the sampling methods defined in Section~\
 Note that these sampling methods used  runtime data only from a
 subset of 100\,\% of the performance scores seen in configurations
 from 0 to X\,\%.
-\end{compactitem}
+\end{itemize}
 
 % \todo[inline]{PLEASE REMOVE - Actually, RQ1 does not say anything about varying the sampling policy; Furthermore, we have defined: \what =  WHERE $+$ $S_1$:Random $+$ CART, so \what plus S2... makes no sense. Vivek: I have changed the definition of WHAT to sampling policy because we are making a claim that any random point is better. Our recent studies have shown that using using outlier is not a good representative of a cluster}
 
@@ -802,7 +802,7 @@ after seeing $X=40$\,\% of the configurations, the variances in prediction error
 Hence, we answer {\bf RQ2} with ``no'': Selecting a small number of samples does not necessarily increase variance (at least to say, not in this domain).
 \end{myshadowbox}
 
-\newpage
+
 \subsection{RQ3}
 
 \begin{center}
@@ -875,9 +875,8 @@ runs. Mean values are denoted $\mu$ and IQR denotes the 25th--75th percentile. A
 \begin{figure*}[tbh]
 \includegraphics[width=\linewidth]{Figures/compare_graph_h}
 \caption{Comparison between \what and the state-of-the-art approaches regarding mean error, standard deviation, and the percentage of configurations used for training the model.} \label{fig:Comparison}
-\todo[inline]{Please use different brightness/alpha values or patterns to be able to distinguish the bar on a print out.}
+% \todo[inline]{Please use different brightness/alpha values or patterns to be able to distinguish the bar on a print out.}
 \end{figure*}
-
  
 \subsection{RQ4}
 
@@ -1102,7 +1101,6 @@ Except for Berkeley DB, our approach performs more accurate than the state-of-th
 
 
 %\vspace*{0.5mm}
- 
  
 \bibliographystyle{plain}
 
