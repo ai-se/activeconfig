@@ -459,9 +459,9 @@ CART explores splits that divide $N$ samples  into two sets  $A$ and $B$, where 
 CART finds the ``best'' split defined as the split that minimizes $\frac{A}{N}\sigma_1 + \frac{B}{N}\sigma_2$.
 Using this best split, CART divides the data recursively.
  
-
+\newpage
 In summary, \what  combines:
-\begin{enumerate}
+\begin{compactitem}
 \item
 The FASTMAP method of Faloutsos and Lin~\cite{Faloutsos1995};
 
@@ -475,7 +475,7 @@ The sampling policy that explores the leaf clusters found by this recursive divi
 \item 
 The CART regression-tree learner that converts the data from the samples collected by sampling policy 
 into a run-time prediction model~\cite{breiman1984}.
-\end{enumerate}
+\end{compactitem}
 That is,
 \begin{center}
 \begin{tabular}{rcl}
@@ -523,6 +523,8 @@ Therefore, to assess feasibility of our sampling policies, we must consider:
 %the next point should always be true. otherwise, what would be the reason to do that?!
 \item The optimization support offered by the performance predictor (i.e., can the model work in tandem with other off-the-shelf optimizers to generate useful solutions).
 \end{itemize}
+
+%\vfill\eject
 The above considerations lead to four research questions:
 \begin{description}
 \item[{\em RQ1:}] {\em Can  \what generate good predictions after
