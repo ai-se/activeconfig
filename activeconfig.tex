@@ -164,22 +164,16 @@ shadow=true
 \conferenceinfo{Submitted to FSE'16}{Seattle, WA, USA. 2016}
 \acmPrice{\$ZZ.00}
 
-\usepackage{stfloats}
  
 \begin{document}
 
 % \conferenceinfo{FSE}{'15 Bergamo, Italy}
-\title{Faster Discovery of Faster System Configurations with Spectral Learning} 
-\numberofauthors{2}
+\title{Being Cheap: Cheaper methods for Search Based Software Engineering} 
+\numberofauthors{1}
 \author{
-        \alignauthor Vivek Nair, Tim Menzies, Xipeng Shen 
-        \affaddr{NC State University, USA}\\
-        \email{{vivekaxl, tim.menzies, xipengshen@gmail.com}}
-    \and  
-        \alignauthor Norbert Siegmund, Sven Apel \\
-        \affaddr{University of Passau, Germany}\\
-        \email{{norbert.siegmund, apel@uni-passau.de}}
-       }
+        \alignauthor Vivek Nair \\
+        \affaddr{North Carolina State University, USA}\\
+        \email{{vivekaxl@gmail.com}}       }
 \maketitle 
 \thispagestyle{plain}
 \pagestyle{plain}
@@ -460,9 +454,9 @@ CART explores splits that divide $N$ samples  into two sets  $A$ and $B$, where 
 CART finds the ``best'' split defined as the split that minimizes $\frac{A}{N}\sigma_1 + \frac{B}{N}\sigma_2$.
 Using this best split, CART divides the data recursively.
  
-
+\newpage
 In summary, \what  combines:
-\begin{enumerate}
+\begin{compactitem}
 \item
 The FASTMAP method of Faloutsos and Lin~\cite{Faloutsos1995};
 
@@ -476,7 +470,7 @@ The sampling policy that explores the leaf clusters found by this recursive divi
 \item 
 The CART regression-tree learner that converts the data from the samples collected by sampling policy 
 into a run-time prediction model~\cite{breiman1984}.
-\end{enumerate}
+\end{compactitem}
 That is,
 \begin{center}
 \begin{tabular}{rcl}
@@ -524,6 +518,8 @@ Therefore, to assess feasibility of our sampling policies, we must consider:
 %the next point should always be true. otherwise, what would be the reason to do that?!
 \item The optimization support offered by the performance predictor (i.e., can the model work in tandem with other off-the-shelf optimizers to generate useful solutions).
 \end{itemize}
+
+%\vfill\eject
 The above considerations lead to four research questions:
 \begin{description}
 \item[{\em RQ1:}] {\em Can  \what generate good predictions after
@@ -681,6 +677,7 @@ behavior (all found configurations close to the
 best case performance). Hence, the specific
 choice of optimizer is not a critical
 variable in  our analysis.
+
 
 \begin{figure}[tbh]
 \centering
@@ -1106,7 +1103,7 @@ We evaluated our approach on six real-world configurable software systems borrow
 
 
 %\vspace*{0.5mm}
- 
+ \newpage
 \bibliographystyle{plain}
 
 \balance

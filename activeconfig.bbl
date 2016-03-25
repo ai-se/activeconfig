@@ -1,0 +1,193 @@
+\begin{thebibliography}{10}
+
+\bibitem{boley98}
+Daniel Boley.
+\newblock Principal direction divisive partitioning.
+\newblock {\em Data mining and knowledge discovery}, 2(4):325--344, 1998.
+
+\bibitem{breiman1984}
+Leo Breiman, Jerome Friedman, Charles~J Stone, and Richard~A Olshen.
+\newblock {\em Classification and regression trees}.
+\newblock CRC press, 1984.
+
+\bibitem{deb00afast}
+Kalyanmoy Deb, Amrit Pratap, Sameer Agarwal, and T~Meyarivan.
+\newblock A fast and elitist multiobjective genetic algorithm: {NSGA-II}.
+\newblock {\em IEEE Transactions on Evolutionary Computation}, 6(2):182--197,
+  2002.
+
+\bibitem{Du2008}
+Qian Du and James~E Fowler.
+\newblock Low-complexity principal component analysis for hyperspectral image
+  compression.
+\newblock {\em International Journal of High Performance Computing
+  Applications}, 22(4):438--448, 2008.
+
+\bibitem{Faloutsos1995}
+Christos Faloutsos and King-Ip Lin.
+\newblock Fastmap: A fast algorithm for indexing, data-mining and visualization
+  of traditional and multimedia datasets.
+\newblock volume~24. ACM, 1995.
+
+\bibitem{fletcher13}
+Roger Fletcher.
+\newblock {\em Practical methods of optimization}.
+\newblock John Wiley \& Sons, 2013.
+
+\bibitem{guo2013variability}
+Jianmei Guo, Krzysztof Czarnecki, Sven Apel, Norbert Siegmund, and Andrzej
+  Wasowski.
+\newblock Variability-aware performance prediction: A statistical learning
+  approach.
+\newblock In {\em IEEE/ACM 28th International Conference on Automated Software
+  Engineering}, pages 301--311. IEEE, 2013.
+
+\bibitem{hamerly2010making}
+Greg Hamerly.
+\newblock Making k-means even faster.
+\newblock Society for Industrial and Applied Mathematics.
+
+\bibitem{harman12}
+Mark Harman, S~Afshin Mansouri, and Yuanyuan Zhang.
+\newblock Search-based software engineering: Trends, techniques and
+  applications.
+\newblock {\em ACM Computing Surveys}, 45(1):11, 2012.
+
+\bibitem{ilin10}
+Alexander Ilin and Tapani Raiko.
+\newblock Practical approaches to principal component analysis in the presence
+  of missing values.
+\newblock {\em The Journal of Machine Learning Research}, 11:1957--2000, 2010.
+
+\bibitem{kamvar2003spectral}
+Kamvar Kamvar, Sepandar Sepandar, Klein Klein, Dan Dan, Manning Manning, and
+  Christopher Christopher.
+\newblock Spectral learning.
+\newblock In {\em International Joint Conference of Artificial Intelligence}.
+  Stanford InfoLab, 2003.
+
+\bibitem{krall2014gale}
+Joseph Krall, Tim Menzies, and Misty Davies.
+\newblock Gale: Geometric active learning for search-based software
+  engineering.
+\newblock {\em IEEE Transactions on Software Engineering}, 41(10):1001--1018,
+  2015.
+
+\bibitem{Kuhn:2013}
+D~Richard Kuhn, Raghu~N Kacker, and Yu~Lei.
+\newblock {\em Introduction to combinatorial testing}.
+\newblock CRC press, 2013.
+
+\bibitem{loshchilov13}
+Ilya~Gennadyevich Loshchilov.
+\newblock {\em Surrogate-assisted evolutionary algorithms}.
+\newblock PhD thesis, 2013.
+
+\bibitem{me12d}
+Tim Menzies, Andrew Butcher, David Cok, Andrian Marcus, Lucas Layman, Forrest
+  Shull, Burak Turhan, and Thomas Zimmermann.
+\newblock Local versus global lessons for defect prediction and effort
+  estimation.
+\newblock {\em IEEE Transactions on Software Engineering}, 39(6):822--834,
+  2013.
+
+\bibitem{scikit-learn}
+Fabian Pedregosa, Ga{\"e}l Varoquaux, Alexandre Gramfort, Vincent Michel,
+  Bertrand Thirion, Olivier Grisel, Mathieu Blondel, Peter Prettenhofer, Ron
+  Weiss, Vincent Dubourg, et~al.
+\newblock Scikit-learn: Machine learning in python.
+\newblock {\em The Journal of Machine Learning Research}, 12:2825--2830, 2011.
+
+\bibitem{platt05}
+John Platt.
+\newblock Fastmap, {M}etricmap, and {L}andmark {MDS} are all nystrom
+  algorithms.
+\newblock pages 261--268. Society for Artificial Intelligence and Statistics,
+  2005.
+
+\bibitem{pukelsheim2006optimal}
+Friedrich Pukelsheim.
+\newblock {\em Optimal Design of Experiments}, volume~50.
+\newblock Society for Industrial and Applied Mathematics, 1993.
+
+\bibitem{sarkar2015cost}
+Atri Sarkar, Jianmei Guo, Norbert Siegmund, Sven Apel, and Krzysztof Czarnecki.
+\newblock Cost-efficient sampling for performance prediction of configurable
+  systems.
+\newblock In {\em 30th IEEE/ACM International Conference on Automated Software
+  Engineering}, pages 342--352. IEEE, 2015.
+
+\bibitem{sayyad13b}
+Abdel~Salam Sayyad, Joe Ingram, Tim Menzies, and Hany Ammar.
+\newblock Scalable product line configuration: A straw to break the camel's
+  back.
+\newblock In {\em IEEE/ACM 28th International Conference on Automated Software
+  Engineering}, pages 465--474. IEEE, 2013.
+
+\bibitem{shi00}
+Jianbo Shi and Jitendra Malik.
+\newblock Normalized cuts and image segmentation.
+\newblock {\em IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  22(8):888--905, 2000.
+
+\bibitem{SSA15}
+Janet Siegmund, Norbert Siegmund, and Sven Apel.
+\newblock Views on internal and external validity in empirical software
+  engineering.
+\newblock In {\em Proceedings of the 37th International Conference on Software
+  Engineering}, pages 9--19. IEEE, 2015.
+
+\bibitem{SGA+15}
+Norbert Siegmund, Alexander Grebhahn, Sven Apel, and Christian K{\"a}stner.
+\newblock Performance-influence models for highly configurable systems.
+\newblock In {\em Proceedings of the 2015 10th Joint Meeting on Foundations of
+  Software Engineering}, pages 284--294. ACM, 2015.
+
+\bibitem{siegmund2012predicting}
+Norbert Siegmund, Sergiy~S Kolesnikov, Christian K{\"a}stner, Sven Apel, Don
+  Batory, Marko Rosenm{\"u}ller, and Gunter Saake.
+\newblock Predicting performance via automated feature-interaction detection.
+\newblock In {\em Proceedings of the 34th International Conference on Software
+  Engineering}, pages 167--177. IEEE Press, 2012.
+
+\bibitem{storn1997differential}
+Rainer Storn and Kenneth Price.
+\newblock Differential evolution--a simple and efficient heuristic for global
+  optimization over continuous spaces.
+\newblock {\em Journal of global optimization}, 11(4):341--359, 1997.
+
+\bibitem{theisen2015approximating}
+Christopher Theisen, Kim Herzig, Patrick Morrison, Brendan Murphy, and Laurie
+  Williams.
+\newblock Approximating attack surfaces with stack traces.
+\newblock In {\em Proceedings of the 37th International Conference on Software
+  Engineering}, pages 199--208. IEEE Press, 2015.
+
+\bibitem{weiss2008maximizing}
+Gary~M Weiss and Ye~Tian.
+\newblock Maximizing classifier utility when there are data acquisition and
+  modeling costs.
+\newblock {\em Data Mining and Knowledge Discovery}, 17(2):253--282, 2008.
+
+\bibitem{xu2015hey}
+Tianyin Xu, Long Jin, Xuepeng Fan, Yuanyuan Zhou, Shankar Pasupathy, and Rukma
+  Talwadker.
+\newblock Hey, you have given me too many knobs!: {U}nderstanding and dealing
+  with over-designed configuration in system software.
+\newblock In {\em Proceedings of the 2015 10th Joint Meeting on Foundations of
+  Software Engineering}, pages 307--319. ACM, 2015.
+
+\bibitem{zhang2015performance}
+Yi~Zhang, Jianmei Guo, Eric Blais, and Krzysztof Czarnecki.
+\newblock Performance prediction of configurable software systems by fourier
+  learning.
+\newblock In {\em 30th IEEE/ACM International Conference on Automated Software
+  Engineering}, pages 365--373. IEEE, 2015.
+
+\bibitem{zuluaga2013active}
+Marcela Zuluaga, Guillaume Sergent, Andreas Krause, and Markus P{\"u}schel.
+\newblock Active learning for multi-objective optimization.
+\newblock In {\em Proceedings of the 30th International Conference on Machine
+  Learning}, pages 462--470, 2013.
+
+\end{thebibliography}

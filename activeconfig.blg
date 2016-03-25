@@ -1,0 +1,59 @@
+This is BibTeX, Version 0.99d (TeX Live 2015)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: activeconfig.aux
+The style file: plain.bst
+Database file #1: activeconfig.bib
+Warning--string name "aistats05" is undefined
+--line 162 of file activeconfig.bib
+Warning--I'm ignoring pukelsheim2006optimal's extra "title" field
+--line 179 of file activeconfig.bib
+Warning--I'm ignoring scikit-learn's extra "title" field
+--line 198 of file activeconfig.bib
+Warning--empty booktitle in Faloutsos1995
+Warning--can't use both volume and number fields in Faloutsos1995
+Warning--empty booktitle in hamerly2010making
+Warning--empty year in hamerly2010making
+Warning--empty school in loshchilov13
+Warning--empty booktitle in platt05
+You've used 30 entries,
+            2118 wiz_defined-function locations,
+            667 strings with 9526 characters,
+and the built_in function-call counts, 12213 in all, are:
+= -- 1215
+> -- 619
+< -- 13
++ -- 245
+- -- 214
+* -- 870
+:= -- 1954
+add.period$ -- 102
+call.type$ -- 30
+change.case$ -- 191
+chr.to.int$ -- 0
+cite$ -- 36
+duplicate$ -- 466
+empty$ -- 923
+format.name$ -- 214
+if$ -- 2607
+int.to.chr$ -- 0
+int.to.str$ -- 30
+missing$ -- 33
+newline$ -- 153
+num.names$ -- 60
+pop$ -- 235
+preamble$ -- 1
+purify$ -- 166
+quote$ -- 0
+skip$ -- 326
+stack$ -- 0
+substring$ -- 760
+swap$ -- 139
+text.length$ -- 13
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 112
+warning$ -- 6
+while$ -- 113
+width$ -- 32
+write$ -- 335
+(There were 9 warnings)
