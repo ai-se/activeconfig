@@ -1,6 +1,52 @@
-
-\documentclass{newsig}
-% \documentclass[conference]{IEEEtran}
+%%%%%%%%%%%%%%%%%%%%%%% file template.tex %%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% This is a general template file for the LaTeX package SVJour3
+% for Springer journals.          Springer Heidelberg 2010/09/16
+%
+% Copy it to a new file with a new name and use it as the basis
+% for your article. Delete % signs as needed.
+%
+% This template includes a few options for different layouts and
+% content for various journals. Please consult a previous issue of
+% your journal as needed.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% First comes an example EPS file -- just ignore it and
+% proceed on the \documentclass line
+% your LaTeX will extract the file if required
+\begin{filecontents*}{example.eps}
+%!PS-Adobe-3.0 EPSF-3.0
+%%BoundingBox: 19 19 221 221
+%%CreationDate: Mon Sep 29 1997
+%%Creator: programmed by hand (JK)
+%%EndComments
+gsave
+newpath
+  20 20 moveto
+  20 220 lineto
+  220 220 lineto
+  220 20 lineto
+closepath
+2 setlinewidth
+gsave
+  .4 setgray fill
+grestore
+stroke
+grestore
+\end{filecontents*}
+%
+\RequirePackage{fix-cm}
+%
+%\documentclass{svjour3}                     % onecolumn (standard format)
+%\documentclass[smallcondensed]{svjour3}     % onecolumn (ditto)
+\documentclass[smallextended]{svjour3}       % onecolumn (second format)
+%\documentclass[twocolumn]{svjour3}          % twocolumn
+%
+\smartqed  % flush right qed marks, e.g. at end of proof
+%
+\usepackage{graphicx}
+\usepackage{amsfonts}
 \usepackage{color}
 \usepackage{listings}
 \usepackage{graphicx} 
@@ -65,9 +111,6 @@ shadow=true
 \definecolor{Blue}{RGB}{0,29,193}
 \newcommand{\G}{\cellcolor{green}}
 \newcommand{\Y}{\cellcolor{yellow}}
-
-
-
 \usepackage{booktabs}
 
 
@@ -122,61 +165,57 @@ shadow=true
 
 %\usepackage[shortlabels]{enumitem}  
 \usepackage{url}
-% \def\baselinestretch{1}
-
-
-% \setlist{nosep}
-%  \usepackage[font={small}]{caption, subfig}
-% \setlength{\abovecaptionskip}{1ex}
-%  \setlength{\belowcaptionskip}{1ex}
-
-%  \setlength{\floatsep}{1ex}
-%  \setlength{\textfloatsep}{1ex}
-%  \newcommand{\subparagraph}{}
-
-% \usepackage[compact,small]{titlesec}
-% \DeclareMathSizes{7}{7}{7}{7} 
-% \setlength{\columnsep}{7mm}
-
-
-% \usepackage[svgnames]{xcolor}
-% \usepackage[framed]{ntheorem}
-% \usepackage{framed}
-% \usepackage{tikz}
-% \usetikzlibrary{shadows}
-% %\newtheorem{Lesson}{Lesson}
-% \theoremclass{Lesson}
-% \theoremstyle{break}
-
-
-\setcopyright{acmcopyright}
-%\setcopyright{acmlicensed}
-%\setcopyright{rightsretained}
-%\setcopyright{usgov}
-%\setcopyright{usgovmixed}
-%\setcopyright{cagov}
-%\setcopyright{cagovmixed}
-% DOI
-\doi{XX.XXX/XXX+X}
-% ISBN
-\isbn{YYY-YYYY-YY-YYY/YY/YYY}
-%Conference
-\conferenceinfo{Submitted to FSE'16}{Seattle, WA, USA. 2016}
-\acmPrice{\$ZZ.00}
-
- 
+%
+% \usepackage{mathptmx}      % use Times fonts if available on your TeX system
+%
+% insert here the call for the packages your document requires
+%\usepackage{latexsym}
+% etc.
+%
+% please place your own definitions here and don't use \def but
+% \newcommand{}{}
+%
+% Insert the name of "your journal" with
+% \journalname{myjournal}
+%
 \begin{document}
 
-% \conferenceinfo{FSE}{'15 Bergamo, Italy}
-\title{Being Cheap: Cheaper methods for Search Based Software Engineering} 
-\numberofauthors{1}
-\author{
-        \alignauthor Vivek Nair \\
-        \affaddr{North Carolina State University, USA}\\
-        \email{{vivekaxl@gmail.com}}       }
-\maketitle 
-\thispagestyle{plain}
-\pagestyle{plain}
+\title{Faster Discovery of Faster System Configurations with Spectral Learning%\thanks{Grants or other notes
+%about the article that should go on the front page should be
+%placed here. General acknowledgments should be placed at the end of the article.}
+}
+\subtitle{Do you have a subtitle?\\ If so, write it here}
+
+%\titlerunning{Short form of title}        % if too long for running head
+
+\author{Vivek Nair \and Tim Menzies \\ \and Norbert Siegmund \and Sven Apel}
+
+%\authorrunning{Short form of author list} % if too long for running head
+
+\institute{
+		Vivek Nair \at
+		North Carolina State University, Raleigh, USA \\
+		\email{vivekaxl@gmail.com}          
+           \and
+		Tim Menzies \at
+              	North Carolina State University, Raleigh, USA \\
+		\email{tim.menzies@gmail.com}
+	\and
+		Norbert Siegmund\at
+              	University of Passau, Germany \\
+		\email{norbert.siegmund@uni-passau.de}
+	\and
+		Sven Apel \at
+              	University of Passau, Germany \\
+		\email{apel@uni-passau.de}
+}
+
+\date{Received: date / Accepted: date}
+% The correct dates will be entered by the editor
+
+
+\maketitle
+
 \begin{abstract}
 Despite the huge spread and economical importance of configurable software systems, there is  unsatisfactory support in utilizing the full potential of these systems with respect to finding performance-optimal configurations.
 Prior work on predicting the performance of software configurations suffered from either (a)~requiring far too many sample configurations or (b)~large variances in their predictions.
@@ -194,28 +233,9 @@ deviation).
 %unclear: (i.e., much mean errors and standard deviations on the errors, refer to Figure 9-11)
 Furthermore, we demonstrate that predictive models generated by
 \what can be used by optimizers to discover system configurations that closely approach the optimal performance.
+\keywords{Performance Prediction \and Spectral Learning \and Decision Trees \and Search-Based Software Engineering \and Sampling.}
 \end{abstract}
 
-% A category with the (minimum) three required fields
-\vspace{1ex}
-\noindent
-{\bf Categories/Subject Descriptors:} 
-D.2 [{\bf Software Engineering}];
-I.2 [{\bf Artificial Intelligence}];
-
- 
-\vspace{1ex}
-\noindent
-{\bf Keywords:} Performance Prediction, 
-Spectral Learning, 
-Decision Trees,
-Search-Based Software Engineering, 
-Sampling.
-\pagenumbering{arabic} %XXX delete before submission
- 
-\begin{comment} 
-\end{comment}
- 
 \section{Introduction}
  
 %==Are these comments?== 
@@ -272,7 +292,8 @@ learner} that uses an approximation to the first principal component of the conf
 \label{sect:addit}
 
 A configurable software system has a set $X$ of Boolean configuration options,\footnote{In this paper, we concentrate on Boolean options, as they make up the majority of all options; see Siegmund et al., for how to incorporate numeric options~\cite{SGA+15}.} also referred to as features or independent variables in our setting.
-We denote the number of features of system $S$ as $n$. The configuration space of $S$ can be represented by a Boolean space $\mathbb{Z}_{2}^{n}$, which is denoted by $F$. All valid configurations of $S$ belong to a set $V$, which is represented by vectors $\vec{C_i}$ (with $1\leq i\leq \left\vert{V}\right\vert$) in $\mathbb{Z}_{2}^{n}$. Each element of a configuration represents a feature, which can either be \emph{True} or \emph{False}, based on whether the feature is selected or not. 
+We denote the number of features of system $S$ as $n$. The configuration space of $S$ can be represented by a Boolean space $\mathbb{Z}_{2}^{n}$, which is denoted by $F$. All valid configurations of $S$ belong to a set $V$, 
+which is represented by vectors $\vec{C_i}$ (with $1\leq i\leq \left\vert{V}\right\vert$) in $\mathbb{Z}_{2}^{n}$. Each element of a configuration represents a feature, which can either be \emph{True} or \emph{False}, based on whether the feature is selected or not. 
 % We denote the number of features in the system as $n$. All the features of a system can be represents a boolean/binary space (${Z}_{2}^{n}$)--- $F$, where $n$ is the number of features of the system. Every software system has a set of valid configurations ($V$) which is represented as a vector $\vec{C} \in \mathbb{Z}_{2}^{n}$, where $\mathbb{Z}_{2}^{n}$
 % % http://math.stackexchange.com/questions/892094/notation-for-show-that-a-variable-is-binary
 % is Boolean $n$-space i.e. each feature of a configurations is assigned $\mathit{True}$ and $\mathit{False}$ otherwise, based on whether the feature was selected or not.  
@@ -402,7 +423,10 @@ contains less than  $\sqrt{|N|}$ examples.
 \begin{equation}
     \mathit{dist}(x, y) = 
     \begin{cases}
-        \sqrt{\sum_i(x_i-y_i)^2}& \text{if $x_i$ and $y_i$ is numeric}\\
+       \sqrt{
+       \sum_i(x_i-y_i)^2
+       }
+       %& \text{if $x_i$ and $y_i$ is numeric}\\
         \begin{cases}
             0, & \text{ if $x_i = y_i$}\\
             1, & \text{ otherwise}\\
@@ -1104,78 +1128,24 @@ We evaluated our approach on six real-world configurable software systems borrow
 
 %\vspace*{0.5mm}
  \newpage
-\bibliographystyle{plain}
+\bibliographystyle{spbasic}
 
 \balance
 \bibliography{activeconfig}  
-\end{document}
-
-\section{Appendix}
-
-\subsection{Evolutionary optimization algorithms} \label{ssec:appendix_1}
-starts with an \textit{initial population} (randomly generated, based on some constraints). Since the solutions are drawn from a uniform distribution, typically, this diversity is desirable, although in some cases we might want to initialize all of the available parents to some best-known solution and proceed from there. The chosen \textit{evaluation function} must be capable of differentiating
-between two individuals, i.e., it has to be able to rank one solution ahead
-function, are favored to become parents for the next generation of offspring. 
-A core function in evolutionary optimizers are the
-\textit{reproduction} functions that generate   new solutions  probabilistically in the neighborhood of old solutions. This process continues till the a \"good enough\" solution is achieved or a hard limit on iterations are reached.  
-    
-    There has been extensive research in evolutionary algorithms in search-based software engineering.  For example, here is a list of search algorithms used widely in research: \textit{simulated annealing}\cite{bell2013limited, menzies2007business}; various genetic algorithms\cite{goldberg1979complexity} agumented by techniques such as
-    (1)~smarter population subset selection~\cite{zit02,deb00afast};
-    (2)~\textit{differential evolution} \cite{storn1997differential}
-    (3)~\textit{tabu search and scatter search}\cite{nebro2008abyss, molina2007sspmo, glover1986general, beausoleil2006moss}; 
-    (4)~\textit{particle swarm optimization}\cite{pan2008particle}; 
-    (5)~numerous decomposition approaches that use heuristics to decompose the total space into small problems, then apply a response surface methods such
-    as our own GALE\cite{krall2014gale,zuluaga2013active} algorithm.
-    
-    For this study, we applied three optimizers that are standards
-    in the SE literature (NSGA-II~\cite{deb00afast} and SPEA2~\cite{zit02})
-    as well as our own GALE algorithm~\cite{krall2014gale}).
-    GALE uses the WHERE algorithm to find a direction of most useful
-    mutation. Given leaf clusters, each with an {\em East,West} point
-    then 
-    GALE mutates the population of candidates in that leaf cluster towards
-    which of {\em East,West} has better evaluation scores. These
-    mutants become the data  that is cluster
-    and mutated by WHERE in  generation $i+1$.
-    
-\subsection{Parameter Used}
-We used the default parameters for NSGA-II and Differential Evolution (as recommended by the authors) where as the parameters used by GALE are as follows:
-\begin{itemize}
-\item $\mu$ = 100: population size;
-\item $\omega$ = $\mu$: minimum size leaf clusters;
-\item $\lambda$ = 3: premature stopping criteria (sets the maximum
-allowed generations without any improvement
-on any objective).
-\item $\delta$ = 1: the ``accelerator'' that encourages larger
-mutations;
-\item $\gamma$ = 1.5: the ``brake'' that blocks excessive mutation.
-\end{itemize}
-\subsection{Parameter Bias} 
-For this study, we did not do extensive parameter tuning:
-NSGA-II and DE were run using their default
-settings while GALE was run using the settings that
-worked well on the first model we studied, which were
-then frozen for the rest of this study. As documented
-above, those parameters were:
-\begin{itemize}
-\item $\mu$ = 100: population size;
-\item $\omega$ = $\mu$: minimum size leaf clusters;
-\item $\lambda$ = 3: premature stopping criteria (sets the maximum
-allowed generations without any improvement
-on any objective).
-\item $\delta$ = 1: the ``accelerator'' that encourages larger
-mutations;
-\item $\gamma$ = 1.5: the ``brake'' that blocks excessive mutation.
-\end{itemize}
-
-If this paper was arguing that these parameters were
-somehow optimal, then it would be required to present
-experiments defending the above settings. However, our
-claim is less than thatâwe only aim to show that with
-these settings, GALE does as well than standard searching
-tools. In future work, we will explore other settings.
 
 
+%\begin{acknowledgements}
+%If you'd like to thank anyone, place your comments here
+%and remove the percent signs.
+%\end{acknowledgements}
+
+% BibTeX users please use one of
+%\bibliographystyle{spbasic}      % basic style, author-year citations
+%\bibliographystyle{spmpsci}      % mathematics and physical sciences
+%\bibliographystyle{spphys}       % APS-like style for physics
+%\bibliography{}   % name your BibTeX data base
 
 
 \end{document}
+% end of file template.tex
+
