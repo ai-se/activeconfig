@@ -45,7 +45,7 @@ grestore
 %
 \smartqed  % flush right qed marks, e.g. at end of proof
 %
-\usepackage{graphicx}
+
 \usepackage{amsfonts}
 \usepackage{color}
 \usepackage{listings}
@@ -420,21 +420,19 @@ on the line  running  from {\em East} to {\em West}\footnote{The projection of $
 }.  We divide
 the examples based on the median value of the projection of $x_i$. Now, we have two clusters of data divided based on the projection values (of $N_i$) on the line joining {\em East} and {\em West}. This process is applied recursively on these clusters until a predefined stopping condition. In our study, the  recursive splitting of the $N_i$'s stops when a sub-region
 contains less than  $\sqrt{|N|}$ examples.
-\begin{equation}
-    \mathit{dist}(x, y) = 
-    \begin{cases}
-       \sqrt{
-       \sum_i(x_i-y_i)^2
-       }
-       %& \text{if $x_i$ and $y_i$ is numeric}\\
-        \begin{cases}
-            0, & \text{ if $x_i = y_i$}\\
-            1, & \text{ otherwise}\\
-        \end{cases}
-        & \text{if $x_i$ and $y_i$ is Boolean}\\
-    \end{cases}
-    \label{eq:dist}
-\end{equation}
+% \begin{equation}
+%     \mathit{dist}(x, y) = 
+%     \begin{cases}
+%       \sqrt{\sum_i(x_i-y_i)^2}
+%       %& \text{if $x_i$ and $y_i$ is numeric}\\
+%         \begin{cases}
+%             0, & \text{ if $x_i = y_i$}\\
+%             1, & \text{ otherwise}\\
+%         \end{cases}
+%         & \text{if $x_i$ and $y_i$ is Boolean}\\
+%     \end{cases}
+%     \label{eq:dist}
+% \end{equation}
 We explore this approach for three reasons:
 \begin{itemize}
 \item
@@ -1130,7 +1128,7 @@ We evaluated our approach on six real-world configurable software systems borrow
  \newpage
 \bibliographystyle{spbasic}
 
-\balance
+% \balance
 \bibliography{activeconfig}  
 
 
