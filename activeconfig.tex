@@ -45,7 +45,7 @@ grestore
 %
 \smartqed  % flush right qed marks, e.g. at end of proof
 %
-\usepackage{amsmath}1
+\usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{color}
 \usepackage{listings}
@@ -475,8 +475,7 @@ our ability to make accurate predictions.
 CART explores splits that divide $N$ samples  into two sets  $A$ and $B$, where each set  has a  standard deviation on the target variable of $\sigma_1$ and  $\sigma_2$.
 CART finds the ``best'' split defined as the split that minimizes $\frac{A}{N}\sigma_1 + \frac{B}{N}\sigma_2$.
 Using this best split, CART divides the data recursively.
- 
-\newpage
+
 In summary, \what  combines:
 \begin{compactitem}
 \item
@@ -1032,8 +1031,9 @@ since \what yields predictions that are similar to or more accurate than prior
 work, while requiring fewer samples.
 \end{myshadowbox}
 
+\section{Why does it work?}
+In this section, we present an in-depth analysis to understand why our sampling technique (based on a spectral learner) achieves such low mean fault rates while being stable (low variance). 
 
- \newpage
 \section{Reliability and Validity}\label{sect:construct}
 
 {\em Reliability} refers to the consistency of the results obtained
@@ -1125,7 +1125,6 @@ We evaluated our approach on six real-world configurable software systems borrow
 
 
 %\vspace*{0.5mm}
- \newpage
 \bibliographystyle{plain}
 
 % \balance
