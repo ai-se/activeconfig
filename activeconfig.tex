@@ -702,9 +702,9 @@ choice of optimizer is not a critical
 variable in  our analysis.
 
 
-\begin{figure}[th]
+\begin{figure}[t]
 \centering
-\includegraphics[width=0.5\columnwidth]{Figures/SamplingAccuracy}
+\includegraphics[width=\columnwidth]{Figures/SamplingAccuracy}
 \caption{Errors of the predictions made by \what with four different
 sampling policies. Note that, on the y-axis,  {\em lower} errors are {\em better}.
 }
@@ -712,10 +712,6 @@ sampling policies. Note that, on the y-axis,  {\em lower} errors are {\em better
 \end{figure}
 
 \section{Results}
-
-
-
-
 \subsection{RQ1}
 
 \begin{center}
@@ -759,9 +755,9 @@ We see a trend that the error of  $S_1$ and $S_2$ are within $5$\,\% of the {\em
 Hence, we can recommend these two minimal sampling methods.
 \end{itemize}
 
-\begin{figure}[tbh]
+\begin{figure}[!b]
 \centering
-\includegraphics[width=0.9\columnwidth]{Figures/evaluation_graph}
+\includegraphics[width=0.8\columnwidth]{Figures/evaluation_graph}
 \caption{Comparing evaluations of different sampling policies. We see that the number of configurations evaluated for $S_2$ is twice as high as $S_1$, as it selects 2 points from each cluster, where as  $S_1$ selects only 1 point. }\label{fig:Evaluations}
 \end{figure}
 
@@ -815,8 +811,9 @@ since that space contains fewer confusing or correlated variables than the raw c
 after seeing $X=40$\,\% of the configurations, the variances in prediction errors reduces to nearly zero.
 
 
-\begin{figure}[th]
-\includegraphics[width=0.5\columnwidth]{Figures/Variance}
+\begin{figure}[tbh]
+\includegraphics[width=\columnwidth]{Figures/Variance}
+\centering
 \caption{Standard deviations seen at various points of  \fig{sampling_accuracy}.}\label{fig:Variance}
 \end{figure}
 
