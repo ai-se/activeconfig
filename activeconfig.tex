@@ -45,6 +45,7 @@ grestore
 %
 \smartqed  % flush right qed marks, e.g. at end of proof
 %
+\usepackage{mathtools}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{color}
@@ -469,7 +470,7 @@ that follow, we also compare our
 sampling methods against another baseline using information gathered after executing
 all configurations.
 
-\subsection{Regression-Tree Learning}
+\subsection{Regression-Tree Learning} \label{rtlearning}
 After collecting the data using one of the sampling policies ($S_1$, $S_2$, or $S_3$), as described in Section \ref{sect:sample}, we  use a CART regression-tree learner~\cite{breiman1984} to build a performance predictor. Regression-tree learners seek the attribute-range split that most increases
 our ability to make accurate predictions.
 CART explores splits that divide $N$ samples  into two sets  $A$ and $B$, where each set  has a  standard deviation on the target variable of $\sigma_1$ and  $\sigma_2$.
@@ -1032,7 +1033,28 @@ work, while requiring fewer samples.
 \end{myshadowbox}
 
 \section{Why does it work?}
-In this section, we present an in-depth analysis to understand why our sampling technique (based on a spectral learner) achieves such low mean fault rates while being stable (low variance). 
+In this section, we present an in-depth analysis to understand why our sampling technique (based on a spectral learner) achieves such low mean fault rates while being stable (low variance). We hypothesize that the configuration space of the system configuration lie on a low dimensional manifold. 
+
+\subsection{History}
+Menzies et. al~\cite{me12d} suggested data heterogeneity and demonstrated the existence of local region, which is very different from the global representation. Menzies et al. also makes an important observation about exploiting the underlying dimension to cluster the data. Menzies et al.~\cite{me12d} used an algorithm called WHERE (see section~\ref{rtlearning}), which recurses on two dimensions synthesized in linear time using a technique called FASTMAP~\cite{faloutsos1995fastmap}. The use of underlying dimension has been endorsed by various other researchers~\cite{bettenburg2012think, deiters2013using, bettenburg2015towards, zhang2016cross}. There are numerous other methods in the literature, which are used to learn the underlying dimensionality of the data set like Principal Component Analysis (PCA)~\cite{jolliffe2002principal}~\footnote{WHERE is an approximation of the first principal component}, Spectral Learning~\cite{shi2000normalized}, Random Projection~\cite{bingham2001random}.  These algorithms  essentially use  different techniques to identify the underlying, independent/orthogonal dimensions to cluster the data points and differ with respect to the computational complexity and accuracy. We use WHERE since it computationally efficient~$O(2N)$ while being accurate.
+
+\subsection{Testing Technique}
+Given out hypothesis -- configuration space lies in a lower dimensional manifold, we need to show that the intrinsic dimensionality of the search space is rather low. To formalize this notion we borrow the concept of correlation dimension from the domain of physics~\cite{grassberger2004measuring}. The correlation dimension of a dataset with $k$ item is found by plotting the number of items found at distance withing radius $r$ (where r is the euclidean distance between two configurations). This is then normalized by the number of connections between $k$ items to find the expected number of neighbors at distance $r$. This can be written as:
+\begin{equation}
+    C(r) = \frac{2}{k(k-1)} \sum_{i=1}^{n} \sum_{j=i+1}^{n} I(\abs{x_i, x_j} \textless r) \\  
+\end{equation}
+where 
+    I(x \textless y) =
+    \begin{cases}
+            1, & \text{ if x \textless y}\\
+            0, & \text{ otherwise}\\
+    \end{cases}
+
+
+Given the dataset with $k$ items and range of distances \numrange{$r_0$}{$r_{max}$}, we estimate the intrinsic dimensionality as the maximum slope between $\ln(C(r))$ vs $\ln(r)$.
+
+\subsection{Evaluation}
+
 
 \section{Reliability and Validity}\label{sect:construct}
 
