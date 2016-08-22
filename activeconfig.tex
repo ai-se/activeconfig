@@ -101,6 +101,7 @@ shadow=true
 \usepackage{algorithmicx}
 \usepackage{algpseudocode}
 \usepackage[export]{adjustbox}
+\usepackage{mathtools}
 \renewcommand{\footnotesize}{\scriptsize}
 \definecolor{lightgray}{gray}{0.8}
 \definecolor{darkgray}{gray}{0.6}
@@ -161,7 +162,7 @@ shadow=true
 \newcommand{\tab}[1]{Table ~\ref{tab:#1}}
 \newcommand{\eq}[1]{Equation~\ref{eq:#1}}
 \newcommand{\what}{{\bf WHAT }}
-
+\usepackage{siunitx}
 %% space saving measures
 
 %\usepackage[shortlabels]{enumitem}  
@@ -701,14 +702,12 @@ choice of optimizer is not a critical
 variable in  our analysis.
 
 
-\begin{figure}[tbh]
+\begin{figure}[th]
 \centering
-\includegraphics[width=0.9\columnwidth]{Figures/SamplingAccuracy}
+\includegraphics[width=0.5\columnwidth]{Figures/SamplingAccuracy}
 \caption{Errors of the predictions made by \what with four different
 sampling policies. Note that, on the y-axis,  {\em lower} errors are {\em better}.
-% \todo[inline]{It should be SQLite and not SQL.}
 }
-% \todo[inline]{Please add $S_1$, $S_2$, ... to the legend.: It is already there at the bottom of the figure. I think I am missing something! }
 \label{fig:sampling_accuracy}
 \end{figure}
 
@@ -816,9 +815,8 @@ since that space contains fewer confusing or correlated variables than the raw c
 after seeing $X=40$\,\% of the configurations, the variances in prediction errors reduces to nearly zero.
 
 
-\begin{figure}[tbh]
-\centering
-\includegraphics[width=0.9\columnwidth]{Figures/Variance}
+\begin{figure}[th]
+\includegraphics[width=0.5\columnwidth]{Figures/Variance}
 \caption{Standard deviations seen at various points of  \fig{sampling_accuracy}.}\label{fig:Variance}
 \end{figure}
 
@@ -1038,23 +1036,33 @@ In this section, we present an in-depth analysis to understand why our sampling 
 \subsection{History}
 Menzies et. al~\cite{me12d} suggested data heterogeneity and demonstrated the existence of local region, which is very different from the global representation. Menzies et al. also makes an important observation about exploiting the underlying dimension to cluster the data. Menzies et al.~\cite{me12d} used an algorithm called WHERE (see section~\ref{rtlearning}), which recurses on two dimensions synthesized in linear time using a technique called FASTMAP~\cite{faloutsos1995fastmap}. The use of underlying dimension has been endorsed by various other researchers~\cite{bettenburg2012think, deiters2013using, bettenburg2015towards, zhang2016cross}. There are numerous other methods in the literature, which are used to learn the underlying dimensionality of the data set like Principal Component Analysis (PCA)~\cite{jolliffe2002principal}~\footnote{WHERE is an approximation of the first principal component}, Spectral Learning~\cite{shi2000normalized}, Random Projection~\cite{bingham2001random}.  These algorithms  essentially use  different techniques to identify the underlying, independent/orthogonal dimensions to cluster the data points and differ with respect to the computational complexity and accuracy. We use WHERE since it computationally efficient~$O(2N)$ while being accurate.
 
+\begin{figure}[ht]
+\includegraphics[width=\columnwidth]{Figures/underlying_dimension}
+\caption{Errors of the predictions made by \what with four different
+sampling policies. Note that, on the y-axis,  {\em lower} errors are {\em better}.
+}
+\label{fig:underlying_d}
+\end{figure}
 \subsection{Testing Technique}
 Given out hypothesis -- configuration space lies in a lower dimensional manifold, we need to show that the intrinsic dimensionality of the search space is rather low. To formalize this notion we borrow the concept of correlation dimension from the domain of physics~\cite{grassberger2004measuring}. The correlation dimension of a dataset with $k$ item is found by plotting the number of items found at distance withing radius $r$ (where r is the euclidean distance between two configurations). This is then normalized by the number of connections between $k$ items to find the expected number of neighbors at distance $r$. This can be written as:
 \begin{equation}
-    C(r) = \frac{2}{k(k-1)} \sum_{i=1}^{n} \sum_{j=i+1}^{n} I(\abs{x_i, x_j} \textless r) \\  
-\end{equation}
-where 
-    I(x \textless y) =
-    \begin{cases}
-            1, & \text{ if x \textless y}\\
+    C(r) = \frac{2}{k(k-1)} \displaystyle\sum_{i=1}^{n} \displaystyle\sum_{j=i+1}^{n} I(||x_i, x_j|| < r) \\  
+ \end{equation} 
+$$
+where:
+    I(x < y) = \begin{cases}
+            1, & \text{ if x < y}\\
             0, & \text{ otherwise}\\
     \end{cases}
+$$
+  
 
-
-Given the dataset with $k$ items and range of distances \numrange{$r_0$}{$r_{max}$}, we estimate the intrinsic dimensionality as the maximum slope between $\ln(C(r))$ vs $\ln(r)$.
+Given the dataset with $k$ items and range of distances [$r_0$--$r_{max}$], we estimate the intrinsic dimensionality as the maximum slope between $\ln(C(r))$ vs $\ln(r)$.
 
 \subsection{Evaluation}
 
+
+\section{Results}
 
 \section{Reliability and Validity}\label{sect:construct}
 
@@ -1131,10 +1139,25 @@ Furthermore, there is a recent approach that learns {\em per\-for\-mance-influen
 
 \section{Conclusions}
 
-Configurable software systems today are widely used in practice, but expose challenges regarding finding performance-optimal configurations. State-of-the-art approaches require too many measurements or are prone to large variances in their performance predictions. To avoid these shortcomings, we have proposed a fast spectral learner, called \what,  along with three new sampling techniques. The key idea of \what is to explore the configuration space with eigenvalues of the features used in a configuration to determine exactly those configurations for measurement that reveal key performance characteristics. 
+Configurable software systems today are widely used in practice, but expose challenges
+regarding finding performance-optimal configurations. State-of-the-art approaches require too
+many measurements or are prone to large variances in their performance predictions. To avoid
+these shortcomings, we have proposed a fast spectral learner, called \what,  along with three
+new sampling techniques. The key idea of \what is to explore the configuration space with
+eigenvalues of the features used in a configuration to determine exactly those configurations
+for measurement that reveal key performance characteristics. 
 This way, we can study many closely associated configurations with only a few measurements.
 
-We evaluated our approach on six real-world configurable software systems borrowed from the literature. Our approach achieves similar to lower error rates, while being stable when compared to the state of the art. In particular, with the exception of Berkeley DB, our approach is more accurate than the state-of-the-art approaches by Siegmund et al.~\cite{siegmund2012predicting} and Guo et al.~\cite{guo2013variability}. Furthermore, we achieve a similar prediction accuracy and stability as the approach by Sarkar et al~\cite{sarkar2015cost}, while requiring a far smaller number of configurations to be measured. We also demonstrated that our approach can be used to build cheap and stable surrogate prediction models, which can be used by off-the-shelf optimizers to find the performance-optimal configuration. 
+We evaluated our approach on six real-world configurable software systems borrowed from the
+literature. Our approach achieves similar to lower error rates, while being stable when
+compared to the state of the art. In particular, with the exception of Berkeley DB, our
+approach is more accurate than the state-of-the-art approaches by Siegmund et
+al.~\cite{siegmund2012predicting} and Guo et al.~\cite{guo2013variability}. Furthermore, we
+achieve a similar prediction accuracy and stability as the approach by Sarkar et
+al~\cite{sarkar2015cost}, while requiring a far smaller number of configurations to be
+measured. We also demonstrated that our approach can be used to build cheap and stable
+surrogate prediction models, which can be used by off-the-shelf optimizers to find the
+performance-optimal configuration. 
 
 %Our specific focus here was on sampling data
 %to reason about configurable software systems. More generally,
