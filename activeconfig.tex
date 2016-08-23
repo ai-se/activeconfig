@@ -854,7 +854,7 @@ results of \fig{Evaluations}).
 
 \begin{figure}[tbh]
 \centering
-\includegraphics[width=\columnwidth]{Figures/optimizer_result_g}
+\includegraphics[width=\columnwidth]{Figures/optimizer_result}
 \caption{Solutions found by GALE, NSGA-II and DE (shown as points) laid against the ground truth (all known configuration performance scores). 
 % In case of Apache and BDBJ, we can see that the different optimizers find different solutions but in the remaining plots, the results are the same. 
 It can be observed that all the optimizers can find the configuration with  lower performance scores.}\label{fig:performance_graph}
@@ -871,6 +871,7 @@ The answer to {\bf RQ3} is ``yes'': For optimizing performance scores, we can us
 
 
 \begin{table}[tbh]
+\centering
 \caption{The table shows how the minimum performance scores as found by the learners GALE, NSGA-II, and DE, vary over 20 repeated
 runs. Mean values are denoted $\mu$ and IQR denotes the 25th--75th percentile. A low IQR suggests that the surrogate model build by \what is stable and can be utilized by off the shelf optimizers to find performance-optimal configurations.
 % \todo[inline]{$\mu$ is reserved for the mean of the entire population, not for the mean of the part of the data we look at.}
