@@ -145,6 +145,18 @@ shadow=true
 %\newcommand{\rfive}{\crule{1mm}{1.95mm}\hspace{0.3pt}\crule{1mm}{1.95mm}\hspace{0.3pt}\crule{1mm}{1.95mm}\hspace{0.3pt}\crule{1mm}{1.95mm}}
 \newcommand{\quart}[3]{\begin{picture}(100,6)%1
 {\color{black}\put(#3,3){\circle*{4}}\put(#1,3){\line(1,0){#2}}}\end{picture}}
+\newcommand{\quartex}[3]{
+\begin{picture}(25,6)%1
+    {
+        \color{black}
+        \put(#3,3)
+        {\circle*{4}}
+        \put(#1,3)
+        {\line(1,0){#2}}
+    }
+\end{picture}
+}
+
 \definecolor{Gray}{gray}{0.95}
 \definecolor{LightGray}{gray}{0.975}
 % \newcommand{\rone}{}
@@ -275,7 +287,7 @@ In a number of experiments, we compared \what against the state-of-the-art appro
 We found that \what performs as well or better than prior approaches,
 while  requiring far fewer samples (just a few dozen).
 This is significant and most surprising, since some of the systems explored here have up to millions of possible configurations. 
-
+\newpage
 Overall, we make the following contributions:
 \begin{itemize}
 \item We present a novel sampling and learning approach for predicting the performance of software configurations in the face of large configuration spaces. The approach is based on a
@@ -656,7 +668,7 @@ measure of \eq{err} (see below).
 
 % \todo[inline]{Check the correct placement of this paragraph}
 The validity of the predictors built by the regression tree is verified on testing data. 
-For each  test item, we determine how long it {\em actually} takes to run the corresponding system configuration and compare the actual measured performance to the {\em prediction} from CART. The resulting prediction error is then computed using:
+For each  test item, we determine how long it {\em actually} takes to run the corresponding system configuration and compare the actual measured performance to the {\em prediction} from CART. The resulting prediction error is then computed using~\footnote{There is a growing literature which debates on how MMRE can be misleading as a performance measure. We conduct the same study with sum of absolute residues and the results of that study is consistent with our result found using MMRE. The results can be found in http://tiny.cc/sumAR}:
 \begin{equation}\label{eq:err}
 \mathit{error}=\frac{\mid\mathit{predicted} - \mathit{actual}\mid}{\mathit{actual}}*100
 \end{equation}
@@ -892,55 +904,51 @@ runs. Mean values are denoted $\mu$ and IQR denotes the 25th--75th percentile. A
 \end{tabular}
 \end{table}
 
-\begin{figure*}[tbh]
-\includegraphics[width=\linewidth]{Figures/compare_graph_h}
-\caption{Comparison between \what and the state-of-the-art approaches regarding mean error, standard deviation, and the percentage of configurations used for training the model.} \label{fig:Comparison}
-% \todo[inline]{Please use different brightness/alpha values or patterns to be able to distinguish the bar on a print out.}
-\end{figure*}
+% \begin{figure*}[tbh]
+% \includegraphics[width=\linewidth]{Figures/compare_graph_h}
+% \caption{Comparison between \what and the state-of-the-art approaches regarding mean error, standard deviation, and the percentage of configurations used for training the model.} \label{fig:Comparison}
+% % \todo[inline]{Please use different brightness/alpha values or patterns to be able to distinguish the bar on a print out.}
+% \end{figure*}
  
  
-\begin{figure*}
+\begin{figure*}[h]
  \begin{minipage}{4in}
 
-  
-  \begin{center}Mean MRE  ({\em less} is {\em better})\end{center}
-  
         {\small
           \begin{tabular}{l@{~~~~}l@{~~~~}r@{~~~~}r@{~~}c@{}r}
     
     
-  \multicolumn{1}{l}{\textbf{Rank}}& \textbf{using} & \textbf{Mean MRE}& \textbf{STDev} & \textbf{} & \textbf{Evaluations} &\\ 
- 
+  \multicolumn{1}{l}{\textbf{Rank}}& \textbf{using} & \textbf{Mean MRE}& \textbf{STDev} & \textbf{} & \textbf{Evaluations} \\ 
  \rowcolor{lightgray}\arrayrulecolor{lightgray}
 \textbf{Apache}  & \textbf{} & \textbf{} & \textbf{}&\textbf{}&  \\\hline
   1 &       Sarkar &    7.49  &  0.82 & \quart{6}{3}{7} & 55 \\
-  1 &      Guo(pw) &    10.51  &  6.85 & \quart{3}{33}{22} & 29 \\
+  1 &      Guo(PW) &    10.51  &  6.85 & \quart{3}{33}{22} & 29 \\
   1 &     Siegmund &    10.34  &  11.68 & \quart{0}{55}{21} &  29\\
   1 &         	\textbf{WHAT} &    10.95  &  2.74 & \quart{16}{13}{24} & 16 \\
-  1 &      Guo(2n) &    13.03  &  15.28 & \quart{7}{72}{34} &  18\\
+  1 &      Guo(2N) &    13.03  &  15.28 & \quart{7}{72}{34} &  18\\
 \hline  
 \rowcolor{lightgray}\arrayrulecolor{lightgray}
 \textbf{BDBC}  & \textbf{} & \textbf{} & \textbf{}& \textbf{}&\\\hline
   1 &       Sarkar &    1.24  &  1.46 & \quart{0}{1}{0} &  191\\
 \hline  2 &     Siegmund &    6.14  &  4.41 & \quart{4}{5}{6} &  139\\
   2 &         	\textbf{WHAT} &    6.57  &  7.4 & \quart{4}{9}{7} &  64\\
-  2 &      Guo(pw) &    10.16  &  10.6 & \quart{2}{13}{11} &  139\\
-\hline  3 &      Guo(2n) &    49.9  &  52.25 & \quart{16}{63}{59} &  36\\
+  2 &      Guo(PW) &    10.16  &  10.6 & \quart{2}{13}{11} &  139\\
+\hline  3 &      Guo(2N) &    49.9  &  52.25 & \quart{16}{63}{59} &  36\\
 \hline  
 \rowcolor{lightgray}\arrayrulecolor{lightgray}
 \textbf{BDBJ}  & \textbf{} & \textbf{} & \textbf{}& \textbf{}&\\\hline
-  1 &      Guo(2n) &    2.29  &  3.26 & \quart{0}{29}{9} &  52\\
-  1 &      Guo(pw) &    2.86  &  2.72 & \quart{2}{25}{14} &  48\\
+  1 &      Guo(2N) &    2.29  &  3.26 & \quart{0}{29}{9} &  52\\
+  1 &      Guo(PW) &    2.86  &  2.72 & \quart{2}{25}{14} &  48\\
   1 &         	\textbf{WHAT} &    4.75  &  4.46 & \quart{12}{40}{31} &  16\\
 \hline  2 &       Sarkar &    5.67  &  6.97 & \quart{6}{62}{39} &  48\\
   2 &     Siegmund &    6.98  &  7.13 & \quart{16}{63}{51} &  57\\
 \hline  
 \rowcolor{lightgray}\arrayrulecolor{lightgray}
 \textbf{LLVM}  & \textbf{} & \textbf{} & \textbf{}&\textbf{}& \\\hline
-  1 &      Guo(pw) &    3.09  &  2.98 & \quart{0}{21}{10} &  64\\
+  1 &      Guo(PW) &    3.09  &  2.98 & \quart{0}{21}{10} &  64\\
   1 &         	\textbf{WHAT} &    3.32  &  1.05 & \quart{9}{7}{12} &  32\\
   1 &       Sarkar &    3.72  &  0.45 & \quart{13}{3}{15} &  62\\
-  1 &      Guo(2n) &    4.99  &  5.05 & \quart{11}{36}{24} &  22\\
+  1 &      Guo(2N) &    4.99  &  5.05 & \quart{11}{36}{24} &  22\\
 \hline  2 &     Siegmund &    8.5  &  8.28 & \quart{21}{58}{49} &  43\\
 \hline
  
@@ -949,23 +957,30 @@ runs. Mean values are denoted $\mu$ and IQR denotes the 25th--75th percentile. A
 \textbf{SQLite} & \textbf{} & \textbf{} & \textbf{} & \textbf{}&\\\hline
   1 &       Sarkar &    3.44  &  0.1 & \quart{0}{0}{0} &  925\\
 \hline  2 &         	\textbf{WHAT} &    5.6  &  0.57 & \quart{7}{2}{8} &  64\\
-\hline  3 &      Guo(2n) &    8.57  &  7.3 & \quart{2}{28}{19} &  78\\
-  3 &      Guo(pw) &    8.94  &  6.24 & \quart{6}{24}{20} &  566\\
+\hline  3 &      Guo(2N) &    8.57  &  7.3 & \quart{2}{28}{19} &  78\\
+  3 &      Guo(PW) &    8.94  &  6.24 & \quart{6}{24}{20} &  566\\
 \hline  4 &     Siegmund &    12.83  &  17.0 & \quart{16}{63}{35} &  566\\
 \hline  
 \rowcolor{lightgray}\arrayrulecolor{lightgray}
 \textbf{x264} & \textbf{} & \textbf{} & \textbf{}& \textbf{}&\\\hline
   1 &       Sarkar &    6.64  &  1.04 & \quart{4}{2}{5} &  93\\
   1 &         	\textbf{WHAT} &    6.93  &  1.67 & \quart{4}{4}{6} &  32\\
-  1 &      Guo(2n) &    7.18  &  7.07 & \quart{0}{15}{6} &  32\\
-  1 &      Guo(pw) &    7.72  &  2.33 & \quart{4}{5}{8} &  81\\
+  1 &      Guo(2N) &    7.18  &  7.07 & \quart{0}{15}{6} &  32\\
+  1 &      Guo(PW) &    7.72  &  2.33 & \quart{4}{5}{8} &  81\\
 \hline  2 &     Siegmund &    31.87  &  21.24 & \quart{32}{47}{61} &  81\\
 \hline 
 
   \end{tabular}} 
-\end{minipage}~~~~~~~~~~~~
-\caption{}
-\end{figure*}
+\end{minipage}
+\caption{Mean MRE seen in 20 repeats. Mean MRE is the prediction error as described in Equation~\ref{eq:err} and STDev is the standard deviation of the MREs found during multiple repeats. 
+Lines with a a dot in the middle 
+(e.g. \protect \quartex{3}{13}{13}) 
+show the mean as a round dot withing the IQR (and if the IQR is very small, only a  round dot will be visible). 
+All the results are sorted by the mean values: lower mean value of MRE is better than large mean value. 
+The left-hand side columns \textbf{Rank} the various techniques, smaller the value of \textbf{Rank} better the technique e.g. in Apache, all the techniques have the same rank since their mean values are not statistically different. \textbf{Rank} is computer using Scott-Knott, bootstrap 95\% confidence, and the A12 test.
+}
+\label{fig:stats}
+\end{figure*} 
  
  
 \subsection{RQ4}
@@ -978,57 +993,32 @@ runs. Mean values are denoted $\mu$ and IQR denotes the 25th--75th percentile. A
 \end{center}
 
 We compare \what with the three state-of-the-art predictors proposed in the literature~\cite{siegmund2012predicting}, \cite{guo2013variability}, \cite{sarkar2015cost}, as discussed in Section~\ref{sect:addit}. Note that all approaches use regression-trees as predictors, except Siegmund's approach, which uses a regression function derived using linear programming.
- 
- The \framebox{\colorbox{whatcolor}{\textcolor{whatcolor}{\bf blue}}} bars of Figure \ref{fig:Comparison} show the
- mean error rate, the standard deviation of the error rate, and the mean percentage
- of total configurations used in 30 repeats of the different approaches.
- Note that the y-axis of that figure is a logarithmic scale so, within each plot:
- \begin{itemize}
- \item Differences near the bottom  are very small differences;
- \item Differences near the top   are very large differences;
- \end{itemize}
- 
-As seen in the left and middle plots of
-Figure~\ref{fig:Comparison}, 
-the {\em FW} approach of Siegmund et al.\ (i.e., the sampling approach using the fewest number of configurations) often has the highest
-error rate and the highest
-standard deviation on that error rate. Hence,
-we cannot recommend this method or,  if one wishes to use this method, we recommend using the other sampling heuristics (e.g., HO, HS) to make more accurate predictions (but at the cost of much more measurements). Moreover, the size of the standard deviation of this method causes further difficulties in estimating which configurations are those exhibiting a large prediction error. 
+The results were studied using non-parametric tests, which was also used by Arcuri and Briand at ICSE
+'11~\cite{mittas13}). For testing statistical significance,
+we used non-parametric bootstrap test 95\% confidence~\cite{efron93} followed by
+an A12 test to check that any observed differences were not trivially small effects;
+i.e. given two lists $X$ and $Y$, count how often there are larger
+numbers in the former list (and there there are ties, add a half mark):
+$a=\forall x\in X, y\in Y\frac{\#(x>y) + 0.5*\#(x=y)}{|X|*|Y|}$
+(as per Vargha~\cite{Vargha00}, we say that a ``small'' effect has $a <0.6$). 
+Lastly, to generate succinct reports, we use the Scott-Knott test to recursively
+divide our optimizers. This recursion used A12 and bootstrapping  
+to group together subsets that are (a)~not significantly different and are (b)~not
+just a small effect different to each other. This use of Scott-Knott is endorsed
+by Mittas and Angelis~\cite{mittas13}
+and by Hassan et al.~\cite{7194626}.
 
-As to the approach of Guo et al.\ (with PW), this   does not standout on any of
-our measurements. Its error results are within 1\,\% of \what;
- its standard deviation are usually larger; and it requires
- much more data than \what.
- 
- In terms of the number of measured samples required to build a model, 
- the right-hand-side plot of  Figure~\ref{fig:Comparison}  shows that
- \what requires the fewest samples except for two cases:
- the approach of Guo et al. (with 2N) working on BDBC and LLVM.  In both these cases, the mean error and standard deviation on the error
- estimate is   larger than \what  (see the \framebox{\colorbox{guocolor}{\textcolor{guocolor}{\bf red}}} bars in the left and middle plots   of Figure~\ref{fig:Comparison}). Furthermore, in the case of BDBC, the error values
+As seen in the figure~\ref{fig:stats}, the FW approach of Siegmund et al. (i.e., the sampling approach using the fewest number of configurations) $(4/6)$ times has the higher errors rate and the highest standard deviation on that error rate. Hence, we can't recommend this method or, if one wishes to use this method, we recommend using the other sampling heuristics (e.g., HO, HS) to make more accurate predictions (but at the cost of much more measurements). Moreover, the size of the standard deviation of this method causes further difficulties in estimating which configurations are those exhibiting a large prediction error. 
+
+As to the approach of Guo et al (with PW), this does not standout on any of our measurements. Its error results are within 1\% of \what; its standard deviation are usually larger and it requires much more data than \what (Evaluations column of the figure). 
+
+In terms of the number of measure samples required to build a model, the right-hand most column of Figure~\ref{fig:stats} shows that \what requires the fewest samples except for two cases: the approach of Guo et al. (with 2N) working on BDBC and LLVM. In both these cases, the mean error and standard deviation on the error estimate is larger than \what. Furthermore, in the case of BDBC, the error values
  are $\mu=14\,\%$, $\sigma=13\,\%$, which are much larger
-than \what{}'s error scores of $\mu=6\,\%$, $\sigma=5\,\%$. 
+than \what{}'s error scores of $\mu=6\,\%$, $\sigma=5\,\%$.
 
+Although the approach of Sarkar et al. produces an error rate that is sometimes less than the one of \what, it requires the most number of measurements. Moreover, \what\'s  accuracy is close to Sarkar\'s approach (1\% to 2\%) difference). Hence, we cannot recommend this approach, too.
 
-Although the approach of Sarkar et al.\ produces an error rate that is sometimes less than the one of \what (see the left-hand-side of
-Figure~\ref{fig:Comparison}), it requires the most number of measurements. Moreover, \what's accuracy is close to Sarkar's approach (1\,\%
-to 2\,\% difference). Hence, we cannot recommend this approach, too.
-
-%Nor can we recommend the approach of Sarkar et al.\ since,
-%as shown on the right-hand-side of Figure~\ref{fig:Comparison}, 
-%this approach requires the most data.
-%While it is true that its error rate 
-%is sometimes less than the one of \what (see the left-hand-side of
-%Figure~\ref{fig:Comparison}), that difference is often small (1\,\%
-%to 2\,\%). 
-
-%The exception here is BDBC, where Sarker's approach has the lowest
-%error of any approach. This exception is discussed further in the
-%next paragraph.
- 
-
-The right-hand-side of Figure~\ref{fig:Comparison}   shows
-the {\em percent} of required measurements. Table~\ref{tab:measurements} shows the same
-expressed as absolute values. We see that most state-of-the-art approaches often require many more samples than
+Table~\ref{tab:measurements} shows the number of evaluations used by each approaches. We see that most state-of-the-art approaches often require many more samples than
 \what{}.  Using those fewest numbers of samples, \what has
 within 1 to 2\,\% of the lowest standard deviation rates 
 and within 1 to 2\,\% of lowest error rates.
@@ -1040,6 +1030,68 @@ the overall reduction of the error is   small (5\,\% difference
 between Sarkar and \what in mean error), the overall
 cost of tripling the data-collection cost is
 often not feasible in a practical context and might not justify the small additional benefit in accuracy. 
+
+%  The \framebox{\colorbox{whatcolor}{\textcolor{whatcolor}{\bf blue}}} bars of Figure \ref{fig:Comparison} show the
+%  mean error rate, the standard deviation of the error rate, and the mean percentage
+%  of total configurations used in 30 repeats of the different approaches.
+%  Note that the y-axis of that figure is a logarithmic scale so, within each plot:
+%  \begin{itemize}
+%  \item Differences near the bottom  are very small differences;
+%  \item Differences near the top   are very large differences;
+%  \end{itemize}
+ 
+% As seen in the left and middle plots of
+% Figure~\ref{fig:Comparison}, 
+% the {\em FW} approach of Siegmund et al.\ (i.e., the sampling approach using the fewest number of configurations) often has the highest
+% error rate and the highest
+% standard deviation on that error rate. Hence,
+% we cannot recommend this method or,  if one wishes to use this method, we recommend using the other sampling heuristics (e.g., HO, HS) to make more accurate predictions (but at the cost of much more measurements). Moreover, the size of the standard deviation of this method causes further difficulties in estimating which configurations are those exhibiting a large prediction error. 
+
+% As to the approach of Guo et al.\ (with PW), this   does not standout on any of
+% our measurements. Its error results are within 1\,\% of \what;
+%  its standard deviation are usually larger; and it requires
+%  much more data than \what.
+ 
+%  In terms of the number of measured samples required to build a model, 
+%  the right-hand-side plot of  Figure~\ref{fig:Comparison}  shows that
+%  \what requires the fewest samples except for two cases:
+%  the approach of Guo et al. (with 2N) working on BDBC and LLVM.  In both these cases, the mean error and standard deviation on the error
+%  estimate is   larger than \what  (see the \framebox{\colorbox{guocolor}{\textcolor{guocolor}{\bf red}}} bars in the left and middle plots   of Figure~\ref{fig:Comparison}). Furthermore, in the case of BDBC, the error values
+%  are $\mu=14\,\%$, $\sigma=13\,\%$, which are much larger
+% than \what{}'s error scores of $\mu=6\,\%$, $\sigma=5\,\%$. 
+
+
+% Although the approach of Sarkar et al.\ produces an error rate that is sometimes less than the one of \what (see the left-hand-side of
+% Figure~\ref{fig:Comparison}), it requires the most number of measurements. Moreover, \what's accuracy is close to Sarkar's approach (1\,\%
+% to 2\,\% difference). Hence, we cannot recommend this approach, too.
+
+% %Nor can we recommend the approach of Sarkar et al.\ since,
+% %as shown on the right-hand-side of Figure~\ref{fig:Comparison}, 
+% %this approach requires the most data.
+% %While it is true that its error rate 
+% %is sometimes less than the one of \what (see the left-hand-side of
+% %Figure~\ref{fig:Comparison}), that difference is often small (1\,\%
+% %to 2\,\%). 
+
+% %The exception here is BDBC, where Sarker's approach has the lowest
+% %error of any approach. This exception is discussed further in the
+% %next paragraph.
+ 
+
+% The right-hand-side of Figure~\ref{fig:Comparison}   shows
+% the {\em percent} of required measurements. Table~\ref{tab:measurements} shows the same
+% expressed as absolute values. We see that most state-of-the-art approaches often require many more samples than
+% \what{}.  Using those fewest numbers of samples, \what has
+% within 1 to 2\,\% of the lowest standard deviation rates 
+% and within 1 to 2\,\% of lowest error rates.
+% The exception is Sarkar's approach, which has 5\,\% lower mean error
+% rates (in BDBC, see the left-hand-side plot of Figure~\ref{fig:Comparison}).  However, 
+% as shown in right-hand-side of Table~\ref{tab:measurements}, Sarkar's approach needs nearly three times
+% more measurements than \what (191 vs 64 samples). Given
+% the overall reduction of the error is   small (5\,\% difference
+% between Sarkar and \what in mean error), the overall
+% cost of tripling the data-collection cost is
+% often not feasible in a practical context and might not justify the small additional benefit in accuracy. 
 
 
  %Note that:
