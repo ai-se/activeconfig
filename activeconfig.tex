@@ -668,10 +668,15 @@ measure of \eq{err} (see below).
 
 % \todo[inline]{Check the correct placement of this paragraph}
 The validity of the predictors built by the regression tree is verified on testing data. 
-For each  test item, we determine how long it {\em actually} takes to run the corresponding system configuration and compare the actual measured performance to the {\em prediction} from CART. The resulting prediction error is then computed using~\footnote{There is a growing literature which debates on how MMRE can be misleading as a performance measure. We conduct the same study with sum of absolute residues and the results of that study is consistent with our result found using MMRE. The results can be found in http://tiny.cc/sumAR}:
+For each  test item, we determine how long it {\em actually} takes to run the corresponding system configuration and compare the actual measured performance to the {\em prediction} from CART. The resulting prediction error is then computed using:
 \begin{equation}\label{eq:err}
 \mathit{error}=\frac{\mid\mathit{predicted} - \mathit{actual}\mid}{\mathit{actual}}*100
 \end{equation}
+(Aside: It is reasonable to ask why this metrics and not some of the others proposed
+in the literature (e.g sum absolute residuals). In short, our results are stable
+across a range of different metrics. For example, the results of this paper have
+been repeated using sum of absolute residuals and, in those other results,
+we seen the same ranking of methods; see  http://tiny.cc/sumAR.)
 
 {\bf RQ2} requires testing the standard deviation of the prediction error rate. To support that test, we:
 \begin{itemize}
@@ -1008,7 +1013,21 @@ just a small effect different to each other. This use of Scott-Knott is endorsed
 by Mittas and Angelis~\cite{mittas13}
 and by Hassan et al.~\cite{7194626}.
 
-As seen in the figure~\ref{fig:stats}, the FW approach of Siegmund et al. (i.e., the sampling approach using the fewest number of configurations) $(4/6)$ times has the higher errors rate and the highest standard deviation on that error rate. Hence, we can't recommend this method or, if one wishes to use this method, we recommend using the other sampling heuristics (e.g., HO, HS) to make more accurate predictions (but at the cost of much more measurements). Moreover, the size of the standard deviation of this method causes further difficulties in estimating which configurations are those exhibiting a large prediction error. 
+As seen in the Figure~\ref{fig:stats}, the FW approach of Siegmund et al. (i.e., the sampling approach using the fewest number of configurations) $(4/6)$ times has the higher errors rate and the highest standard deviation on that error rate. Hence, we cannot recommend this method or, if one wishes to use this method, we recommend using the other sampling heuristics (e.g., HO, HS) to make more accurate predictions (but at the cost of much more measurements). Moreover, the size of the standard deviation of this method causes further difficulties in estimating which configurations are those exhibiting a large prediction error. 
+
+THere are two cases in Figure~\ref{fig:stats} where \what performs worse than at least one
+other methods:
+\begin{itemize}
+\item 
+SQLite: here, the Sukar methods does better that \what (3.44 vs 5.6)
+but, as shown in the final column of Figure~\ref{fig:stats},
+does so at the cost of $\frac{925}{64} \approx 15$ times more evaluations that \what.
+In this case, a pragmatic engineering could well prefer our solution the that of Sukar (since
+Sukar uses  more than an order of magnitude slowdown).
+\item BDBC: Here again, \what is not doing the best but, compared to the space of
+all other solutions, it  is not doing particular bad.
+\end{itemize}
+
 
 As to the approach of Guo et al (with PW), this does not standout on any of our measurements. Its error results are within 1\% of \what; its standard deviation are usually larger and it requires much more data than \what (Evaluations column of the figure). 
 
@@ -1159,7 +1178,7 @@ Menzies et. al~\cite{me12d} suggested data heterogeneity by demonstrating the ex
 
 
 \subsection{Testing Technique}
-Given our hypothesis -- configuration space lies in a lower dimensional hyperplane, it is imperative to demonstrate that the intrinsic dimensionality of the configuration space is less than actual dimension. To formalize this notion we borrow the concept of correlation dimension from the domain of physics~\cite{grassberger2004measuring}. The correlation dimension of a dataset with $k$ item is found by computing the number of items found at distance withing radius $r$ (where r is the euclidean distance between two configurations) while varying the size of $r$. This is then normalized by the number of connections between $k$ items to find the expected number of neighbors at distance $r$. This can be written as:
+Given our hypothesis -- configuration space lies in a lower dimensional hyperplane--  it is imperative to demonstrate that the intrinsic dimensionality of the configuration space is less than actual dimension. To formalize this notion we borrow the concept of correlation dimension from the domain of physics~\cite{grassberger2004measuring}. The correlation dimension of a dataset with $k$ item is found by computing the number of items found at distance withing radius $r$ (where r is the euclidean distance between two configurations) while varying $r$. This is then normalized by the number of connections between $k$ items to find the expected number of neighbors at distance $r$. This can be written as:
 \begin{equation}
     C(r) = \frac{2}{k(k-1)} \displaystyle\sum_{i=1}^{n} \displaystyle\sum_{j=i+1}^{n} I(||x_i, x_j|| < r) \\  
  \end{equation} 
