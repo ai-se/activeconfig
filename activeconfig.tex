@@ -295,8 +295,7 @@ Overall, we make the following contributions:
 \item We present a novel sampling and learning approach for predicting the performance of software configurations in the face of large configuration spaces. The approach is based on a
 {\em spectral
 learner} that uses an approximation to the first principal component of the configuration space to recursively cluster it, relying only on a few points as representatives of each cluster.
-\item We demonstrate the practicality and generality of our approach by conducting experiments on six real-world configurable software systems (see Figure ~\ref{fig:systems}). The results show that our approach is more accurate (lower mean error) and more stable (lower standard deviation) than state-of-the-art approaches.
-\item We report on a comparative analysis of our approach and three state-of-the-art approaches, demonstrating that our approach outperforms previous approaches in terms of sample size and prediction stability. A key finding is the utility of the principal component of a configuration space to  find informative samples from a large configuration space.
+\item We demonstrate the practicality and generality of our approach by conducting experiments on six real-world configurable software systems (see Figure ~\ref{fig:systems}). The results show that our approach is more accurate (lower mean error) and more stable (lower standard deviation) than state-of-the-art approaches. A key finding is the utility of the principal component of a configuration space to  find informative samples from a large configuration space.
 
 All materials required for reproducing this work are available at \url{https://goo.gl/689Dve}.
 \end{itemize}
@@ -678,7 +677,7 @@ For each  test item, we determine how long it {\em actually} takes to run the co
 \end{equation}
 (Aside: It is reasonable to ask why this metrics and not some of the others proposed
 in the literature (e.g sum absolute residuals). In short, our results are stable
-across a range of different metrics. For example, the results of this paper have
+across a range of different metrics. For e.g., the results of this paper have
 been repeated using sum of absolute residuals and, in those other results,
 we seen the same ranking of methods; see  \url{http://tiny.cc/sumAR}).
 
@@ -726,7 +725,7 @@ variable in  our analysis.
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{Figures/SamplingAccuracy}
-\caption{\textcolor{red}{vivek}Errors of the predictions made by \what with four different
+\caption{Errors of the predictions made by \what with four different
 sampling policies. Note that, on the y-axis,  {\em lower} errors are {\em better}.
 }
 \label{fig:sampling_accuracy}
@@ -744,7 +743,7 @@ examining only a small number of configurations?}
 after taking $X$\,\% of the configurations, then asking  \what and some sampling method ($S_1$, $S_2$, and $S_3$)
 to (a)~find what configurations to measure; then (b)~asking CART to build a predictor
 using these measurements. The horizontal axis of the plots shows what $X$\,\%
-of the configurations are studied; the vertical axis shows the mean relative error (from \eq{err}).
+of the configurations are studied; the vertical axis shows the mean relative error ($\mu$) from \eq{err}.
 In this figure:
 \begin{itemize}
 \item
@@ -779,7 +778,7 @@ Hence, we can recommend these two minimal sampling methods.
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.75\columnwidth]{Figures/evaluation_graph}
-\caption{\textcolor{red}{vivek}Comparing evaluations of different sampling policies. We see that the number of configurations evaluated for $S_2$ is twice as high as $S_1$, as it selects 2 points from each cluster, where as  $S_1$ selects only 1 point. }\label{fig:Evaluations}
+\caption{Comparing evaluations of different sampling policies. We see that the number of configurations evaluated for $S_2$ is twice as high as $S_1$, as it selects 2 points from each cluster, where as  $S_1$ selects only 1 point. }\label{fig:Evaluations}
 \end{figure}
 
 \fig{Evaluations} provides information about which  of    $S_1$ or $S_2$ we should recommend.
@@ -818,7 +817,7 @@ Do less data used in building prediction models cause larger variances in the pr
 
 
 Two competing effects can cause increased or decreased  variances in 
-runtime predictions.
+performance predictions. In our study, we report standard deviation ($\sigma$) as a measure of variances in the performance predicitons.
 The   less we sample the configuration space,
 the less we constrain model generation in that space. Hence, one effect that can be expected
 is that models learned
@@ -827,14 +826,14 @@ But,
 a  compensating effect can be introduced by sampling from the spectral space
 since that space contains fewer confusing or correlated variables than the raw configuration space.
 \fig{Variance} reports which one of these two competing effects are dominant. 
-\fig{sampling_accuracy} shows that after some initial fluctuations,
-after seeing $X=40$\,\% of the configurations, the variances in prediction errors reduces to nearly zero.
+\fig{Variance} shows that after some initial fluctuations,
+after seeing $X=40$\,\% of the configurations, the variances in prediction errors reduces to nearly zero, which is similar to the results in figure \ref{fig:sampling_accuracy}.
 
 
 \begin{figure}[t]
 \includegraphics[width=\columnwidth]{Figures/Variance}
 \centering
-\caption{\textcolor{red}{vivek}Standard deviations seen at various points of  \fig{sampling_accuracy}.}\label{fig:Variance}
+\caption{Standard deviations seen at various points of  \fig{sampling_accuracy}.}\label{fig:Variance}
 \end{figure}
 
 \begin{myshadowbox}
@@ -875,7 +874,7 @@ results of \fig{Evaluations}).
 \begin{figure}[tb]
 \centering
 \includegraphics[width=\columnwidth]{Figures/optimizer_result}
-\caption{Solutions found by GALE, NSGA-II and DE (shown as points) laid against the ground truth (all known configuration performance scores). 
+\caption{Solutions found by GALE, NSGA-II, and DE (shown as points) laid against the ground truth (all known configuration performance scores). 
 % In case of Apache and BDBJ, we can see that the different optimizers find different solutions but in the remaining plots, the results are the same. 
 It can be observed that all the optimizers can find the configuration with  lower performance scores.}\label{fig:performance_graph}
 \end{figure}
@@ -1018,25 +1017,12 @@ and by Hassan et al.~\cite{7194626}.
 
 As seen in Figure~\ref{fig:stats}, the FW heuristic of Siegmund et al. (i.e., the sampling approach using the fewest number of configurations)  has the higher errors rate and the highest standard deviation on that error rate (four out of six times). Hence, we cannot recommend this method or, if one wishes to use this method, we recommend using the other sampling heuristics (e.g., HO, HS) to make more accurate predictions (but at the cost of much more measurements). Moreover, the size of the standard deviation of this method causes further difficulties in estimating which configurations are those exhibiting a large prediction error. 
 
-There are two cases in Figure~\ref{fig:stats} where \what performs worse than, at least, one
-other method:
-\begin{itemize}
-\item 
-SQLite: The technique proposed by Sarkar et al. does better than \what (3.44 vs 5.6)
-but, as shown in the final column of Figure~\ref{fig:stats},
-does so at the cost of $\frac{925}{64} \approx 15$ times more evaluations that \what.
-In this case, a pragmatic engineer could well prefer our solution than that of Sarkar et al. (since
-number of evaluations performance by Sarkar et al.more than an order of magnitude).
-\item BDBC: Here again, \what is not doing the best but, compared to the number of evalations required by
-all other solutions, it  is not doing particularly bad.
-\end{itemize}
-
 
 As to the approach of Guo et al (with PW), it does not standout on any of our measurements. Its error results are within 1\% of \what; its standard deviations are usually larger and it requires much more data than \what (Evaluations column of the figure~\ref{fig:stats}). 
 
 In terms of the number of measure samples required to build a model, the right-hand column of Figure~\ref{fig:stats} shows that \what requires the fewest samples except for two cases: the approach of Guo et al. (with 2N) working on BDBC and LLVM. In both these cases, the mean error and standard deviation on the error estimate is larger than \what. Furthermore, in the case of BDBC, the error values
  are $\mu=14\,\%$, $\sigma=13\,\%$, which are much larger
-than \what{}'s error scores of $\mu=6\,\%$, $\sigma=5\,\%$ \textcolor{red}{skype??}.
+than \what{}'s error scores of $\mu=6\,\%$, $\sigma=5\,\%$. 
 
 Although the approach of Sarkar et al. produces an error rate that is sometimes less than the one of \what, it requires the highest number of measurements. Moreover, \what\textquotesingle s   accuracy is close to Sarkar\textquotesingle s approach (1\% to 2\%) difference). Hence, we cannot recommend this approach, too.
 
@@ -1047,9 +1033,24 @@ and within 1 to 2\,\% of lowest error rates.
 The exception is Sarkar's approach, which has 5\,\% lower mean error
 rates (in BDBC, see the Mean MRE column of figure~\ref{fig:stats}).  However, 
 as shown in right-hand side of Table~\ref{tab:measurements}, Sarkar's approach needs nearly three times
-more measurements than \what (191 vs. 64 samples). Given
+more measurements than \what. 
+
+\noindent To summarize, there are two cases in Figure~\ref{fig:stats} where \what performs worse than, at least, one
+other method:
+\begin{itemize}
+\item 
+SQLite: The technique proposed by Sarkar et al. does better than \what (3.44 vs 5.6)
+but, as shown in the final column of Figure~\ref{fig:stats},
+does so at the cost of $\frac{925}{64} \approx 15$ times more evaluations that \what.
+In this case, a pragmatic engineer could well prefer our solution over that of Sarkar et al. (since
+number of evaluations performed by Sarkar et al.more than an order of magnitude than \what).
+\item BDBC: Here again, \what is not doing the best but, compared to the number of evaluations required by all other solutions, it  is not doing particularly bad.
+\end{itemize}
+
+
+\noindent Given
 the overall reduction of the error is   small (5\,\% difference
-between Sarkar and \what in mean error), the overall
+between Sarkar and \what in mean error), the 
 cost of tripling the data-collection cost is
 often not feasible in a practical context and might not justify the small additional benefit in accuracy. 
 
