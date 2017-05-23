@@ -98,6 +98,20 @@ roundcorner=2pt
 \usepackage{xspace}
 \usepackage{todonotes}
 
+%% reviewing
+\newcommand{\review}[1]{{\textit{#1}}~\\}
+\newcommand{\respto}[1]{
+    \fcolorbox{black}{black!15}{
+    \label{response:#1}
+    \textbf{R-{#1}}}
+}
+
+\newcommand{\citeresp}[1]{
+{\bf (see } \fcolorbox{black}{black!15}{
+ \bf
+  \scriptsize R-{#1}}~{\bf{on page \pageref{response:#1})}}
+}
+
 \definecolor{MyDarkBlue}{rgb}{0,0.08,0.45} 
 \lstset{
     language=Python,
@@ -292,14 +306,15 @@ All materials required for reproducing this work are available at \url{https://g
 \label{fig:motivation}
 \end{figure}
 
+
 \textcolor{blue}{
-\section{Motivating Example}
-We use the configurable tool BDBC as an example to motivate our approach. BDBC is an embedded database system  written  in C. In this example, we consider 18 features or configurations of BDBC, which an user can configure. We use the response time to indicate the performance of BDBC in different configurations. These 18 configurations lead to 2,560 configurations. 
+\section{\respto{2e}~Motivating Example}
+We use the configurable tool BDBC as an example to motivate our approach. BDBC is an embedded database system  written  in C. In this example, we consider 18 features or configuration options of BDBC, which an user can configure. We use the response time to indicate the performance of BDBC in different configurations. These 18 configuration options lead to 2,560 configurations. 
 In Figure~\ref{fig:motivation}, shows the performance distribution of all the configurations of BDBC. It is worth noting the difference between the best performing configuration (lower left corner) and the worst performing (top right corner). This shows that having a good configuration reduces the response time by a factor of 40 when compared to the worst possible configuration. 
 }
 
 \textcolor{blue}{
-An important point is that, in practice, the configurations are selected randomly and may not be the best or near best configuration. More over with more configurations added with ever release~\cite{xu2015hey}, it is important to have an automated approach to find the best or near-best configuration. Another aspect to this problem is the cost of evaluation (of a particular configuration), which is very expensive. So an ideal method should be able to find the best or near-best performing configuration with least number of evaluations. Our approach \what{} is effective in building accurate as well as stable performance models while using few sample configurations. }
+An important point is that, in practice, the configurations are selected randomly and may not be the best or near best configuration. More over with more configurations added with ever release~\cite{xu2015hey}, it is important to have an automated approach to find the best or near-best configuration. Another aspect to this problem is the cost of evaluation (of a particular configuration), which is very expensive. So an ideal method should be able to find the best or near-best performing configuration with least number of evaluations. Our approach \what{} is effective in building accurate as well as stable performance models while using fewer sample configurations. }
  
 \section{Background \& Related Work}  
 \label{sect:addit}
@@ -416,18 +431,18 @@ using an $O(2N)$ analysis that we have developed previously~\cite{me12d}, which 
 \\ 
      \begin{tabular}[c]{@{}l@{}}(d) Find {\em East}, a point\\furthest away from {\em West}.\end{tabular}   & \begin{tabular}[c]{@{}l@{}}(e) Line joining {\em East} and {\em West}\\is the first principal component\end{tabular} & \begin{tabular}[c]{@{}l@{}}(f) Projection of a point ({\em x})\\is calculated\end{tabular} \\[6pt]
 \end{tabular}
-\caption{Spectral Learning using \what{} using a synthetic example of a system with two configurations.}
+\caption{\respto{1a}~Spectral Learning using \what{} using a synthetic example of a system with two configurations.}
 \label{fig:spectral_desc}
 \end{figure}
 
 
 
 \textcolor{blue}{Figure~\ref{fig:spectral_desc} describes the procedure used to calculate the projection of a configurations.} \what receives $N$ (with $1\leq \left\vert{N}\right\vert\leq \left\vert{V}\right\vert$)
-valid configurations ($\vec{C}$), $N_1,N_2,...$, as input and then:
+valid configurations ($\vec{C}$), $N_1,N_2,...$, as input \textcolor{blue}{(as shown in Figure~\ref{fig:spectral_desc}(a))} and then:
 \begin{enumerate}
 \item
 Picks any
-point $N_i$ ($1\leq i \leq\left\vert{N}\right\vert$) at random (as shown in Figure~\ref{fig:spectral_desc}(b));
+point $N_i$ ($1\leq i \leq\left\vert{N}\right\vert$) at random \textcolor{blue}{(as shown in Figure~\ref{fig:spectral_desc}(b))};
 \item
 Finds
  the point  {\em West}~$\in N$ that is
@@ -595,7 +610,7 @@ learning performance predictors from configurable software systems?}
 
 \begin{table}[tbh]\normalsize
 {\footnotesize
-\caption{Subject systems used in the experiments.}
+\caption{\respto{2b}~Subject systems used in the experiments.}
 \begin{tabular}{|p{1.05cm}|p{1.5cm}|c|p{0.35cm}|p{4cm}|p{.8cm}|p{2cm}|p{1cm}|}
 \hline
 \textbf{\begin{tabular}[c]{@{}l@{}}System\\ Name\end{tabular}}                     & \textbf{Description}                                                                                                      & \textbf{LOC}     & \textbf{\begin{tabular}[c]{@{}l@{}}Feat\\-ures\end{tabular}} & \textbf{Configurations}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          & \textbf{\begin{tabular}[c]{@{}l@{}}\#Configu\\-rations\end{tabular}}& \textbf{\begin{tabular}[c]{@{}l@{}}Benchmark Used\end{tabular}}                                                                                                   & \textbf{\begin{tabular}[c]{@{}l@{}}Performan\\-ce Metric\end{tabular}} \\ \hline
@@ -617,7 +632,7 @@ x264                                                                      & x264
 \subsection{Subject Systems}
 \label{sec:subject_systems}
 The configurable systems we used in our experiments are described in Table~\ref{fig:systems}.
-\textcolor{blue}{The configurations systems used are real-world systems and represent different  domains  with  different  configuration  mechanisms  and  implemented  with different programming languages.}
+\respto{2c}~\textcolor{blue}{The configurations systems used are real-world systems and representative of different  domains  with  different  configuration  mechanisms  and  implemented  using different programming languages.}
 Note, with ``predicting performance'', we 
 mean predicting performance scores of the subject systems while executing test suites provided by the developers or the community, as described in Table~\ref{fig:systems}.
 To compare the predictions of our and prior approaches with actual performance measures, we use data sets that have been obtained by
@@ -625,7 +640,7 @@ measuring {\em nearly all} configurations\footnote{http://openscience.us/repo/pe
 We say {\em nearly all} configurations, for the following reasoning: For 
 all except one of our subject systems, the total number of valid configurations
 was tractable (192 to 2560). However,  SQLite has 3,932,160 
-possible configurations \textcolor{blue}{(since SQLite has 39 configuration -- $2^{39}$ possible configurations)}, which is an impractically large number of configurations to test whether our predictions are accurate and stable. Hence, for SQLite, we use the 4500 samples for testing prediction accuracy and stability, which we could collect in one day of CPU time. Taking this into account, we will pay particular attention to the variance of the SQLite results.
+possible configurations \respto{2d}\textcolor{blue}{(since SQLite has 39 configuration -- $2^{39}$ possible configurations)}, which is an impractically large number of configurations to test whether our predictions are accurate and stable. Hence, for SQLite, we use the 4500 samples for testing prediction accuracy and stability, which we could collect in one day of CPU time. Taking this into account, we will pay particular attention to the variance of the SQLite results.
 
 
 
@@ -1229,14 +1244,15 @@ As a summary, our observations indicate that the intrinsic dimension of the conf
 
 \begin{figure}[t]
 \includegraphics[width=\columnwidth]{Figures/param_tuning}
-\caption{}
+\caption{The trade-off between the number of evaluations (affected by the size of the sub-region) and the performance (MRE) of the model generated.}
 \label{fig:param_tuning}
 \end{figure}
 
 
-\section{\textcolor{blue}{Discussion}}
-\subsection{\textcolor{blue}{What is the trade-off between the MMRE and the number of measurements?}}
-\textcolor{blue}{\what{} requires that the practitioner to define stopping criterion, (size of the sub-region) before the
+\section{Discussion}
+\subsection{\respto{1b}~What is the trade-off between the MRE and the number of measurements?}
+\textcolor{blue}{
+\what{} requires that the practitioner to define stopping criterion, (size of the sub-region) before the
 process commences.
 The stopping criterion preempts the process of recursive dividing of region
 based on projection values of the configurations. In our experiments, the
@@ -1255,15 +1271,16 @@ our objective is to minimize the number of measurements while
 reducing MRE, we assign the value of $\sqrt{N}$ to the upper bound of the size of the sub-region for the
 purposes of our experiments.}
 
-\subsection{\textcolor{blue}{What are the limitations of WHAT?}}
-\textcolor{blue}{
-The limitations of \what{} are:
+\subsection{\respto{2a}What are the limitations of WHAT?}
+
+\textcolor{blue}{The limitations of \what{} are:
 \begin{itemize}
     \item \what{} cannot be used for non-numeric configuration options. However, it can be used for numeric configurations options (not just boolean options). 
-    \item The configurable systems used in this paper are fairly easy to model using machine learning techniques like CART, but there exist software systems, which cannot be model using CART (even when 40\% of the possible configurations). For these systems, \what{} cannot be used to build accurate performance models.
-    \item The effectiveness of \what{} depends on projecting the configurations on the approximated first principal component. The approximation of the first principal component requires calculate the furthest points (points which is most dissimilar)  in the configuration space using euclidean distance. However, there can exist systems where  Euclidean distance (as used in this paper) cannot  find the most dissimilar points~\cite{chen2016sampling}. For such systems, \what{} in current form will not be effective.
+    \item The configurable systems used in this paper are fairly easy to model using machine learning techniques like CART, but there exist software systems, which cannot be model using CART (even using 40\% of all possible configurations). For these systems, \what{} cannot be used to build accurate performance models.
+    \item The effectiveness of \what{} depends on projecting the configurations on the approximated first principal component. The approximation of the first principal component requires calculate the furthest points (points which is most dissimilar)  in the configuration space using euclidean distance. However, there can exist systems where  Euclidean distance (as used in this paper) cannot  find the most dissimilar points~\cite{chen2016sampling}. For such systems, \what{} in current form will not be effective (which is a part of our future work).
 \end{itemize}
 }
+
 \section{Reliability and Validity}\label{sect:construct}
 
 {\em Reliability} refers to the consistency of the results obtained
@@ -1337,7 +1354,7 @@ Furthermore, there is a recent approach that learns {\em per\-for\-mance-influen
 
 
 
-\section{Conclusions}
+\section{Conclusions \& Future Work}
 
 Configurable software systems today are widely used in practice, but they impose challenges
 regarding finding performance-optimal configurations. State-of-the-art approaches require too
@@ -1359,6 +1376,8 @@ measured. We also demonstrated that our approach can be used to build cheap and 
 surrogate prediction models, which can be used by off-the-shelf optimizers to find the
 performance-optimal configuration.  We use the correlation dimension to demonstrate how the high dimensional configuration space of our subject systems has a low intrinsic dimensionality, which might be the reason why \what performs so well on these datasets. 
 
+\respto{2f}~\textcolor{blue}{As to future work, we plan to explore the implications of \what{}. Currently \what{} uses a static number of evaluations based on the total number of possible configuration ($\sqrt{N}$), which may not be useful for configuration systems which is more difficult to model that the system used in this study. Hence, we need a progressive strategy which can progressive sample new configuration and stop the sampling process based on either the performance score achieved or the budget allocated. Finally the current version of \what{}, assumes all the features of same importance and uses a Euclidean distance to differentiate between good and `not-so-good' solutions. There are systems where all the features are not equally important or there are redundancy in terms of configuration options. Hence, using feature weighting techniques to find weight (importance) of configuration options and use that information to differentiate between configurations.}
+
 %Our specific focus here was on sampling data
 %to reason about configurable software systems. More generally,
 %this paper has demonstrated the benefit of using
@@ -1374,6 +1393,120 @@ performance-optimal configuration.  We use the correlation dimension to demonstr
 
 % \balance
 \bibliography{activeconfig}  
+
+\newpage
+\section*{Response to Reviewers}
+\subsection*{\textbf{Comments from the editor}}
+
+\review{The reviewers like the work and feel it will make a good ASEJ contribution.
+There are some detailed suggestions below that I would like you to consider making especially around
+-clarifying motivation of the work
+-clarifying scope of the solution
+-discussing limitations / threats / future work
+-perhaps explaining how the solution works a little more from an ASE tool perspective (though I am not so worried about this).}
+
+Thank you very much indeed for your comments.\\
+
+\subsection*{\textbf{Response to Reviewer \#1}}
+\noindent
+\review{The spectral learning and projection of configuration onto the principal direction can be made clearer through a diagram. I had to work out the projection formula in the footnote \#3.}
+
+\noindent
+Good point, we have added a diagram along with the text for clearer explanation~\citeresp{1a}.\\
+
+\noindent
+\review{Justification of the choice of minimum size of a sub-region. This will eventually lead to more or less samples for training, hence the cost of obtaining the training data.}
+
+\noindent
+Thank you for the suggestion. The size of the sub-region ($\sqrt{N}$) is indeed very important to tune since, it directly affects the number of evaluations required by \what{} and hence, the performance (MRE) of the model generated. Based on your suggestion, we have added a section which discusses the trade-off curve between the number of evaluations (which is directly affected by the size of sub-region) and the performance of the model~\citeresp{1b}.\\
+
+\noindent
+\review{The testing part of the tree regression should be moved to Section 3. I had to wait until Section 4.3 to see it.}
+
+\noindent
+\textcolor{red}{I do not think, we need to reorganize the paper structure. Advise please.}\\
+
+\noindent
+\review{An important goal of the work of this nature is to find the nearly true optimal configuration in a minimum time, not finding a good predictor with averaged relative absolute errors. Thus the evaluation should include the relative error from the global optimal performance.}
+
+\noindent
+We completely agree with your point about finding near optimal configuration in minimum time is indeed our true objective. But, in this work, we assume that the building an accurate model is indeed the way to find the near optimal configuration. Hence, we have used MRE and average relative errors as an measure of `goodness' of the model generated.\\
+
+\noindent
+\review{The fact that only one principal component is needed is interesting, and it deserves further discussion. The paper attempts to do so in Section 6. My question is that what if the boundary of the configuration space is rather non-convex, and the manifold of configuration is nonlinear? If this is the case then the simple idea of finding the principal component presented in the paper may not work well.
+}
+
+\noindent
+\textcolor{red}{We completely agree with your point about how the problem of finding near-optimal configuration can become challenging when the configuration space is non-convex. However, we did not find such systems during our empirical evaluations. The other point we would like to stress is: we wanted to build a tool, which can differentiate between good and not-so-good configurations using fewer evaluations and our goal is not to find the best configuration but rather near optimal solutions.}\\
+
+\noindent
+\review{The major running cost is acquiring the performance of sampled configurations. Hence it might be less important to claim about the efficiency of the spectral method used in the paper. In machine learning, this is the subject of active learning, and it works by exploring the sampling strategies so that we do not need the full configuration spaces upfront.}\\
+
+\noindent
+We agree with your observation that it is less important to claim about the efficiency of the spectral method since, major cost lies in acquiring the performance score of the configuration for the current systems under study. However, there exist some systems like SaC~\cite{temple2017learning} which have 65,425 possible configurations, where actual computation of principal component might take significantly longer time. 
+
+
+\subsection*{\textbf{Response to Reviewer \#2}}
+\noindent
+\review{The motivation could be strengthened - ideally using a concrete example e.g. one of the benchmark applications.}\\
+
+\noindent
+We agree with you and hence we add a new section~\citeresp{2e}.\\
+
+\noindent
+\review{Now - how restrictive is this? I would like this discussed both in the introduction/ motivation but
+especially in the threats/validity and perhaps discussion/future work.}\\
+\noindent
+This is an important point and we did not answer it explicitly in the text. To address this we have added a new section~\citeresp{2a}.\\
+
+\noindent
+\review{ I would also like a discussion of what exactly "performance" means - this could be CPU utilization, throughput, \# users}\\
+
+\noindent
+This is definitely a good point. Our previous version of the paper did not mention these details in an accessible format. In this version we have added a detailed table mentioning the details about how the data is collected and clearly define how performance is measured~\citeresp{2b}.\\
+
+\noindent
+\review{why each chosen?}\\
+\noindent
+We choose our subject systems from different domains with different configuration mechanism to cover different systems which are used in real-world. We have explicitly mentioned it in~\citeresp{2c} as well as in the threats to validity section (external validity).
+
+
+\review{
+\begin{itemize}
+\item What the benchmark/performance assessment used actually is - this is critical in determining the parameter settings and at the moment I have no idea what each measures/how it works for each application. I suspect they may be very different?
+\item some sense of the configuration parameters - a few examples would actually be nice so the reader can get a feel of the sort of configuration parameters being set
+\end{itemize}
+}\\
+\noindent
+To address this we have added a new section~\citeresp{2a}. \\
+
+\noindent
+\review{whether all these parameters actually impact performance - I suspect not - but can't tell what they are so can't make a judgement. I do wonder if like is being compared with like though?}\\
+\noindent
+Regarding the importance of different configuration, we did not make any assumptions on whether some or all configurations are important. We assumed that all configurations are of equal importance and perform no pre-processing on the data.\\
+
+\noindent
+\review{why the huge \# configurations for SQLite vs others - was not clear from the discussion.}\\
+In this new draft, we add mention why SQLite has huge number of configuration~\citeresp{2d}.\\
+
+\noindent
+\review{It would be good, as above, to somewhere discuss the limitations of the technique. There must be some - would be good to more clearly lay these out for the reader.}\\
+
+\noindent
+This is an important point and we did not answer it explicitly in the text. To address this we have added a new section~\citeresp{2a}.\\
+
+\noindent
+\review{what is the key future work that needs doing? Why?}
+
+\noindent
+As per your suggestion, we have mentioned the key future work~\citeresp{2f}.\\
+
+\noindent
+\review{I would have liked some details about how the technique is actually implemented in section 3 - what tools used to build, how they fit together and so on. I got no sense at all from the paper what implementation challenges result from building the tool and using it.}\\
+
+\noindent
+\textcolor{red}{We mention this in section 5.3.}
+
 \end{document}
 % end of file template.tex
 
