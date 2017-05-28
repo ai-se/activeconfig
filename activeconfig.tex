@@ -309,12 +309,12 @@ All materials required for reproducing this work are available at \url{https://g
 
 \textcolor{blue}{
 \section{\respto{2e}~Motivating Example}
-We use the configurable tool BDBC as an example to motivate our approach. BDBC is an embedded database system  written  in C. In this example, we consider 18 features or configuration options of BDBC, which an user can configure. We use the response time to indicate the performance of BDBC in different configurations. These 18 configuration options lead to 2,560 configurations. 
-In Figure~\ref{fig:motivation}, shows the performance distribution of all the configurations of BDBC. It is worth noting the difference between the best performing configuration (lower left corner) and the worst performing (top right corner). This shows that having a good configuration reduces the response time by a factor of 40 when compared to the worst possible configuration. 
+We use the configurable system BDBC as an example to motivate our approach. BDBC is an embedded database system  written  in C. In this example, we consider 18 features or configuration options of BDBC, which the user can configure. We use the response time to indicate the performance of BDBC in different configurations. These 18 configuration options lead to 2,560 configurations. 
+In Figure~\ref{fig:motivation}, we show the performance distribution of all the configurations of BDBC. It is worth noting the difference between the best performing configuration (lower left corner) and the worst performing (top right corner). The figure shows that having a good configuration reduces the response time by a factor of 40 when compared to the worst possible configuration. 
 }
 
 \textcolor{blue}{
-An important point is that, in practice, the configurations are selected randomly and may not be the best or near best configuration. More over with more configurations added with ever release~\cite{xu2015hey}, it is important to have an automated approach to find the best or near-best configuration. Another aspect to this problem is the cost of evaluation (of a particular configuration), which is very expensive. So an ideal method should be able to find the best or near-best performing configuration with least number of evaluations. Our approach \what{} is effective in building accurate as well as stable performance models while using fewer sample configurations. }
+An important point is that, in practice, the configurations are selected often uninformed and may not be the best or near best configuration. More over with more configurations added with ever release~\cite{xu2015hey}, it is important to have an automated approach to find the best or near-best configuration. Another aspect to this problem is the cost of evaluation (of a particular configuration), which may be very expensive. So, an ideal method should be able to find the best or near-best performing configuration with the least number of evaluations. Our approach \what{} is effective in building accurate as well as stable performance models while using fewer sample configurations than the state-of-the-art. }
  
 \section{Background \& Related Work}  
 \label{sect:addit}
@@ -424,14 +424,14 @@ using an $O(2N)$ analysis that we have developed previously~\cite{me12d}, which 
 
 \begin{figure}
 \begin{tabular}{ccc}
-  \includegraphics[height=35mm, width=35mm]{Figures/1} &   \includegraphics[height=35mm, width=35mm]{Figures/2}  & \includegraphics[height=35mm, width=35mm]{Figures/3}  \\ \begin{tabular}[c]{@{}l@{}}(a) Feature space of a system \\with two configurations\end{tabular}  & \begin{tabular}[c]{@{}l@{}}(b) Choosing a random point \\from the feature space\end{tabular} & \begin{tabular}[c]{@{}l@{}}(c) Find {\em West} furthest from the\\selected random point\end{tabular}\\[6pt]
+  \includegraphics[height=35mm, width=35mm]{Figures/1} &   \includegraphics[height=35mm, width=35mm]{Figures/2}  & \includegraphics[height=35mm, width=35mm]{Figures/3}  \\ \begin{tabular}[c]{@{}l@{}}(a) Feature space of a system \\with two configurations\end{tabular}  & \begin{tabular}[c]{@{}l@{}}(b) Choosing a random point \\from the feature space\end{tabular} & \begin{tabular}[c]{@{}l@{}}(c) Find {\em West} farthest from the\\selected random point\end{tabular}\\[6pt]
  \includegraphics[height=35mm, width=35mm]{Figures/4} &
 \includegraphics[height=35mm, width=35mm]{Figures/5} &
 \includegraphics[height=35mm, width=35mm]{Figures/6} 
 \\ 
-     \begin{tabular}[c]{@{}l@{}}(d) Find {\em East}, a point\\furthest away from {\em West}.\end{tabular}   & \begin{tabular}[c]{@{}l@{}}(e) Line joining {\em East} and {\em West}\\is the first principal component\end{tabular} & \begin{tabular}[c]{@{}l@{}}(f) Projection of a point ({\em x})\\is calculated\end{tabular} \\[6pt]
+     \begin{tabular}[c]{@{}l@{}}(d) Find {\em East}, a point\\farthest away from {\em West}.\end{tabular}   & \begin{tabular}[c]{@{}l@{}}(e) Line joining {\em East} and {\em West}\\is the first principal component\end{tabular} & \begin{tabular}[c]{@{}l@{}}(f) Projection of a point ({\em x})\\is calculated\end{tabular} \\[6pt]
 \end{tabular}
-\caption{\respto{1a}~Spectral Learning using \what{} using a synthetic example of a system with two configurations.}
+\caption{\respto{1a}~Spectral Learning using \what{} using the  example of a system with two configurations.}
 \label{fig:spectral_desc}
 \end{figure}
 
@@ -543,7 +543,19 @@ WHERE& = &PDDP $-$ PCA $+$ FASTMAP\\[1.5ex]
 \end{center}
 This unique combination of methods has not been previously explored in the
 software-engineering literature.
-% \todo[inline]{PLEASE REMOVE-In the remaining text we dont need to mention S1:Random, as it is part of \what, be the above definition. Since we compare different sampling techniques in first research question, I think it is necessary to mention the sampling policy along with \what}
+
+\subsection{\respto{1c}~Approach as a pipeline}
+\textcolor{blue}{
+Different components of \what{} can be used to sample configurations of a configurable software system, which can be then used to generate an accurate and stable performance model. We test \what{} in following way:
+\begin{itemize}
+    \item All the possible configurations of a system is enumerated
+    \item Split the configurations into training and testing datasets based on a predefined ratio (as discussed in section~\ref{sec:exp_rig}) -- at this point none of the configurations is measured
+    \item \what{} (section~\ref{sect:spect}) is used to sample configuration (section~\ref{sect:sample}) from the  training dataset and for each configuration the corresponding performance is measured.
+    \item Configuration and the corresponding performance score is used to build a performance model using Regression-Tree Learner (section~\ref{rtlearning}).
+    \item The accuracy (in terms of MRE) of the built performance model is measured using configurations for the testing set.
+\end{itemize}
+In the next section, we formulate our research questions and discuss the experimental setup.
+}
 
 \section{Experiments}
 \label{sec:experiments}
@@ -611,12 +623,12 @@ learning performance predictors from configurable software systems?}
 \begin{table}[tbh]\normalsize
 {\footnotesize
 \caption{\respto{2b}~Subject systems used in the experiments.}
-\begin{tabular}{|p{1.05cm}|p{1.5cm}|c|p{0.35cm}|p{4cm}|p{.8cm}|p{2cm}|p{1cm}|}
+\begin{tabular}{p{1.05cm}p{1.5cm}cp{0.35cm}p{4cm}p{.8cm}p{2cm}p{1cm}}
 \hline
 \textbf{\begin{tabular}[c]{@{}l@{}}System\\ Name\end{tabular}}                     & \textbf{Description}                                                                                                      & \textbf{LOC}     & \textbf{\begin{tabular}[c]{@{}l@{}}Feat\\-ures\end{tabular}} & \textbf{Configurations}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          & \textbf{\begin{tabular}[c]{@{}l@{}}\#Configu\\-rations\end{tabular}}& \textbf{\begin{tabular}[c]{@{}l@{}}Benchmark Used\end{tabular}}                                                                                                   & \textbf{\begin{tabular}[c]{@{}l@{}}Performan\\-ce Metric\end{tabular}} \\ \hline
 Apache                                                                    & Apache is a prominent open-source Web server that comes with various configuration options.                      & 230,277 & 9        & Base, HostnameLookups, KeepAlive, EnableSendfile, FollowSymLinks, AccessLog, ExtendedStatus, InMemory, Handle                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           & 192               & We used the tools autobench and httperf to generate load on the Web server. We increased the load until the server could not, handle any, further requests & Maximum load                                                 \\ \hline
-\begin{tabular}[c]{@{}l@{}}Berkeley DB\\C Edition\\ (BDBC)\end{tabular}    & BDBC is an embedded database system written in C.                                                                & 219,811 & 18       & HAVE\_CRYPTO, HAVE\_HASH, HAVE\_REPLICATION, HAVE\_VERIFY, HAVE\_SEQUENCE, HAVE\_STATISTICS, DIAGNOSTIC, PAGESIZE, PS1K, PS4K, PS8K, PS16K, PS32K, CACHESIZE, CS32MB, CS16MB, CS64MB, CS512MB                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           & 2,560             & Benchmark provided by the vendor                                                                                                                           & Response time                                                \\ \hline
-\begin{tabular}[c]{@{}l@{}}Berkeley DB\\Java Edition\\ (BDBJ)\end{tabular} & BDBJ is a complete re-development of BDBC in Java with full SQL support.                                         & 42,596  & 32       & Base, Persistence, IO, OldIO, NewIO, NIOBase, NIOType, ChunkedNIO, SingleWriteNIO, DirectNIO, LogSize, S100MiB, S1MiB, Checksum, BTreeFeatures, INCompressor, IEvictor, Evictor, Critical\_Eviction, Verifier, ITracing, Tracing, TracingLevel, Severe, Finest, Statistics                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              & 400               & Benchmark provided by the vendor                                                                                                                           & Response time                                                \\ \hline
+\begin{tabular}[t]{@{}l@{}}Berkeley DB\\C Edition\\ (BDBC)\end{tabular}    & BDBC is an embedded database system written in C.                                                                & 219,811 & 18       & HAVE\_CRYPTO, HAVE\_HASH, HAVE\_REPLICATION, HAVE\_VERIFY, HAVE\_SEQUENCE, HAVE\_STATISTICS, DIAGNOSTIC, PAGESIZE, PS1K, PS4K, PS8K, PS16K, PS32K, CACHESIZE, CS32MB, CS16MB, CS64MB, CS512MB                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           & 2,560             & Benchmark provided by the vendor                                                                                                                           & Response time                                                \\ \hline
+\begin{tabular}[t]{@{}l@{}}Berkeley DB\\Java Edition\\ (BDBJ)\end{tabular} &BDBJ is a complete re-development of BDBC in Java with full SQL support.                                         & 42,596  & 32       &Base, Persistence, IO, OldIO, NewIO, NIOBase, NIOType, ChunkedNIO, SingleWriteNIO, DirectNIO, LogSize, S100MiB, S1MiB, Checksum, BTreeFeatures, INCompressor, IEvictor, Evictor, Critical\_Eviction, Verifier, ITracing, Tracing, TracingLevel, Severe, Finest, Statistics                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              & 400               & Benchmark provided by the vendor                                                                                                                           & Response time                                                \\ \hline
 LLVM                                                                      & LLVM is a compiler infrastructure written in C++.                                                                 & 47,549  & 11       & time\_passes, gvn, instcombine, inline, jump\_threading, simplifycfg, sccp, print\_used\_types, ipsccp, iv\_users, licm                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 & 1,024             & As benchmark, we measured the time to compile LLVM’s test suite                                                                                            & Time to compile LLVM’s test suite                            \\ \hline
 SQLite                                                                    & SQLite is an embedded database system deployed over several millions of devices.                                 & 312,625 & 39       & OperatingSystemCharacteristics, SQLITE\_SECURE\_DELETE, ChooseSQLITE\_TEMP\_STORE, SQLITE\_TEMP\_STOREzero, SQLITE\_TEMP\_STOREone, SQLITE\_TEMP\_STOREtwo, SQLITE\_TEMP\_STOREthree, ... AutoVacuumOff, AutoVacuumOn, SetCacheSize, StandardCacheSize, LowerCacheSize, HigherCacheSize, LockingMode, ExclusiveLock, NormalLockingMode, PageSize, StandardPageSize, LowerPageSize, HigherPageSize, HighestPageSize & 3,932,160         & Benchmark provided by the vendor                                                                                                                           & Response time                                                \\ \hline
 x264                                                                      & x264is a video encoder in C that provides configuration options to adjust output quality of encoded video files. & 45,743  & 16       & no\_asm, no\_8x8dct, no\_cabac, no\_deblock, no\_fast\_pskip, no\_mbtree, no\_mixed\_refs, no\_weightb, rc\_lookahead, rc\_lookahead\_20, rc\_lookahead\_40, rc\_lookahead\_60, ref, ref\_1, ref\_5, ref\_9                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             & 1,152             & As benchmark, we encoded the Sintel trailer (735 MB) from AVI to the xH.264 codec                                                                          & Encoding time                                                \\ \hline
@@ -632,7 +644,7 @@ x264                                                                      & x264
 \subsection{Subject Systems}
 \label{sec:subject_systems}
 The configurable systems we used in our experiments are described in Table~\ref{fig:systems}.
-\respto{2c}~\textcolor{blue}{The configurations systems used are real-world systems and representative of different  domains  with  different  configuration  mechanisms  and  implemented  using different programming languages.}
+\respto{2c}~\textcolor{blue}{All systems are real-world systems and representative of different  domains  with  different  configuration  mechanisms  and  implemented  using different programming languages.}
 Note, with ``predicting performance'', we 
 mean predicting performance scores of the subject systems while executing test suites provided by the developers or the community, as described in Table~\ref{fig:systems}.
 To compare the predictions of our and prior approaches with actual performance measures, we use data sets that have been obtained by
@@ -647,7 +659,7 @@ possible configurations \respto{2d}\textcolor{blue}{(since SQLite has 39 configu
 
 
 
-\subsection{Experimental Rig}
+\subsection{Experimental Rig}\label{sec:exp_rig}
 
 
 RQ1 and RQ2 require the construction and assessment of numerous runtime predictors from small samples
@@ -1208,7 +1220,7 @@ work, while requiring fewer samples.
 In this section, we present an in-depth analysis to understand why our sampling technique (based on a spectral learner) achieves such low mean fault rates while being stable (low variance). We hypothesize that the configuration space of the system configuration lie on a low dimensional manifold. 
 
 \subsection{History}
-Menzies et. al~\cite{me12d}  demonstrated how to exploit the underlying dimension to cluster data to find local homogeneous data regions in an otherwise heterogeneous data space. The authors used an algorithm called WHERE (see section~\ref{rtlearning}), which recurses on two dimensions synthesized in linear time using a technique called FASTMAP ~\cite{faloutsos1995fastmap}. The use of underlying dimension has been endorsed by various other researchers~\cite{bettenburg2012think, deiters2013using, bettenburg2015towards, zhang2016cross}. There are numerous other methods in the literature, which are used to learn the underlying dimensionality of the data set such as Principal Component Analysis (PCA)~\cite{jolliffe2002principal}~\footnote{WHERE is an approximation of the first principal component}, Spectral Learning~\cite{shi2000normalized} and Random Projection~\cite{bingham2001random}.  These algorithms  use  different techniques to identify the underlying, independent/orthogonal dimensions to cluster the data points and differ with respect to the computational complexity and accuracy. We use WHERE since it computationally efficient~$O(2N)$, while still being accurate.
+Menzies et. al~\cite{me12d}  demonstrated how to exploit the underlying dimension to cluster data to find local homogeneous data regions in an otherwise heterogeneous data space. The authors used an algorithm called WHERE (see section~\ref{rtlearning}), which recurses on two dimensions synthesized in linear time using a technique called FASTMAP ~\cite{Faloutsos1995}. The use of underlying dimension has been endorsed by various other researchers~\cite{bettenburg2012think, deiters2013using, bettenburg2015towards, zhang2016cross}. There are numerous other methods in the literature, which are used to learn the underlying dimensionality of the data set such as Principal Component Analysis (PCA)~\cite{jolliffe2002principal}~\footnote{WHERE is an approximation of the first principal component}, Spectral Learning~\cite{shi2000normalized} and Random Projection~\cite{bingham2001random}.  These algorithms  use  different techniques to identify the underlying, independent/orthogonal dimensions to cluster the data points and differ with respect to the computational complexity and accuracy. We use WHERE since it computationally efficient~$O(2N)$, while still being accurate.
 
 
 
@@ -1252,9 +1264,9 @@ As a summary, our observations indicate that the intrinsic dimension of the conf
 \section{Discussion}
 \subsection{\respto{1b}~What is the trade-off between the MRE and the number of measurements?}
 \textcolor{blue}{
-\what{} requires that the practitioner to define stopping criterion, (size of the sub-region) before the
+\what{} requires that the practitioner to define a stopping criterion, (size of the sub-region) before the
 process commences.
-The stopping criterion preempts the process of recursive dividing of region
+The stopping criterion preempts the process of recursive division of regions
 based on projection values of the configurations. In our experiments, the
 number of measurements or the size of the training set depends
 on the stopping criterion. An early termination of the
@@ -1266,7 +1278,7 @@ between the MRE found and the number
 of measurements (size of training set). The trade-off characterizes
 the relationship between two conflicting objectives, for example,
 point in Apache, (size of sub-region=$4\cdot \sqrt{N}$) requires very few measurements but the MRE of the model built is the highest, whereas point (size of sub-region=$\frac{1}{4}\cdot \sqrt{N}$) requires large
-number of measurements but the MRE of the model built is the lowest. Since
+number of measurements, but the MRE of the model built is the lowest. Since
 our objective is to minimize the number of measurements while
 reducing MRE, we assign the value of $\sqrt{N}$ to the upper bound of the size of the sub-region for the
 purposes of our experiments.}
@@ -1275,11 +1287,14 @@ purposes of our experiments.}
 
 \textcolor{blue}{The limitations of \what{} are:
 \begin{itemize}
-    \item \what{} cannot be used for non-numeric configuration options. However, it can be used for numeric configurations options (not just boolean options). 
-    \item The configurable systems used in this paper are fairly easy to model using machine learning techniques like CART, but there exist software systems, which cannot be model using CART (even using 40\% of all possible configurations). For these systems, \what{} cannot be used to build accurate performance models.
-    \item The effectiveness of \what{} depends on projecting the configurations on the approximated first principal component. The approximation of the first principal component requires calculate the furthest points (points which is most dissimilar)  in the configuration space using euclidean distance. However, there can exist systems where  Euclidean distance (as used in this paper) cannot  find the most dissimilar points~\cite{chen2016sampling}. For such systems, \what{} in current form will not be effective (which is a part of our future work).
+    \item \what{} cannot be used for non-numeric configuration options. However, it can be used for numeric configurations options, not just Boolean options ( most related work only supports Boolean options). 
+    \item The configurable systems used in this paper are fairly easy to model using machine learning techniques such as CART, but there exist software systems, which cannot be model using CART (even using 40\% of all possible configurations). For these systems, \what{} cannot be used to build accurate performance models.
+    \item The effectiveness of \what{} depends on projecting the configurations on the approximated first principal component. The approximation of the first principal component require calculating the farthest points (points which is most dissimilar)  in the configuration space using euclidean distance. However, there maybe systems where  Euclidean distance (as used in this paper) cannot  find the most dissimilar points~\cite{chen2016sampling}. For such systems, \what{} in current form will not be effective (which is a part of our future work).
+    \item Finding near-optimal configuration can become challenging when the configuration space is non-convex. However, we did not find such systems during our empirical evaluations. The other point we would like to stress is: we wanted to build a tool, which can differentiate between good and not-so-good configurations using fewer evaluations and our goal is not to find the best configuration but rather near optimal solutions.
 \end{itemize}
 }
+
+
 
 \section{Reliability and Validity}\label{sect:construct}
 
@@ -1376,7 +1391,7 @@ measured. We also demonstrated that our approach can be used to build cheap and 
 surrogate prediction models, which can be used by off-the-shelf optimizers to find the
 performance-optimal configuration.  We use the correlation dimension to demonstrate how the high dimensional configuration space of our subject systems has a low intrinsic dimensionality, which might be the reason why \what performs so well on these datasets. 
 
-\respto{2f}~\textcolor{blue}{As to future work, we plan to explore the implications of \what{}. Currently \what{} uses a static number of evaluations based on the total number of possible configuration ($\sqrt{N}$), which may not be useful for configuration systems which is more difficult to model that the system used in this study. Hence, we need a progressive strategy which can progressive sample new configuration and stop the sampling process based on either the performance score achieved or the budget allocated. Finally the current version of \what{}, assumes all the features of same importance and uses a Euclidean distance to differentiate between good and `not-so-good' solutions. There are systems where all the features are not equally important or there are redundancy in terms of configuration options. Hence, using feature weighting techniques to find weight (importance) of configuration options and use that information to differentiate between configurations.}
+\respto{2f}~\textcolor{blue}{As to future work, we plan to explore the implications of \what{}. Currently \what{} uses a static number of evaluations based on the total number of possible configurations ($\sqrt{N}$), which may not be useful for systems that are more difficult to model that the system used in this study. Hence, we need a progressive strategy, which can progressively sample new configurations and stop the sampling process based on either the performance score achieved or the budget allocated. Finally the current version of \what{}, assumes that all the features are of similar importance and uses a Euclidean distance to differentiate between good and `not-so-good' solutions. There are certainly systems where not all the features are equally important or there are redundancy in terms of configuration options. Hence, using feature weighting techniques to find weight (importance) of configuration options and use that information to differentiate between configurations.}
 
 %Our specific focus here was on sampling data
 %to reason about configurable software systems. More generally,
@@ -1412,19 +1427,19 @@ Thank you very much indeed for your comments.\\
 \review{The spectral learning and projection of configuration onto the principal direction can be made clearer through a diagram. I had to work out the projection formula in the footnote \#3.}
 
 \noindent
-Good point, we have added a diagram along with the text for clearer explanation~\citeresp{1a}.\\
+Good point, we have added a diagram along with the text for better understanding~\citeresp{1a}.\\
 
 \noindent
 \review{Justification of the choice of minimum size of a sub-region. This will eventually lead to more or less samples for training, hence the cost of obtaining the training data.}
 
 \noindent
-Thank you for the suggestion. The size of the sub-region ($\sqrt{N}$) is indeed very important to tune since, it directly affects the number of evaluations required by \what{} and hence, the performance (MRE) of the model generated. Based on your suggestion, we have added a section which discusses the trade-off curve between the number of evaluations (which is directly affected by the size of sub-region) and the performance of the model~\citeresp{1b}.\\
+Thank you for the suggestion. The size of the sub-region ($\sqrt{N}$) is indeed very important to tune since it directly affects the number of evaluations required by \what{} and hence the performance (MRE) of the model generated. Based on your suggestion, we have added a section which discusses the trade-off curve between the number of evaluations (which is directly affected by the size of sub-region) and the performance of the model~\citeresp{1b}.\\
 
 \noindent
 \review{The testing part of the tree regression should be moved to Section 3. I had to wait until Section 4.3 to see it.}
 
 \noindent
-\textcolor{red}{I do not think, we need to reorganize the paper structure. Advise please.}\\
+\textcolor{red}{Thank you for the suggestion. We now have a new sub-section describing how all the components of \what{} fits together. It also mentions how \what{} can be tested in addition to section 4.3~\citeresp{1c}}\\
 
 \noindent
 \review{An important goal of the work of this nature is to find the nearly true optimal configuration in a minimum time, not finding a good predictor with averaged relative absolute errors. Thus the evaluation should include the relative error from the global optimal performance.}
@@ -1437,13 +1452,13 @@ We completely agree with your point about finding near optimal configuration in 
 }
 
 \noindent
-\textcolor{red}{We completely agree with your point about how the problem of finding near-optimal configuration can become challenging when the configuration space is non-convex. However, we did not find such systems during our empirical evaluations. The other point we would like to stress is: we wanted to build a tool, which can differentiate between good and not-so-good configurations using fewer evaluations and our goal is not to find the best configuration but rather near optimal solutions.}\\
+\textcolor{red}{We completely agree with your point about how the problem of finding near-optimal configuration can become challenging when the configuration space is non-convex. However, we did not find such systems during our empirical evaluations. The other point we would like to stress is: we wanted to build a tool, which can differentiate between good and not-so-good configurations using fewer evaluations and our goal is not to find the best configuration but rather near optimal solutions.~\citeresp{2a}}\\
 
 \noindent
 \review{The major running cost is acquiring the performance of sampled configurations. Hence it might be less important to claim about the efficiency of the spectral method used in the paper. In machine learning, this is the subject of active learning, and it works by exploring the sampling strategies so that we do not need the full configuration spaces upfront.}\\
 
 \noindent
-We agree with your observation that it is less important to claim about the efficiency of the spectral method since, major cost lies in acquiring the performance score of the configuration for the current systems under study. However, there exist some systems like SaC~\cite{temple2017learning} which have 65,425 possible configurations, where actual computation of principal component might take significantly longer time. 
+We agree with your observation that it is less important to claim about the efficiency of the spectral method since, major cost lies in acquiring the performance score of the configuration for the current systems under study. However, there exist some systems such as SaC~\cite{temple2017learning} which have 65,425 possible configurations, where actual computation of principal component might take significantly longer time. 
 
 
 \subsection*{\textbf{Response to Reviewer \#2}}
@@ -1463,7 +1478,7 @@ This is an important point and we did not answer it explicitly in the text. To a
 \review{ I would also like a discussion of what exactly "performance" means - this could be CPU utilization, throughput, \# users}\\
 
 \noindent
-This is definitely a good point. Our previous version of the paper did not mention these details in an accessible format. In this version we have added a detailed table mentioning the details about how the data is collected and clearly define how performance is measured~\citeresp{2b}.\\
+This is definitely a good point. Our previous version of the paper did not mention these details in an accessible format. In the revised version we have added a detailed table mentioning the details about how the data is collected and clearly define how performance is measured~\citeresp{2b}.\\
 
 \noindent
 \review{why each chosen?}\\
@@ -1483,11 +1498,11 @@ To address this we have added a new section~\citeresp{2a}. \\
 \noindent
 \review{whether all these parameters actually impact performance - I suspect not - but can't tell what they are so can't make a judgement. I do wonder if like is being compared with like though?}\\
 \noindent
-Regarding the importance of different configuration, we did not make any assumptions on whether some or all configurations are important. We assumed that all configurations are of equal importance and perform no pre-processing on the data.\\
+Regarding the importance of different configurations, we did not make any assumptions on whether some or all configurations are important. We assumed that all configurations are of equal importance and perform no pre-processing on the data.\\
 
 \noindent
 \review{why the huge \# configurations for SQLite vs others - was not clear from the discussion.}\\
-In this new draft, we add mention why SQLite has huge number of configuration~\citeresp{2d}.\\
+In this new draft, we add the reason why SQLite has huge number of configurations~\citeresp{2d}.\\
 
 \noindent
 \review{It would be good, as above, to somewhere discuss the limitations of the technique. There must be some - would be good to more clearly lay these out for the reader.}\\
