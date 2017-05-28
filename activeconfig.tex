@@ -307,17 +307,17 @@ All materials required for reproducing this work are available at \url{https://g
 \end{figure}
 
 
-\textcolor{blue}{
-\section{\respto{2e}~Motivating Example}
-We use the configurable system BDBC as an example to motivate our approach. BDBC is an embedded database system  written  in C. In this example, we consider 18 features or configuration options of BDBC, which the user can configure. We use the response time to indicate the performance of BDBC in different configurations. These 18 configuration options lead to 2,560 configurations. 
+
+ 
+\section{Background \& Related Work}  
+\label{sect:addit}
+
+\respto{2e}~\textcolor{blue}{We use the configurable system-BDBC as an example to motivate our approach. BDBC is an embedded database system  written  in C. In this example, we consider 18 features or configuration options of BDBC, which the user can configure. We use the response time to indicate the performance of BDBC in different configurations. These 18 configuration options lead to 2,560 configurations. 
 In Figure~\ref{fig:motivation}, we show the performance distribution of all the configurations of BDBC. It is worth noting the difference between the best performing configuration (lower left corner) and the worst performing (top right corner). The figure shows that having a good configuration reduces the response time by a factor of 40 when compared to the worst possible configuration. 
 }
 
 \textcolor{blue}{
 An important point is that, in practice, the configurations are selected often uninformed and may not be the best or near best configuration. More over with more configurations added with ever release~\cite{xu2015hey}, it is important to have an automated approach to find the best or near-best configuration. Another aspect to this problem is the cost of evaluation (of a particular configuration), which may be very expensive. So, an ideal method should be able to find the best or near-best performing configuration with the least number of evaluations. Our approach \what{} is effective in building accurate as well as stable performance models while using fewer sample configurations than the state-of-the-art. }
- 
-\section{Background \& Related Work}  
-\label{sect:addit}
 
 A configurable software system has a set $X$ of Boolean configuration options,\footnote{In this paper, we concentrate on Boolean options, as they make up the majority of all options; see Siegmund et al., for how to incorporate numeric options~\cite{SGA+15}.} also referred to as features or independent variables in our setting.
 We denote the number of features of system $S$ as $n$. The configuration space of $S$ can be represented by a Boolean space $\mathbb{Z}_{2}^{n}$, which is denoted by $F$. All valid configurations of $S$ belong to a set $V$, 
