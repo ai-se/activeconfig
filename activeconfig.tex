@@ -26,6 +26,7 @@
 %
 \smartqed  % flush right qed marks, e.g. at end of proof
 %
+
 \usepackage{textcomp}
 \usepackage{mathtools}
 \usepackage{amsmath}
@@ -171,6 +172,7 @@ roundcorner=2pt
 \newcommand{\eq}[1]{Equation~\ref{eq:#1}}
 \newcommand{\what}{{\bf WHAT}\xspace}
 \usepackage{siunitx}
+\usepackage{adjustbox}
 %% space saving measures
 
 %\usepackage[shortlabels]{enumitem}  
@@ -312,7 +314,7 @@ All materials required for reproducing this work are available at \url{https://g
 \section{Background \& Related Work}  
 \label{sect:addit}
 
-\respto{2e}~\textcolor{blue}{We use the configurable system-BDBC as an example to motivate our approach. BDBC is an embedded database system  written  in C. In this example, we consider 18 features or configuration options of BDBC, which the user can configure. We use the response time to indicate the performance of BDBC in different configurations. These 18 configuration options lead to 2,560 configurations. 
+\respto{2e}~\textcolor{blue}{We use the configurable system, BDBC, as an example to motivate our approach. BDBC is an embedded database system  written  in C. In this example, we consider 18 features or configuration options of BDBC, which the user can configure. We use the response time to indicate the performance of BDBC in different configurations. These 18 configuration options lead to 2,560 configurations. 
 In Figure~\ref{fig:motivation}, we show the performance distribution of all the configurations of BDBC. It is worth noting the difference between the best performing configuration (lower left corner) and the worst performing (top right corner). The figure shows that having a good configuration reduces the response time by a factor of 40 when compared to the worst possible configuration. 
 }
 
@@ -413,7 +415,7 @@ However, to the best of our knowledge, spectral methods have not been used befor
 
 
 \what is somewhat different from other spectral
-learners explored in, for instance, image processing applications~\cite{shi00}.
+learners explored in, for instance, image processing applications~\cite{shi2000normalized}.
 Work on image processing does not aim at
 defining a minimal sampling policy to predict performance scores.
 Also, a standard spectral method requires an $O(N^2)$ matrix multiplication to compute the components
@@ -431,7 +433,7 @@ using an $O(2N)$ analysis that we have developed previously~\cite{me12d}, which 
 \\ 
      \begin{tabular}[c]{@{}l@{}}(d) Find {\em East}, a point\\farthest away from {\em West}.\end{tabular}   & \begin{tabular}[c]{@{}l@{}}(e) Line joining {\em East} and {\em West}\\is the first principal component\end{tabular} & \begin{tabular}[c]{@{}l@{}}(f) Projection of a point ({\em x})\\is calculated\end{tabular} \\[6pt]
 \end{tabular}
-\caption{\respto{1a}~Spectral Learning using \what{} using the  example of a system with two configurations.}
+\caption{\respto{1a}~Spectral Learning using \what{} using the  example of a system with two configuration options.}
 \label{fig:spectral_desc}
 \end{figure}
 
@@ -616,28 +618,35 @@ since our goal is to sample as little as possible from the configuration space.
 learning performance predictors from configurable software systems?}
 \end{description}
 
-\noindent To answer RQ4, we will compare \what 
-          against approaches presented by Siegmund et al.~\cite{siegmund2012predicting}, Guo et al.~\cite{guo2013variability}, and Sarkar et al.~\cite{sarkar2015cost}.
- 
-
-\begin{table}[tbh]\normalsize
+\begin{table}
+\begin{adjustbox}{addcode=
+    {\begin{minipage}{\width}}
+    {\caption{\respto{2b}~Subject systems used in the experiments.}\label{fig:systems}\end{minipage}},angle=90}
 {\footnotesize
-\caption{\respto{2b}~Subject systems used in the experiments.}
-\begin{tabular}{p{1.05cm}p{1.5cm}cp{0.35cm}p{4cm}p{.8cm}p{2cm}p{1cm}}
-\hline
-\textbf{\begin{tabular}[c]{@{}l@{}}System\\ Name\end{tabular}}                     & \textbf{Description}                                                                                                      & \textbf{LOC}     & \textbf{\begin{tabular}[c]{@{}l@{}}Feat\\-ures\end{tabular}} & \textbf{Configurations}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          & \textbf{\begin{tabular}[c]{@{}l@{}}\#Configu\\-rations\end{tabular}}& \textbf{\begin{tabular}[c]{@{}l@{}}Benchmark Used\end{tabular}}                                                                                                   & \textbf{\begin{tabular}[c]{@{}l@{}}Performan\\-ce Metric\end{tabular}} \\ \hline
-Apache                                                                    & Apache is a prominent open-source Web server that comes with various configuration options.                      & 230,277 & 9        & Base, HostnameLookups, KeepAlive, EnableSendfile, FollowSymLinks, AccessLog, ExtendedStatus, InMemory, Handle                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           & 192               & We used the tools autobench and httperf to generate load on the Web server. We increased the load until the server could not, handle any, further requests & Maximum load                                                 \\ \hline
-\begin{tabular}[t]{@{}l@{}}Berkeley DB\\C Edition\\ (BDBC)\end{tabular}    & BDBC is an embedded database system written in C.                                                                & 219,811 & 18       & HAVE\_CRYPTO, HAVE\_HASH, HAVE\_REPLICATION, HAVE\_VERIFY, HAVE\_SEQUENCE, HAVE\_STATISTICS, DIAGNOSTIC, PAGESIZE, PS1K, PS4K, PS8K, PS16K, PS32K, CACHESIZE, CS32MB, CS16MB, CS64MB, CS512MB                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           & 2,560             & Benchmark provided by the vendor                                                                                                                           & Response time                                                \\ \hline
-\begin{tabular}[t]{@{}l@{}}Berkeley DB\\Java Edition\\ (BDBJ)\end{tabular} &BDBJ is a complete re-development of BDBC in Java with full SQL support.                                         & 42,596  & 32       &Base, Persistence, IO, OldIO, NewIO, NIOBase, NIOType, ChunkedNIO, SingleWriteNIO, DirectNIO, LogSize, S100MiB, S1MiB, Checksum, BTreeFeatures, INCompressor, IEvictor, Evictor, Critical\_Eviction, Verifier, ITracing, Tracing, TracingLevel, Severe, Finest, Statistics                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              & 400               & Benchmark provided by the vendor                                                                                                                           & Response time                                                \\ \hline
-LLVM                                                                      & LLVM is a compiler infrastructure written in C++.                                                                 & 47,549  & 11       & time\_passes, gvn, instcombine, inline, jump\_threading, simplifycfg, sccp, print\_used\_types, ipsccp, iv\_users, licm                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 & 1,024             & As benchmark, we measured the time to compile LLVM’s test suite                                                                                            & Time to compile LLVM’s test suite                            \\ \hline
-SQLite                                                                    & SQLite is an embedded database system deployed over several millions of devices.                                 & 312,625 & 39       & OperatingSystemCharacteristics, SQLITE\_SECURE\_DELETE, ChooseSQLITE\_TEMP\_STORE, SQLITE\_TEMP\_STOREzero, SQLITE\_TEMP\_STOREone, SQLITE\_TEMP\_STOREtwo, SQLITE\_TEMP\_STOREthree, ... AutoVacuumOff, AutoVacuumOn, SetCacheSize, StandardCacheSize, LowerCacheSize, HigherCacheSize, LockingMode, ExclusiveLock, NormalLockingMode, PageSize, StandardPageSize, LowerPageSize, HigherPageSize, HighestPageSize & 3,932,160         & Benchmark provided by the vendor                                                                                                                           & Response time                                                \\ \hline
-x264                                                                      & x264is a video encoder in C that provides configuration options to adjust output quality of encoded video files. & 45,743  & 16       & no\_asm, no\_8x8dct, no\_cabac, no\_deblock, no\_fast\_pskip, no\_mbtree, no\_mixed\_refs, no\_weightb, rc\_lookahead, rc\_lookahead\_20, rc\_lookahead\_40, rc\_lookahead\_60, ref, ref\_1, ref\_5, ref\_9                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             & 1,152             & As benchmark, we encoded the Sintel trailer (735 MB) from AVI to the xH.264 codec                                                                          & Encoding time                                                \\ \hline
+% \caption{\respto{2b}~Subject systems used in the experiments.}
+\begin{tabular}{p{1.25cm}p{2.5cm}cp{0.35cm}p{6cm}p{1cm}p{3cm}p{1cm}}
+\toprule
+                     & \textbf{Description}                                                                                                      & \textbf{LOC}     & \textbf{\begin{tabular}[c]{@{}l@{}}Feat\\-ures\end{tabular}} & \textbf{Configurations}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          & \textbf{\begin{tabular}[c]{@{}l@{}}\#Configu\\-rations\end{tabular}}& \textbf{\begin{tabular}[c]{@{}l@{}}Benchmark Used\end{tabular}}                                                                                                   & \textbf{\begin{tabular}[c]{@{}l@{}}Performance\\Metric\end{tabular}} \\ \cmidrule{1-8}
+\textbf{Apache}                                                                    & Apache is a prominent open-source Web server that comes with various configuration options.                      & 230,277 & 9        & Base, HostnameLookups, KeepAlive, EnableSendfile, FollowSymLinks, AccessLog, ExtendedStatus, InMemory, Handle                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           & 192               & We used the tools autobench and httperf to generate load on the Web server. We increased the load until the server could not, handle any, further requests & Maximum load~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                                                 \\ 
+\\ \textbf{\begin{tabular}[t]{@{}l@{}}Berkeley DB\\C Edition\\ (BDBC)\end{tabular}}    & BDBC is an embedded database system written in C.                                                                & 219,811 & 18       & HAVE\_CRYPTO, HAVE\_HASH, HAVE\_REPLICATION, HAVE\_VERIFY, HAVE\_SEQUENCE, HAVE\_STATISTICS, DIAGNOSTIC, PAGESIZE, PS1K, PS4K, PS8K, PS16K, PS32K, CACHESIZE, CS32MB, CS16MB, CS64MB, CS512MB                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           & 2,560             & Benchmark provided by the vendor                                                                                                                           & Response time                                                \\ 
+\\ \textbf{\begin{tabular}[t]{@{}l@{}}Berkeley DB\\Java Edition\\ (BDBJ)\end{tabular}} &BDBJ is a complete re-development of BDBC in Java with full SQL support.                                         & 42,596  & 32       &Base, Persistence, IO, OldIO, NewIO, NIOBase, NIOType, ChunkedNIO, SingleWriteNIO, DirectNIO, LogSize, S100MiB, S1MiB, Checksum, BTreeFeatures, INCompressor, IEvictor, Evictor, Critical\_Eviction, Verifier, ITracing, Tracing, TracingLevel, Severe, Finest, Statistics                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              & 400               & Benchmark provided by the vendor                                                                                                                           & Response time                                                \\ 
+\\ \textbf{LLVM}                                                                      & LLVM is a compiler infrastructure written in C++.                                                                 & 47,549  & 11       & time\_passes, gvn, instcombine, inline, jump\_threading, simplifycfg, sccp, print\_used\_types, ipsccp, iv\_users, licm                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 & 1,024             & As benchmark, we measured the time to compile LLVM’s test suite                                                                                            & Time to compile LLVM’s test suite                            \\ 
+\\ \textbf{SQLite}                                                                    & SQLite is an embedded database system deployed over several millions of devices.                                 & 312,625 & 39       & OperatingSystemCharacteristics,SQLITE\_SECURE\_DELETE, ChooseSQLITE\_TEMP\_STORE,SQLITE\_TEMP\_STOREzero, SQLITE\_TEMP\_STOREone, SQLITE\_TEMP\_STOREtwo, SQLITE\_TEMP\_STOREthree, ... AutoVacuumOff, AutoVacuumOn, SetCacheSize, StandardCacheSize, LowerCacheSize, HigherCacheSize, LockingMode, ExclusiveLock, NormalLockingMode, PageSize, StandardPageSize, LowerPageSize, HigherPageSize, HighestPageSize & 3,932,160         & Benchmark provided by the vendor                                                                                                                           & Response time                                                \\ 
+\\ \textbf{x264}                                                                      & x264is a video encoder in C that provides configuration options to adjust output quality of encoded video files. & 45,743  & 16       & no\_asm, no\_8x8dct, no\_cabac, no\_deblock, no\_fast\_pskip, no\_mbtree, no\_mixed\_refs, no\_weightb, rc\_lookahead, rc\_lookahead\_20, rc\_lookahead\_40, rc\_lookahead\_60, ref, ref\_1, ref\_5, ref\_9                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             & 1,152             & As benchmark, we encoded the Sintel trailer (735 MB) from AVI to the xH.264 codec                                                                          & Encoding time                                                \\ 
 \end{tabular}
 
 }
 
 \label{fig:systems}
+\end{adjustbox}
+
 \end{table}
+
+\noindent To answer RQ4, we will compare \what 
+          against approaches presented by Siegmund et al.~\cite{siegmund2012predicting}, Guo et al.~\cite{guo2013variability}, and Sarkar et al.~\cite{sarkar2015cost}.
+ 
+
+
 
 
 
@@ -1007,7 +1016,7 @@ Lines with a a dot in the middle
 (e.g. \protect \quartex{3}{13}{13}) 
 show the mean as a round dot withing the IQR (and if the IQR is very small, only a  round dot will be visible). 
 All the results are sorted by the mean values: a lower mean value of MRE is better than large mean value. 
-The left-hand side column ({\textit rank}) ranks the various techniques for e.g. when comparing various techniques for Apache, all the techniques have the same rank since their mean values are not statistically different. \textit{Rank} is computer using Scott-Knott, bootstrap 95\% confidence, and the A12 test.
+The left-hand side column ({\textit rank}) ranks  various techniques for e.g. when comparing various techniques for Apache, all the techniques have the same rank since their mean values are not statistically different. \textit{Rank} is computed using Scott-Knott, bootstrap 95\% confidence, and A12 test.
 }
 \label{fig:stats}
 \end{figure*} 
@@ -1152,24 +1161,7 @@ often not feasible in a practical context and might not justify the small additi
 % Please add the following required packages to your document preamble:
 % \usepackage[table,xcdraw]{xcolor}
 % If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
-\begin{table}[t]
-\caption{Comparison of the number of the samples
-required with the state of the art. The grey colored cells indicate the approach that requires the lowest number of samples.  We notice that WHAT and Guo (2N) uses less data compared to the other approaches. The high fault rate  of Guo (2N) accompanied with high variability in the predictions makes WHAT our preferred method.}\label{tab:measurements}
-\vspace{2ex}
-\centering
-\small
-\begin{tabular}{lrrrrr}
-\toprule
-                                   & \multicolumn{5}{c}{{Samples}}                                                                         \\ \cmidrule{2-6} 
-\multirow{-2}{*}{\textbf{}} & {Siegmund} & {Guo (2N)}          & {Guo (PW)} & {Sarkar} & {WHAT}                \\ \midrule
-\textbf{Apache}                    & 29                & 181                        & 29                & 55              & \cellcolor[HTML]{C0C0C0}16 \\ 
-\textbf{BDBC}                      & 139               & \cellcolor[HTML]{C0C0C0}36 & 139               & 191             & 64                         \\ 
-\textbf{BDBJ}                      & 48                & 52                         & 48                & 57              & \cellcolor[HTML]{C0C0C0}16 \\ 
-\textbf{LLVM}                      & 62                & \cellcolor[HTML]{C0C0C0}22 & 64                & 43              & 32                         \\ 
-\textbf{SQLite}                    & 566               & 78                         & 566               & 925             & \cellcolor[HTML]{C0C0C0}64 \\ 
-\textbf{X264}                      & 81                & \cellcolor[HTML]{C0C0C0}32 & 81                & 93              & \cellcolor[HTML]{C0C0C0}32 \\ \bottomrule
-\end{tabular}
-\end{table}
+
 
 % \input{tex/vs2102}
 
@@ -1215,6 +1207,25 @@ Based on the results of figure~\ref{fig:stats}, we answer {\bf RQ4} with ``yes''
 since \what yields predictions that are similar to or more accurate than prior
 work, while requiring fewer samples.
 \end{myshadowbox}
+
+\begin{table}[t]
+\caption{Comparison of the number of the samples
+required with the state of the art. The grey colored cells indicate the approach that requires the lowest number of samples.  We notice that WHAT and Guo (2N) uses less data compared to the other approaches. The high fault rate  of Guo (2N) accompanied with high variability in the predictions makes WHAT our preferred method.}\label{tab:measurements}
+\vspace{2ex}
+\centering
+\small
+\begin{tabular}{lrrrrr}
+\toprule
+                                   & \multicolumn{5}{c}{{Samples}}                                                                         \\ \cmidrule{2-6} 
+\multirow{-2}{*}{\textbf{}} & {Siegmund} & {Guo (2N)}          & {Guo (PW)} & {Sarkar} & {WHAT}                \\ \midrule
+\textbf{Apache}                    & 29                & 181                        & 29                & 55              & \cellcolor[HTML]{C0C0C0}16 \\ 
+\textbf{BDBC}                      & 139               & \cellcolor[HTML]{C0C0C0}36 & 139               & 191             & 64                         \\ 
+\textbf{BDBJ}                      & 48                & 52                         & 48                & 57              & \cellcolor[HTML]{C0C0C0}16 \\ 
+\textbf{LLVM}                      & 62                & \cellcolor[HTML]{C0C0C0}22 & 64                & 43              & 32                         \\ 
+\textbf{SQLite}                    & 566               & 78                         & 566               & 925             & \cellcolor[HTML]{C0C0C0}64 \\ 
+\textbf{X264}                      & 81                & \cellcolor[HTML]{C0C0C0}32 & 81                & 93              & \cellcolor[HTML]{C0C0C0}32 \\ \bottomrule
+\end{tabular}
+\end{table}
 
 \section{Why does it work?}
 In this section, we present an in-depth analysis to understand why our sampling technique (based on a spectral learner) achieves such low mean fault rates while being stable (low variance). We hypothesize that the configuration space of the system configuration lie on a low dimensional manifold. 
@@ -1290,7 +1301,7 @@ purposes of our experiments.}
     \item \what{} cannot be used for non-numeric configuration options. However, it can be used for numeric configurations options, not just Boolean options ( most related work only supports Boolean options). 
     \item The configurable systems used in this paper are fairly easy to model using machine learning techniques such as CART, but there exist software systems, which cannot be model using CART (even using 40\% of all possible configurations). For these systems, \what{} cannot be used to build accurate performance models.
     \item The effectiveness of \what{} depends on projecting the configurations on the approximated first principal component. The approximation of the first principal component require calculating the farthest points (points which is most dissimilar)  in the configuration space using euclidean distance. However, there maybe systems where  Euclidean distance (as used in this paper) cannot  find the most dissimilar points~\cite{chen2016sampling}. For such systems, \what{} in current form will not be effective (which is a part of our future work).
-    \item Finding near-optimal configuration can become challenging when the configuration space is non-convex. However, we did not find such systems during our empirical evaluations. The other point we would like to stress is: we wanted to build a tool, which can differentiate between good and not-so-good configurations using fewer evaluations and our goal is not to find the best configuration but rather near optimal solutions.
+    \item Finding near-optimal configuration can become challenging when the configuration space is non-convex. However, we did not find such systems during our empirical evaluations. The other point we would like to stress is: we wanted to build a tool, which can differentiate between good and not-so-good configurations using few evaluations and our goal is not to find the best configuration but rather near optimal solutions.
 \end{itemize}
 }
 
@@ -1343,7 +1354,7 @@ Also, we are aware that measurement bias can cause false interpretations~\cite{m
 \section{Related Work}
 \label{sect:related}
  
-In 2000, Shi and Maik~\cite{shi00} claimed the term ``spectral clustering'' as a reference to their normalized cuts
+In 2000, Shi and Maik~\cite{shi2000normalized} claimed the term ``spectral clustering'' as a reference to their normalized cuts
 image
 segmentation algorithm that  partitions data through a spectral (eigenvalue) analysis of the  
 Laplacian representation of the similarity graph between instances in the data.
